@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const xlsx_1 = require("../../lib/xlsx");
+const xlsxAsync_1 = require("../../lib/xlsxAsync");
 exports.readWorkBook = async function (filename) {
-    return xlsx_1.xlsx.readFile(filename);
+    return xlsxAsync_1.xlsxAsync.readFile(filename);
 };
 exports.readWorkBookAsCsv = async function (filename) {
     const wb = await exports.readWorkBook(filename);

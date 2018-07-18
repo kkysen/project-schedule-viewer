@@ -35,6 +35,18 @@ defineSharedProperties(Object, immutableDescriptor, {
 
 Object.defineImmutableProperties(Object, {
     
+    allKeys<T>(t: T): (keyof T)[] {
+        return [...Object.getOwnPropertyNames(t), ...Object.getOwnPropertySymbols(t)];
+    },
+    
+    allValues<T>(t: T): T[keyof T][] {
+        return Object.allKeys(t).map(key => t[key]);
+    },
+    
+    allEntries<T>(t: T): [keyof T, T[keyof T]][] {
+        return Object.allKeys(t).map(key => [key, t[key]] as [keyof T, T[keyof T]]);
+    },
+    
     definePolyfillProperties(obj: any, propertyValues: Object): void {
         Object.defineImmutableProperties(obj, propertyValues, false);
     },
@@ -51,7 +63,7 @@ Object.defineImmutableProperties(Object, {
         return Array.from(
             new Set(
                 Object.getPrototypeChain(object)
-                    .flatMap(Object.getOwnPropertyNames)
+                    .flatMap(proto => Object.getOwnPropertyNames(proto) as string[])
             )
         );
     },
@@ -88,7 +100,7 @@ Object.defineImmutableProperties(Object.prototype, {
     },
     
     mapFields<T, U>(this: {[field: string]: T}, mapper: (field: T) => U): {[field: string]: U} {
-        const obj: {[field: string]: U} = Object.create(null);
+        const obj: {[field: string]: U} = {};
         for (const [key, value] of Object.entries(this)) {
             obj[key] = mapper(value);
         }
@@ -223,7 +235,7 @@ Object.defineImmutableProperties(Array.prototype, {
     },
     
     toObject<T>(this: [string, T][]): {[key: string]: T} {
-        let o: {[key: string]: T} = Object.create(null);
+        let o: {[key: string]: T} = {};
         for (const [k, v] of this) {
             o[k] = v;
         }
@@ -270,6 +282,14 @@ Object.defineImmutableProperties(Array.prototype, {
     async asyncMapFilter<T, U>(this: T[],
                                map: (value: T, index: number, array: T[]) => Promise<OrFalsy<U>>): Promise<U[]> {
         return (await Promise.all(this.map(map))).filter(truthy);
+    },
+    
+    readOnly() {
+        return this;
+    },
+    
+    _() {
+        return this;
     },
     
 });
@@ -327,6 +347,22 @@ Object.defineImmutableProperties(Number, {
     
     toPixels(n: number): string {
         return Math.round(n) + "px";
+    },
+    
+});
+
+Object.defineImmutableProperties(Map.prototype, {
+   
+    map<K, V, T>(this: Map<K, V>, map: (v: V, k: K) => T): Map<K, T> {
+        return new Map([...this].map(([k, v]) => [k, map(v, k)] as [K, T]));
+    },
+    
+});
+
+Object.defineImmutableProperties(Set.prototype, {
+    
+    map<T, U>(this: Set<T>, map: (e: T) => U): Set<U> {
+        return new Set([...this].map(map));
     },
     
 });

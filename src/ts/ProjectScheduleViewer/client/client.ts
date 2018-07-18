@@ -3,7 +3,9 @@ import {loadApp} from "./loadApp";
 
 const main = function(): void {
     addExtensions();
-    loadApp();
+    (async () => {
+        await loadApp();
+    })();
 };
 
 main();

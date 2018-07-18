@@ -1,8 +1,9 @@
 import {WorkBook} from "xlsx";
 import {xlsx} from "../../lib/xlsx";
+import {xlsxAsync} from "../../lib/xlsxAsync";
 
 export const readWorkBook = async function(filename: string): Promise<WorkBook> {
-    return xlsx.readFile(filename);
+    return xlsxAsync.readFile(filename);
 };
 
 export type Row = (string | null)[];

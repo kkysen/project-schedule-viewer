@@ -28,6 +28,15 @@ defineSharedProperties(Object, immutableDescriptor, {
     },
 });
 Object.defineImmutableProperties(Object, {
+    allKeys(t) {
+        return [...Object.getOwnPropertyNames(t), ...Object.getOwnPropertySymbols(t)];
+    },
+    allValues(t) {
+        return Object.allKeys(t).map(key => t[key]);
+    },
+    allEntries(t) {
+        return Object.allKeys(t).map(key => [key, t[key]]);
+    },
     definePolyfillProperties(obj, propertyValues) {
         Object.defineImmutableProperties(obj, propertyValues, false);
     },
@@ -40,7 +49,7 @@ Object.defineImmutableProperties(Object, {
     },
     getAllPropertyNames(object) {
         return Array.from(new Set(Object.getPrototypeChain(object)
-            .flatMap(Object.getOwnPropertyNames)));
+            .flatMap(proto => Object.getOwnPropertyNames(proto))));
     },
     getting(key) {
         return o => o[key];
@@ -66,7 +75,7 @@ Object.defineImmutableProperties(Object.prototype, {
         return Object.create(Object.getPrototypeOf(this), Object.getOwnPropertyDescriptors(this));
     },
     mapFields(mapper) {
-        const obj = Object.create(null);
+        const obj = {};
         for (const [key, value] of Object.entries(this)) {
             obj[key] = mapper(value);
         }
@@ -176,7 +185,7 @@ Object.defineImmutableProperties(Array.prototype, {
         return func(...this);
     },
     toObject() {
-        let o = Object.create(null);
+        let o = {};
         for (const [k, v] of this) {
             o[k] = v;
         }
@@ -209,6 +218,12 @@ Object.defineImmutableProperties(Array.prototype, {
     },
     async asyncMapFilter(map) {
         return (await Promise.all(this.map(map))).filter(Truthy_1.truthy);
+    },
+    readOnly() {
+        return this;
+    },
+    _() {
+        return this;
     },
 });
 Object.definePolyfillProperties(Array.prototype, {
@@ -246,6 +261,16 @@ Object.defineImmutableProperties(Number, {
     },
     toPixels(n) {
         return Math.round(n) + "px";
+    },
+});
+Object.defineImmutableProperties(Map.prototype, {
+    map(map) {
+        return new Map([...this].map(([k, v]) => [k, map(v, k)]));
+    },
+});
+Object.defineImmutableProperties(Set.prototype, {
+    map(map) {
+        return new Set([...this].map(map));
     },
 });
 // don't touch RegExp.prototype,

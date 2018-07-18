@@ -9,7 +9,7 @@
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
     "newLine": "LF",
-    "jsxFactory": "React.createElement",
+//    "jsxFactory": "React.createElement",
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "noImplicitThis": true,

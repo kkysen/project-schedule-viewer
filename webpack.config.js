@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 const WebpackCleanupPlugin = require("webpack-cleanup-plugin");
 const CompressionWebpackPlugin = require("compression-webpack-plugin");
+const {BundleAnalyzerPlugin} = require("webpack-bundle-analyzer");
 
 const production = false;
 const mode = production ? "production" : "development";
@@ -13,7 +14,7 @@ const htmlPlugin = function(name, chunks) {
         chunks: chunks || undefined,
         filename: `${name}.html`,
         template: `./src/html/${name}.html`,
-        hash: true,
+        hash: false,
         cache: true,
         // favicon: "./src/img/favicon.ico",
         showErrors: !production,
@@ -146,7 +147,7 @@ module.exports = {
         server: "./src/ts/ProjectScheduleViewer/server/server.ts",
     },
     output: {
-        filename: "[name].js",
+        filename: "[name].[chunkhash].js",
         path: path.resolve(__dirname, "dist"),
     },
     resolve: {
@@ -162,9 +163,9 @@ module.exports = {
     },
     cache: true,
     optimization: {
-        // splitChunks: {
-        //     chunks: "all",
-        // },
+        splitChunks: {
+            chunks: "all",
+        },
         minimize: production,
         minimizer: [
             new UglifyJSPlugin({
@@ -174,7 +175,7 @@ module.exports = {
     },
     plugins: [
         ...htmlPlugins({
-            ProjectScheduleViewer: ["ProjectScheduleViewer"],
+            ProjectScheduleViewer: ["client"],
         }),
         new WebpackCleanupPlugin(),
         new CompressionWebpackPlugin({
@@ -184,6 +185,7 @@ module.exports = {
             threshold: 10240,
             minRatio: 0.8,
         }),
+        // new BundleAnalyzerPlugin(),
     ],
     mode: mode,
 };

@@ -1,7 +1,7 @@
 import * as fs from "fs-extra";
-import {identity} from "../util/functional/utils";
 import {path} from "../util/polyfills/path";
-import {matchAll} from "../util/utils";
+import {regex} from "../util/regex";
+import matchAll = regex.matchAll;
 
 type CoercedExportType = "const" | "type";
 type ExportType = CoercedExportType | "function" | "interface";
@@ -70,7 +70,7 @@ type ExportAsNamespaceArgs = {
 
 export const exportAsNamespace = async function(
     {namespace, importPath, typeDeclarationsPath, nodeModule = true, outDirectory = "../lib", aliases = {}}: ExportAsNamespaceArgs): Promise<void> {
-    const _path = nodeModule ? fromNodeModule(importPath, typeDeclarationsPath): typeDeclarationsPath;
+    const _path = nodeModule ? fromNodeModule(importPath, typeDeclarationsPath) : typeDeclarationsPath;
     const buffer = await fs.readFile(_path);
     const code = buffer.toString("utf8");
     await fs.writeFile(

@@ -1,19 +1,11 @@
+import {All} from "../../util/All";
 import {path} from "../../util/polyfills/path";
-import {Difference, PartialDifference} from "../../util/types/types";
+import {Is} from "../../util/types/isType";
 import {dir} from "../server/dir";
-import {positions} from "../server/Positions";
-import {parseTeam} from "../server/Teams";
-import {Position} from "./Position";
+import {DataSource} from "./DataSource";
+import {DataAccessor} from "./DataAccessor";
+import {Position, Positions, positions} from "./Position";
 import {Team} from "./Team";
-
-export interface ParsedEmployee {
-    
-    readonly firstName: string;
-    readonly lastName: string;
-    readonly level: number;
-    readonly isLeader: boolean;
-    
-}
 
 export interface Employee {
     
@@ -30,44 +22,61 @@ export interface Employee {
 
 export interface TeamLeader extends Employee {
     
-    teamProjectsFileName(): string;
+    readonly leaderId: number;
     
-    team(): Promise<Team>;
+    readonly team: () => Team;
     
 }
 
-type Id = {readonly id: number};
+const willBeLeader = (employee: Employee): boolean => employee.isLeader;
 
-const makeLeader = function(employee: PartialDifference<Employee, Id>): PartialDifference<TeamLeader, Id> {
-    const leader: Difference<TeamLeader, Id> = Object.assign(employee, {
-        teamProjectsFileName: () => path.join(dir.data, "teams", `${leader.name}.xlsx`),
-        team: () => parseTeam(leader as TeamLeader),
-    });
-    return leader;
-};
+const isLeader: Is<TeamLeader> = willBeLeader as Is<TeamLeader>;
 
-export const isLeader = function(employee: Employee): employee is TeamLeader {
-    return employee.isLeader;
-};
+interface ParsedEmployee {
+    
+    readonly firstName: string;
+    readonly lastName: string;
+    readonly level: number;
+    readonly isLeader: boolean;
+    
+}
 
-const makeEmployee = function(
-    {firstName, lastName, level, isLeader}: ParsedEmployee): Difference<Employee, Id> | undefined {
-    const position = positions.by.level(level);
-    if (!position) {
-        return undefined;
-    }
-    const employee = {
-        name: `${firstName} ${lastName}`,
-        firstName,
-        lastName,
-        position,
-        isLeader,
-    };
-    return isLeader ? makeLeader(employee) : employee;
-};
+export type RawEmployee = [string, string, number, 0 | 1];
 
-export const makeEmployees = function(employees: ReadonlyArray<ParsedEmployee>): ReadonlyArray<Employee> {
-    return (employees as ParsedEmployee[])
-        .mapFilter(makeEmployee)
-        .map((e, i) => Object.assign(e, {id: i}));
-};
+type Named = {name: string};
+
+export type Employees = All<Employee, Named>;
+
+type EmployeesArgs = {positions: Positions};
+
+export type EmployeesSource = DataSource<RawEmployee, EmployeesArgs>;
+
+export const employees = DataAccessor.new<Employee, Named, ParsedEmployee, RawEmployee, EmployeesArgs>({
+    source: e => e.employees,
+    parse: ([firstName, lastName, level, isLeader]) => ({firstName, lastName, level, isLeader: !!isLeader}),
+    create: ({firstName, lastName, level, isLeader}, id, {positions}) => {
+        const position = positions.by.level(level);
+        return !position ? undefined : {
+            id,
+            name: `${firstName} ${lastName}`,
+            firstName,
+            lastName,
+            position,
+            isLeader,
+        };
+    },
+    by: {name: ""},
+}, {positions});
+
+export type TeamLeaders = All<TeamLeader, Named>;
+
+export const leaders = DataAccessor.mapped<TeamLeader, Named, {employees: Employees}>(
+    ({employees}) => employees.all
+        .filter(willBeLeader)
+        .map((e, i) => Object.assign(e, {
+            leaderId: i,
+            team: () => undefined as any as Team, // is assigned later in makeTeam (Team.ts)
+        })),
+    {name: ""},
+    {employees},
+);

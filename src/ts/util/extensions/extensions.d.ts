@@ -3,14 +3,25 @@ declare type OrFalsy<T> = T | false | 0 | null | undefined | "";
 declare type Truthy<T> = T extends false | 0 | null | undefined | "" ? never : T;
 
 declare type StringKeyOf<T> = Extract<keyof T, string>;
+declare type SymbolKeyOf<T> = Extract<keyof T, symbol>;
 
 declare interface ObjectConstructor {
     
-    keys<T, K extends StringKeyOf<T>>(t: T): K[];
+    keys<T>(t: T): StringKeyOf<T>[];
     
-    values<T, K extends StringKeyOf<T>>(t: T): T[K][];
+    values<T>(t: T): T[StringKeyOf<T>][];
     
-    entries<T, K extends StringKeyOf<T>>(t: T): [K, T[K]][];
+    entries<T>(t: T): [StringKeyOf<T>, T[StringKeyOf<T>]][];
+    
+    getOwnPropertyNames<T>(t: T): StringKeyOf<T>[];
+    
+    getOwnPropertySymbols<T>(t: T): SymbolKeyOf<T>[];
+    
+    allKeys<T>(t: T): (keyof T)[];
+    
+    allValues<T>(t: T): T[keyof T][];
+    
+    allEntries<T>(t: T): [keyof T, T[keyof T]][];
     
     defineSharedProperties(object: any, sharedDescriptor: PropertyDescriptor, propertyValues: Object, overwrite?: boolean): void;
     
@@ -42,7 +53,7 @@ declare interface Object {
     // copies complete property descriptors
     fullClone<T>(this: T): T;
     
-    mapFields<T, U, KT extends keyof T, KU extends keyof U>(this: T, mapper: (field: T[KT]) => U[KU]): U;
+    mapFields<T, U>(this: T, mapper: (field: T[keyof T]) => U[keyof U]): U;
     
     mapFields<T, U>(this: {[field: string]: T}, mapper: (field: T) => U): {[field: string]: U};
     
@@ -126,6 +137,18 @@ declare interface Array<T> {
     
     find(predicate: (value: T, index: number, array: T[]) => true, thisArg?: any): T;
     
+    readOnly(): ReadonlyArray<T>;
+    
+    _(): T[];
+    
+}
+
+declare interface ReadonlyArray<T> {
+    
+    readOnly(): ReadonlyArray<T>;
+    
+    _(): T[];
+    
 }
 
 declare interface String {
@@ -141,6 +164,18 @@ declare interface NumberConstructor {
     isNumber(n: number): boolean;
     
     toPixels(n: number): string;
+    
+}
+
+declare interface Map<K, V> {
+    
+    map<T>(map: (v: V, k: V) => T): Map<K, T>;
+    
+}
+
+declare interface Set<T> {
+    
+    map<U>(map: (e: T) => U): Set<U>;
     
 }
 

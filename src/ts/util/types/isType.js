@@ -22,4 +22,5 @@ exports.isByConstructor = function (constructor) {
 };
 exports.isDataView = exports.isByConstructor(DataView);
 exports.isArrayBuffer = exports.isByConstructor(ArrayBuffer);
+exports.isPromise = exports.isByConstructor(Promise);
 //# sourceMappingURL=isType.js.map

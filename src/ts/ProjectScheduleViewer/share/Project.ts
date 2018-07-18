@@ -1,5 +1,29 @@
-import {Employee} from "./Employee";
+import {Employee, TeamLeader} from "./Employee";
 import {Month} from "./Month";
+
+
+interface ParsedEmployeeMonth {
+    readonly month: number;
+    readonly percentCommitted: number;
+}
+
+type RawEmployeeMonth = number;
+
+export interface ParsedProjectEmployee {
+    readonly employee: number;
+    readonly months: ReadonlyArray<ParsedEmployeeMonth>;
+}
+
+export type RawProjectEmployee = [number, RawEmployeeMonth[]];
+
+export interface ParsedProject {
+    readonly id: number;
+    readonly name: string;
+    readonly employees: ReadonlyArray<ParsedProjectEmployee>;
+    readonly percentLikelihood: number;
+}
+
+export type RawProject = [number, string, RawProjectEmployee[], number];
 
 export interface EmployeeCommitment {
     
@@ -17,9 +41,9 @@ export interface ProjectMonth {
 
 export interface Project {
     
+    readonly id: number;
     readonly name: string;
-    readonly number: number;
-    readonly leader: Employee;
+    readonly leader: TeamLeader;
     readonly employees: ReadonlyArray<Employee>;
     
     readonly months: ReadonlyArray<ProjectMonth>;

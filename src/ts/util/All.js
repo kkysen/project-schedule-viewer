@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const AllNow = {
+exports.All = {
     of(a, bySample) {
         const map = (key) => new Map(a.map(e => [e[key], e]));
         const mapBy = (key) => {
@@ -11,23 +11,11 @@ const AllNow = {
             .map(key => [key, mapBy(key)]);
         const byMap = maps.toObject();
         return {
-            all: () => a,
+            all: a,
             by: Object.assign(byMap, {
-                id: (id) => a[id],
+                index: (i) => a[i],
             }),
         };
-    },
-};
-exports.All = {
-    of(getter, by, initial = []) {
-        const all = {
-            refresh: async () => {
-                getter && Object.assign(all, AllNow.of(await getter(), by));
-                return all;
-            },
-            ...AllNow.of(initial, by),
-        };
-        return all;
     },
 };
 //# sourceMappingURL=All.js.map

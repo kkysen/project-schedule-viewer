@@ -41,3 +41,5 @@ export const isByConstructor = function <T>(constructor: new (...args: any[]) =>
 
 export const isDataView = isByConstructor(DataView);
 export const isArrayBuffer = isByConstructor(ArrayBuffer);
+
+export const isPromise = isByConstructor(Promise);

@@ -2,27 +2,24 @@ interface Named {
     readonly name: string;
 }
 
-interface AllNow<T extends By, By> {
+export type By<T, By = {}> = {
     
-    all(): ReadonlyArray<T>;
+    index(index: number): T | undefined;
     
-    readonly by: {
-        
-        id(id: number): T | undefined;
-        
-    } & {[K in keyof By]: (by: By[K]) => T | undefined};
+} & {[K in keyof By]: (by: By[K]) => T | undefined};
+
+
+export interface All<T extends _By, _By> {
+    
+    readonly all: ReadonlyArray<T>;
+    
+    readonly by: By<T, _By>;
     
 }
 
-export interface All<T extends By, By = {}> extends AllNow<T, By> {
+export const All = {
     
-    refresh(): Promise<All<T, By>>;
-    
-}
-
-const AllNow = {
-    
-    of<T extends By, By = {}>(a: ReadonlyArray<T>, bySample: By): AllNow<T, By> {
+    of<T extends By, By = {}>(a: ReadonlyArray<T>, bySample: By): All<T, By> {
         type K = keyof By;
         type V = By[K];
         type M = Map<V, T>;
@@ -35,31 +32,16 @@ const AllNow = {
             return (by: V) => byMap.get(by);
         };
         
-        const maps = Object.keys(bySample)
+        const maps = Object.keys<By>(bySample)
             .map(key => [key, mapBy(key)] as [K, GetBy]);
         const byMap: AllGetBy = maps.toObject();
         
         return {
-            all: () => a,
+            all: a,
             by: Object.assign(byMap, {
-                id: (id: number) => a[id],
+                index: (i: number) => a[i],
             }),
         };
-    },
-    
-};
-
-export const All = {
-    
-    of<T extends By, By>(getter: null | (() => Promise<ReadonlyArray<T>>), by: By, initial: ReadonlyArray<T> = []): All<T, By> {
-        const all: All<T, By> =  {
-            refresh: async () => {
-                getter && Object.assign(all, AllNow.of(await getter(), by));
-                return all;
-            },
-            ...AllNow.of(initial, by),
-        };
-        return all;
     },
     
 };

@@ -79,15 +79,20 @@ exports.escapeRegExp = function (literal, flags) {
 class NotImplementedError extends Error {
 }
 exports.NotImplementedError = NotImplementedError;
-exports.matchAll = function (regex, s) {
-    if (!regex.global) {
-        throw new Error("trying to matchAll with non global regex");
-    }
-    const matches = [];
-    let match;
-    while (match = regex.exec(s)) {
-        matches.push(match);
-    }
-    return matches;
+exports.lowerBound = function (min, n) {
+    return Math.max(min, n);
+};
+exports.upperBound = function (max, n) {
+    return Math.min(max, n);
+};
+exports.bound = function (min, max, n) {
+    return exports.lowerBound(min, exports.upperBound(max, n));
+};
+exports.boundSurrounding = function (min, max, center, halfSize) {
+    return [exports.lowerBound(min, center - halfSize), exports.upperBound(max, center + halfSize)];
+};
+exports.snippet = function (s, center, halfSize) {
+    const [start, end] = exports.boundSurrounding(0, s.length, center, halfSize);
+    return s.slice(start, end);
 };
 //# sourceMappingURL=utils.js.map

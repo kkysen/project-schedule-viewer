@@ -2,7 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs-extra");
 const path_1 = require("../util/polyfills/path");
-const utils_1 = require("../util/utils");
+const regex_1 = require("../util/regex");
+var matchAll = regex_1.regex.matchAll;
 const coerceExportType = function (type) {
     switch (type) {
         case "const":
@@ -15,13 +16,13 @@ const coerceExportType = function (type) {
 };
 const exportAsNamespaceString = function ({ namespace, importPath, code, aliases }) {
     const namespaceBody = [
-        ...utils_1.matchAll(/export\s+(const|function|interface|type)\s+([a-zA-Z$_][a-zA-Z$_0-9]*)/g, code)
+        ...matchAll(/export\s+(const|function|interface|type)\s+([a-zA-Z$_][a-zA-Z$_0-9]*)/g, code)
             .map((e, i) => (console.log([...e]), e))
             .map(([_, type, name]) => ({
             type: coerceExportType(type),
             name,
         })),
-        ...utils_1.matchAll(/export\s*{([^}]*)}/g, code)
+        ...matchAll(/export\s*{([^}]*)}/g, code)
             .map((e, i) => (console.log([...e]), e))
             .map(([_, exports]) => exports.trim().split(/\s*,\s*/))
             .flatten()

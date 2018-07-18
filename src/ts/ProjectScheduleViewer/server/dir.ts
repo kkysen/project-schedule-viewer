@@ -12,5 +12,6 @@ export namespace dir {
     export const dist: string = path.join(root, "dist");
     export const src: string = path.join(root, "src");
     export const data: string = path.join(src, "data");
+    export const test: string = path.join(src, "ts", "ProjectScheduleViewer", "server", "test", "data");
     
 }

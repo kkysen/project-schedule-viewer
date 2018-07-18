@@ -12,4 +12,16 @@ export namespace regex {
         return new RegExp(source, flags);
     };
     
+    export const matchAll = function(regex: RegExp, s: string): RegExpExecArray[] {
+        if (!regex.global) {
+            throw new Error("trying to matchAll with non global regex");
+        }
+        const matches = [];
+        let match;
+        while (match = regex.exec(s)) {
+            matches.push(match);
+        }
+        return matches;
+    };
+    
 }

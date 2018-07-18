@@ -96,14 +96,24 @@ export class NotImplementedError extends Error {
 
 }
 
-export const matchAll = function(regex: RegExp, s: string): RegExpExecArray[] {
-    if (!regex.global) {
-        throw new Error("trying to matchAll with non global regex");
-    }
-    const matches = [];
-    let match;
-    while (match = regex.exec(s)) {
-        matches.push(match);
-    }
-    return matches;
+export const lowerBound = function(min: number, n: number): number {
+    return Math.max(min, n);
 };
+
+export const upperBound = function(max: number, n: number): number {
+    return Math.min(max, n);
+};
+
+export const bound = function(min: number, max: number, n: number): number {
+    return lowerBound(min, upperBound(max, n));
+};
+
+export const boundSurrounding = function(min: number, max: number, center: number, halfSize: number): [number, number] {
+    return [lowerBound(min, center - halfSize), upperBound(max, center + halfSize)];
+};
+
+export const snippet = function(s: string, center: number, halfSize: number): string {
+    const [start, end] = boundSurrounding(0, s.length, center, halfSize);
+    return s.slice(start, end);
+};
+
