@@ -15,7 +15,7 @@ const ProjectTable = ({ project }) => {
                     React.createElement("th", { style: border },
                         "Project: ",
                         project.name),
-                    project.employees.map((e, i) => React.createElement("th", { key: i, style: border }, e.name)))),
+                    project.employees.map((e, i) => React.createElement("th", { key: i, style: border }, e.employee.name)))),
             React.createElement("tbody", null, project.months.map((month, i) => React.createElement("tr", { key: i },
                 React.createElement("td", { style: border }, month.month.name),
                 month.employees.map((employee, i) => {

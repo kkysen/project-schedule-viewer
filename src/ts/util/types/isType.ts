@@ -31,6 +31,7 @@ export const isNumber = isNativeType("number");
 export const isString = isNativeType("string");
 export const isFunction = isNativeType("Function"); // TODO can this be optimized?
 export const isArray = Array.isArray;
+export const isReadonlyArray: Is<ReadonlyArray<any>> = Array.isArray;
 export const isRegExp = isNativeType("RegExp");
 export const isDate = isNativeType("Date");
 export const isObject = isNativeType("object");

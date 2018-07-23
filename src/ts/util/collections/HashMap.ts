@@ -33,11 +33,18 @@ interface HashMapArgs<K, KH, V, VH> extends NewCollectionArgs<MapEntry<K, V>, nu
 
 export interface HashMapClass {
     
-    new: <K, V, KH = HashValue, VH = HashValue>(args: HashMapArgs<K, KH, V, VH>) => HashMap<K, V>,
+    readonly new: <K, V, KH = HashValue, VH = HashValue>(args: HashMapArgs<K, KH, V, VH>) => HashMap<K, V>;
+    
+    readonly referential: <K, V, VH = HashValue>(args: HashMapArgs<K, K, V, VH>) => HashMap<K, V>;
+    
+    readonly perfectHash: <K, V, KH = HashValue, VH = HashValue>(
+        args: HashMapArgs<K, KH, V, VH> & {keysHashEquals: HashEquals<K, KH>}) => HashMap<K, V>;
     
 }
 
 // TODO add referential version like in HashSet
+// TODO add perfect hash version (for keys like Date or enums), b/c can be optimized (no linked lists)
+// TODO add perfect hash version to HashSet, too
 
 export const HashMap: HashMapClass = {
     
@@ -102,35 +109,58 @@ export const HashMap: HashMapClass = {
                     remove: () => undefined,
                 };
             }
+    
+            // explicitly check first node
+            if (equals(key, node.key)) {
+                const n = node;
+                n.key = key;
+                return {
+                    exists: true,
+                    key,
+                    value: n.value,
+                    put: value => {
+                        const v = n.value;
+                        n.value = value;
+                        return v;
+                    },
+                    remove: () => {
+                        const value = n.value;
+                        table.delete(h);
+                        return value;
+                    },
+                };
+            }
             
             for (let next: Node$, prev: Node$; next = node.next; prev = node, node = next) {
                 const k = node.key;
-                if (equals(k, key)) {
-                    const n = node;
-                    n.key = key;
-                    return {
-                        exists: true,
-                        key: n.key,
-                        value: n.value,
-                        put: value => {
-                            const v = n.value;
-                            n.value = value;
-                            return v;
-                        },
-                        remove: () => {
-                            const value = n.value;
-                            if (prev) {
-                                prev.next = next;
-                            } else if (next) {
-                                table.set(h, next);
-                            } else {
-                                table.delete(h);
-                            }
-                            return value;
-                        },
-                    };
+                if (!equals(k, key)) {
+                    continue;
                 }
+                const n = node;
+                n.key = key;
+                return {
+                    exists: true,
+                    key: n.key,
+                    value: n.value,
+                    put: value => {
+                        const v = n.value;
+                        n.value = value;
+                        return v;
+                    },
+                    remove: () => {
+                        const value = n.value;
+                        if (prev) {
+                            prev.next = next;
+                        } else if (next) {
+                            table.set(h, next);
+                        } else {
+                            table.delete(h);
+                        }
+                        return value;
+                    },
+                };
             }
+            
             const n = node;
             return {
                 exists: false,
@@ -192,6 +222,11 @@ export const HashMap: HashMapClass = {
             return exists(node) ? node.value : defaultValue;
         };
         
+        const getOrPutDefault = function(key: K, defaultValue: V): V {
+            const node = getNode(key);
+            return exists(node) ? node.value : (node.put(defaultValue), defaultValue);
+        };
+        
         const getByValue = function(remove: boolean) {
             return function(v: V): boolean {
                 for (const {key, value} of base) {
@@ -229,6 +264,7 @@ export const HashMap: HashMapClass = {
             hasKey,
             get,
             getOrDefault,
+            getOrPutDefault,
             putIfAbsent: (key, value) => {
                 const node = getNode(key);
                 if (!node.exists) {
@@ -328,6 +364,16 @@ export const HashMap: HashMapClass = {
         addAll(elements);
         
         return _;
+    },
+    
+    referential<K, V, VH = HashValue>(args: HashMapArgs<K, K, V, VH>): HashMap<K, V> {
+        args.keysHashEquals = HashEquals.referential();
+        return HashMap.new(args);
+    },
+    
+    perfectHash<K, V, H, VH>(args: HashMapArgs<K, H, V, VH> & {keysHashEquals: HashEquals<K, H>}): HashMap<K, V> {
+        // TODO
+        return HashMap.new(args);
     },
     
 };

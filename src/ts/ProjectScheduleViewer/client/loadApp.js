@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
 const react_dom_1 = require("react-dom");
 const anyWindow_1 = require("../../util/anyWindow");
-const Data_1 = require("../share/Data");
-const JsonDataSource_1 = require("../share/JsonDataSource");
+const Data_1 = require("../share/data/Data");
+const JsonDataSource_1 = require("../share/data/source/JsonDataSource");
 const App_1 = require("../ssr/components/App");
 const api_1 = require("./api");
 exports.loadApp = async function () {

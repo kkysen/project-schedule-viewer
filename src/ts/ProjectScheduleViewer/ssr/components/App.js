@@ -1,38 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const d3_scale_1 = require("d3-scale");
-const d3_time_format_1 = require("d3-time-format");
 const React = require("react");
-const utils_1 = require("../../../util/functional/utils");
+const animate_1 = require("../../../util/animate");
+const anyWindow_1 = require("../../../util/anyWindow");
+const utils_1 = require("../../../util/utils");
+const Graph_1 = require("./Graph");
 const ProjectTables_1 = require("./ProjectTables");
-const AreaStack_1 = require("./svg/AreaStack");
 exports.appId = "app";
-exports.App = ({ data }) => React.createElement("div", { id: exports.appId },
-    AreaStack_1.AreaStack({
-        data: [
-            { month: new Date(2015, 0, 1), apples: 3840, bananas: 1920, cherries: 960, dates: 400 },
-            { month: new Date(2015, 1, 1), apples: 1600, bananas: 1440, cherries: 960, dates: 400 },
-            { month: new Date(2015, 2, 1), apples: 640, bananas: 960, cherries: 640, dates: 400 },
-            { month: new Date(2015, 3, 1), apples: 320, bananas: 480, cherries: 640, dates: 400 },
-            { month: new Date(2015, 4, 1), apples: 10000, bananas: 8000, cherries: 9000, dates: 7000 },
-        ],
-        xKey: "month",
-        values: {
-            month: utils_1.identity,
-            apples: utils_1.identity,
-            bananas: utils_1.identity,
-            cherries: utils_1.identity,
-            dates: utils_1.identity,
-        },
-        scale: {
-            x: d3_scale_1.scaleTime(),
-        },
-        axes: {
-            x: (axis, xData) => axis.tickFormat(d3_time_format_1.timeFormat("%B")).ticks(xData.length),
-        },
-        size: { width: 600, height: 300 },
-        margin: { left: 50, top: 50, right: 50, bottom: 50 },
-    }),
-    React.createElement(ProjectTables_1.ProjectTables, { data: data }),
-    React.createElement("button", { onClick: () => console.log(data) }, "Button"));
+exports.App = ({ data }) => {
+    anyWindow_1.globals({ data });
+    return React.createElement("div", { id: exports.appId },
+        React.createElement(Graph_1.Graph, { data: data }),
+        React.createElement(ProjectTables_1.ProjectTables, { data: data }),
+        React.createElement("button", { onClick: () => console.log(data) }, "Button"));
+};
+if (anyWindow_1.isBrowser) {
+    anyWindow_1.anyWindow.start = () => {
+        const bys = utils_1.moduloIndexer(["index", "employee", "project", "team", "position"]);
+        anyWindow_1.anyWindow.stop = animate_1.animate(i => anyWindow_1.anyWindow.by = bys(i));
+    };
+}
 //# sourceMappingURL=App.js.map

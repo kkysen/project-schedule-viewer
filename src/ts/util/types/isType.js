@@ -14,6 +14,7 @@ exports.isNumber = exports.isNativeType("number");
 exports.isString = exports.isNativeType("string");
 exports.isFunction = exports.isNativeType("Function"); // TODO can this be optimized?
 exports.isArray = Array.isArray;
+exports.isReadonlyArray = Array.isArray;
 exports.isRegExp = exports.isNativeType("RegExp");
 exports.isDate = exports.isNativeType("Date");
 exports.isObject = exports.isNativeType("object");

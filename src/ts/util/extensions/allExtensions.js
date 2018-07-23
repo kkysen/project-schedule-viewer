@@ -51,6 +51,11 @@ Object.defineImmutableProperties(Object, {
         return Array.from(new Set(Object.getPrototypeChain(object)
             .flatMap(proto => Object.getOwnPropertyNames(proto))));
     },
+    assignProperties(target, ...sources) {
+        for (const source of sources) {
+            Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+        }
+    },
     getting(key) {
         return o => o[key];
     },
@@ -62,6 +67,14 @@ Object.defineImmutableProperties(Object, {
     },
 });
 Object.defineImmutableProperties(Object.prototype, {
+    hasProperty(property) {
+        for (let o = this; o !== null; o = Object.getPrototypeOf(o)) {
+            if (o.hasOwnProperty(property)) {
+                return true;
+            }
+        }
+        return false;
+    },
     freeze() {
         return Object.freeze(this);
     },
@@ -184,8 +197,8 @@ Object.defineImmutableProperties(Array.prototype, {
     callOn(func) {
         return func(...this);
     },
-    toObject() {
-        let o = {};
+    toObject(noPrototype = false) {
+        let o = noPrototype ? Object.create(null) : {};
         for (const [k, v] of this) {
             o[k] = v;
         }
@@ -234,6 +247,7 @@ Object.definePolyfillProperties(Array.prototype, {
         return [].concat(...this.map(flatMap));
     },
     flatten(depth = -1) {
+        // TODO faster flatten polyfill
         return depth === 0
             ? this
             : this.reduce((a, e) => a.concat(Array.isArray(e) ? e.flatten(depth - 1) : e), []);

@@ -2,15 +2,15 @@ import {Request, Response} from "express";
 import * as fs from "fs-extra";
 import {addExtensions} from "../../util/extensions/allExtensions";
 import {path} from "../../util/polyfills/path";
-import {getRenderedApp, reRenderApp} from "../ssr/ssr";
+import {inProduction} from "../../util/production";
+import {getRenderedApp, reRenderApp, warmUpAppRenderer} from "../ssr/ssr";
+import {gzipped} from "./config";
 import {dir} from "./dir";
 import e = require("express");
 
 addExtensions();
 
 const app = e();
-
-export const gzipped = false; // TODO
 
 const setGzipHeaders = function(response: Response, type: "html" | "js", gzipped: boolean): void {
     console.log(type);
@@ -51,5 +51,8 @@ app.get("/", async (request: Request, response: Response) => {
             });
         });
 })();
+
+// force v8 to compile and optimize
+inProduction(warmUpAppRenderer(10));
 
 app.listen(8000, () => console.log("listening"));

@@ -1,4 +1,4 @@
-import {Data} from "../share/Data";
+import {Data} from "../share/data/Data";
 
 export namespace api {
     

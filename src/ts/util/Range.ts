@@ -1,6 +1,10 @@
+import {globals} from "./anyWindow";
+
 export interface Range {
     
-    map<T>(func: (i: number) => T): T[];
+    map<T>(map: (i: number) => T): T[];
+    
+    filter(filter: (i: number) => boolean): number[];
     
     forEach(func: (i: number) => void): void;
     
@@ -12,7 +16,9 @@ export interface Range {
 
 export type RangeClass = {
     
-    readonly new: (from: number, to?: number) => Range;
+    "new"(to: number): Range;
+    
+    "new"(from: number, to: number): Range;
     
     ofDomain(domain: number[]): Range;
     
@@ -30,8 +36,12 @@ export const Range: RangeClass = {
                 return [...new Array(_to - _from)].map((e, i) => i + _from);
             },
             
-            map<T>(func: (i: number) => T): T[] {
-                return this.toArray().map(func);
+            map<T>(map: (i: number) => T): T[] {
+                return this.toArray().map(map);
+            },
+            
+            filter(func: (i: number) => boolean): number[] {
+                return this.toArray().filter(func);
             },
             
             forEach(func: (i: number) => void): void {
@@ -53,3 +63,5 @@ export const Range: RangeClass = {
     },
     
 };
+
+globals({range: Range});

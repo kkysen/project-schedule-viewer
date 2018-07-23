@@ -1,8 +1,8 @@
 import * as React from "react";
 import {hydrate, render} from "react-dom";
 import {anyWindow} from "../../util/anyWindow";
-import {getAppData} from "../share/Data";
-import {jsonDataSource} from "../share/JsonDataSource";
+import {getAppData} from "../share/data/Data";
+import {jsonDataSource} from "../share/data/source/JsonDataSource";
 import {App, appId} from "../ssr/components/App";
 import {api} from "./api";
 

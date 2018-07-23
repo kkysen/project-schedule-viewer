@@ -3,13 +3,15 @@ import * as React from "react";
 
 import {renderToString} from "react-dom/server";
 import {compression} from "../../lib/gzip";
+import {withFauxDom} from "../../util/dom/faux/withFauxDom";
 import {MaybePromise} from "../../util/MaybePromise";
 import {path} from "../../util/polyfills/path";
+import {Range} from "../../util/Range";
+import {gzipped} from "../server/config";
 import {dir} from "../server/dir";
 import {fileSystemDataSource} from "../server/FileSystemDataSource";
-import {gzipped} from "../server/server";
-import {getAppData} from "../share/Data";
-import {dataToJson} from "../share/JsonData";
+import {getAppData} from "../share/data/Data";
+import {dataToJson} from "../share/data/JsonData";
 import {App, appId} from "./components/App";
 
 
@@ -27,13 +29,14 @@ const renderApp = async function(): Promise<RenderedApp> {
     const [template, data] = await Promise.all([readTemplate(), getAppData(fileSystemDataSource)]);
     const insertionPoint = `<div id="not-${appId}"></div>`;
     const [before, after] = template.split(insertionPoint);
-    console.log("rendering");
+    console.time("rendering");
     const html = [
         before,
         `<script>window.appData = '${dataToJson(data)}'</script>`,
         renderToString(<App data={data}/>),
         after,
     ].join("");
+    console.timeEnd("rendering");
     (async () => {
         await fs.writeFile(path.join(dir.test, "index.html"), html);
     })();
@@ -53,4 +56,9 @@ export const reRenderApp = async function(): Promise<RenderedApp> {
 
 export const getRenderedApp = function(): MaybePromise<RenderedApp> {
     return renderedApp || renderedAppPromise;
+};
+
+export const warmUpAppRenderer = function(repetitions: number = 10): () => Promise<void> {
+    return () => Range.new(repetitions).toArray().asyncMap(reRenderApp)
+        .then(() => undefined);
 };

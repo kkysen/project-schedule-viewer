@@ -1,7 +1,7 @@
 import * as React from "react";
 import {CSSProperties, Fragment, SFC} from "react";
-import {Data} from "../../share/Data";
-import {Project} from "../../share/Project";
+import {Data} from "../../share/data/Data";
+import {Project} from "../../share/data/access/Project";
 
 const ProjectTable: SFC<{project: Project}> = ({project}) => {
     const border: CSSProperties = {border: "1px solid black"};
@@ -13,7 +13,7 @@ const ProjectTable: SFC<{project: Project}> = ({project}) => {
             <thead>
                 <tr>
                     <th style={border}>Project: {project.name}</th>
-                    {project.employees.map((e, i) => <th key={i} style={border}>{e.name}</th>)}
+                    {project.employees.map((e, i) => <th key={i} style={border}>{e.employee.name}</th>)}
                 </tr>
             </thead>
             <tbody>

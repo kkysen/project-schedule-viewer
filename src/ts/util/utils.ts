@@ -21,6 +21,17 @@ export const joinWords = function(words: ReadonlyArray<string>): string {
     }
 };
 
+export const camelCase = (() => {
+    // from react-faux-dom/lib/utils/camelCase.js
+    const hyphenPattern = /-+([a-z])/gi;
+    return function(s: string): string {
+        hyphenPattern.lastIndex = 0;
+        return s.replace(hyphenPattern, (match: string, c: string, offset: number) => {
+            return offset === 0 ? c : c.toUpperCase();
+        });
+    }
+})();
+
 export const separateClassName = function(className: string): string {
     return className.replace(/([A-Z])/g, " $1").trim();
 };
@@ -117,3 +128,10 @@ export const snippet = function(s: string, center: number, halfSize: number): st
     return s.slice(start, end);
 };
 
+export const boolAsInt = function(bool: boolean): 0 | 1 {
+    return bool ? 1 : 0;
+};
+
+export const moduloIndexer = function <T>(a: ReadonlyArray<T>): (i: number) => T {
+    return i => a[i % a.length];
+};

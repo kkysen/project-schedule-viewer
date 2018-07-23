@@ -1,5 +1,6 @@
 import {Equals} from "../collections/HashEquals";
 import {truthy} from "../types/Truthy";
+import {ValueOf} from "../types/ValueOf";
 
 const immutableDescriptor: PropertyDescriptor = Object.freeze({
     writable: false,
@@ -39,12 +40,12 @@ Object.defineImmutableProperties(Object, {
         return [...Object.getOwnPropertyNames(t), ...Object.getOwnPropertySymbols(t)];
     },
     
-    allValues<T>(t: T): T[keyof T][] {
+    allValues<T>(t: T): ValueOf<T>[] {
         return Object.allKeys(t).map(key => t[key]);
     },
     
-    allEntries<T>(t: T): [keyof T, T[keyof T]][] {
-        return Object.allKeys(t).map(key => [key, t[key]] as [keyof T, T[keyof T]]);
+    allEntries<T>(t: T): [keyof T, ValueOf<T>][] {
+        return Object.allKeys(t).map(key => [key, t[key]] as [keyof T, ValueOf<T>]);
     },
     
     definePolyfillProperties(obj: any, propertyValues: Object): void {
@@ -68,6 +69,12 @@ Object.defineImmutableProperties(Object, {
         );
     },
     
+    assignProperties(target: object, ...sources: any[]): any {
+        for (const source of sources) {
+            Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+        }
+    },
+    
     getting<T, K extends keyof T>(key: K): (o: T) => T[K] {
         return o => o[key];
     },
@@ -82,6 +89,15 @@ Object.defineImmutableProperties(Object, {
 });
 
 Object.defineImmutableProperties(Object.prototype, {
+    
+    hasProperty(this: object, property: PropertyKey): boolean {
+        for (let o = this; o !== null; o = Object.getPrototypeOf(o)) {
+            if (o.hasOwnProperty(property)) {
+                return true;
+            }
+        }
+        return false;
+    },
     
     freeze<T>(this: T): T {
         return Object.freeze(this);
@@ -234,8 +250,8 @@ Object.defineImmutableProperties(Array.prototype, {
         return func(...this);
     },
     
-    toObject<T>(this: [string, T][]): {[key: string]: T} {
-        let o: {[key: string]: T} = {};
+    toObject<T>(this: [string, T][], noPrototype: boolean = false): {[key: string]: T} {
+        let o: {[key: string]: T} = noPrototype ? Object.create(null) : {};
         for (const [k, v] of this) {
             o[k] = v;
         }
@@ -307,6 +323,7 @@ Object.definePolyfillProperties(Array.prototype, {
     },
     
     flatten<T>(this: T[], depth: number = -1): any[] {
+        // TODO faster flatten polyfill
         return depth === 0
             ? this
             : this.reduce(

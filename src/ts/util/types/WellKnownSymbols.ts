@@ -1,3 +1,5 @@
+import {ValueOf} from "./ValueOf";
+
 export type HasIteratorSymbol<T> = Iterable<T>;
 
 export type HasAsyncIteratorSymbol<T> = AsyncIterable<T>;
@@ -103,7 +105,7 @@ export interface WellKnownSymbols {
     
 }
 
-type HasWellKnownSymbol = ReturnType<WellKnownSymbols[keyof WellKnownSymbols]>;
+type HasWellKnownSymbol = ReturnType<ValueOf<WellKnownSymbols>>;
 
 type PropagateHasSymbol<HasSymbol extends HasWellKnownSymbol, T>
     = T extends HasSymbol ? HasSymbol : {};

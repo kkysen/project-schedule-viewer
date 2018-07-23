@@ -1,5 +1,6 @@
 import {MaybePromise} from "./MaybePromise";
 import {isPromise} from "./types/isType";
+import {ValueOf} from "./types/ValueOf";
 
 export type AwaitType<T> = T extends Promise<infer U> ? U : T;
 
@@ -7,7 +8,7 @@ export type Values<T> = {[key: string]: T};
 
 export namespace objectFields {
     
-    export const map = function <T, U>(t: T, mapper: (field: T[keyof T]) => U[keyof U]): U {
+    export const map = function <T, U>(t: T, mapper: (field: ValueOf<T>) => ValueOf<U>): U {
         return t.mapFields(mapper);
     };
     

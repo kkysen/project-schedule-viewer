@@ -1,9 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const React = require("react");
 const react_1 = require("react");
 const InjectedFauxDom = {
-    new(FauxElement, setState) {
+    new(FauxComponent, setState) {
         const connectedFauxDom = new Map();
         let animateUntil = 0;
         let drawTimeout = 0;
@@ -38,8 +37,8 @@ const InjectedFauxDom = {
         const connect = (node, name, discardNode = false) => {
             const element = connectedFauxDom.get(name);
             if (!element || discardNode) {
-                const element = FauxElement.new(node);
-                connectedFauxDom.set(name, FauxElement.new(node));
+                const element = FauxComponent.new(node);
+                connectedFauxDom.set(name, FauxComponent.new(node));
                 drawTimeout = setTimeout(draw);
                 return element;
             }
@@ -79,7 +78,7 @@ exports.withFauxDomFactory = function (FauxElement) {
             }
             render() {
                 const props = Object.assign(this.props, { fauxDom: this.faux });
-                return React.createElement(WrappedComponent, Object.assign({}, props));
+                return react_1.createElement(WrappedComponent, props);
             }
         };
         WithFauxDom.displayName = `withFauxDom(${WrappedComponent.displayName || WrappedComponent.name})`;

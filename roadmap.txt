@@ -1,0 +1,9 @@
+pre-filter graph data so data fills entire graph
+clicking on a section goes in (orders by lower level)
+double clicking on a section returns back to the higher level
+hovering (after a second) over a section shows the name and value
+hovering creates lines to mouse
+separate horizontal and vertical scroll bars that stretch the graph
+download a snapshot
+
+split webpack into web and server configs

@@ -19,6 +19,16 @@ exports.joinWords = function (words) {
             return _words.join(", ") + ", and " + lastWord;
     }
 };
+exports.camelCase = (() => {
+    // from react-faux-dom/lib/utils/camelCase.js
+    const hyphenPattern = /-+([a-z])/gi;
+    return function (s) {
+        hyphenPattern.lastIndex = 0;
+        return s.replace(hyphenPattern, (match, c, offset) => {
+            return offset === 0 ? c : c.toUpperCase();
+        });
+    };
+})();
 exports.separateClassName = function (className) {
     return className.replace(/([A-Z])/g, " $1").trim();
 };
@@ -94,5 +104,11 @@ exports.boundSurrounding = function (min, max, center, halfSize) {
 exports.snippet = function (s, center, halfSize) {
     const [start, end] = exports.boundSurrounding(0, s.length, center, halfSize);
     return s.slice(start, end);
+};
+exports.boolAsInt = function (bool) {
+    return bool ? 1 : 0;
+};
+exports.moduloIndexer = function (a) {
+    return i => a[i % a.length];
 };
 //# sourceMappingURL=utils.js.map

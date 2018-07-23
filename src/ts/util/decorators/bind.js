@@ -18,7 +18,7 @@ exports.bind = function (target) {
         .map(key => ({ key, value: _target[key] }))
         .filter(({ value }) => isBindable(value))
         .map(({ key, value }) => [key, bind(value)])
-        .toObject();
+        .toObject(true);
     Object.defineImmutableProperties(target, properties);
     return target;
 };

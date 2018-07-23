@@ -4,6 +4,7 @@ declare type Truthy<T> = T extends false | 0 | null | undefined | "" ? never : T
 
 declare type StringKeyOf<T> = Extract<keyof T, string>;
 declare type SymbolKeyOf<T> = Extract<keyof T, symbol>;
+declare type ValueOf<T> = T[keyof T];
 
 declare interface ObjectConstructor {
     
@@ -19,9 +20,9 @@ declare interface ObjectConstructor {
     
     allKeys<T>(t: T): (keyof T)[];
     
-    allValues<T>(t: T): T[keyof T][];
+    allValues<T>(t: T): ValueOf<T>[];
     
-    allEntries<T>(t: T): [keyof T, T[keyof T]][];
+    allEntries<T>(t: T): [keyof T, ValueOf<T>][];
     
     defineSharedProperties(object: any, sharedDescriptor: PropertyDescriptor, propertyValues: Object, overwrite?: boolean): void;
     
@@ -35,6 +36,14 @@ declare interface ObjectConstructor {
     
     bind<T>(t: T): T;
     
+    assignProperties<T, U>(target: T, source: U): T & U;
+    
+    assignProperties<T, U, V>(target: T, source1: U, source2: V): T & U & V;
+    
+    assignProperties<T, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
+    
+    assignProperties(target: object, ...sources: any[]): any;
+    
     getting<T, K extends keyof T>(key: K): (o: T) => T[K];
     
     deleting<T, K extends keyof T>(key: K): (o: T) => T;
@@ -42,6 +51,8 @@ declare interface ObjectConstructor {
 }
 
 declare interface Object {
+    
+    hasProperty(v: PropertyKey): boolean;
     
     freeze<T>(this: T): T;
     
@@ -53,7 +64,7 @@ declare interface Object {
     // copies complete property descriptors
     fullClone<T>(this: T): T;
     
-    mapFields<T, U>(this: T, mapper: (field: T[keyof T]) => U[keyof U]): U;
+    mapFields<T, U>(this: T, mapper: (field: ValueOf<T>) => ValueOf<U>): U;
     
     mapFields<T, U>(this: {[field: string]: T}, mapper: (field: T) => U): {[field: string]: U};
     
@@ -111,11 +122,11 @@ declare interface Array<T> {
     
     callOn<U>(func: (...args: T[]) => U): U;
     
-    toObject<T, K extends keyof T>(this: [K, T[K]][]): T;
+    toObject<T, K extends keyof T>(this: [K, T[K]][], noPrototype?: boolean): T;
     
-    toObject<T>(this: [string, T][]): {[property: string]: T};
+    toObject<T>(this: [string, T][], noPrototype?: boolean): {[property: string]: T};
     
-    toObject(this: [string, any][]): any;
+    toObject(this: [string, any][], noPrototype?: boolean): any;
     
     sortBy<U>(key: (t: T) => U): T[];
     

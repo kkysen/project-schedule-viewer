@@ -21,7 +21,7 @@ export const bind = function <T>(target: T): T {
         .map(key => ({key, value: _target[key]}))
         .filter(({value}) => isBindable(value))
         .map(({key, value}) => [key, bind(value)] as [string, Function])
-        .toObject();
+        .toObject(true);
     
     Object.defineImmutableProperties(target, properties);
     

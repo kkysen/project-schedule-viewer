@@ -7,7 +7,7 @@ export interface MapEntry<K, V> {
     value: V;
 }
 
-interface Mapper<K, V, R> {
+interface Mapper<K, R> {
     (k: K): R;
 }
 
@@ -28,13 +28,14 @@ export interface Map<K, V> extends Set<MapEntry<K, V>> {
     replaceIfEquals(k: K, oldValue: V, newValue: V): boolean;
     
     computeIfAbsent<WillExist extends boolean = boolean>(
-        k: K, mapper: Mapper<K, V, IfElse<WillExist, V, undefined>>
+        k: K, mapper: Mapper<K, IfElse<WillExist, V, undefined>>
     ): IfElse<WillExist, V, undefined>;
     
     computeIfPresent(k: K, remapper: ReMapper<K, V>): V | undefined;
     
     compute(k: K, remapper: ReMapper<K, V | undefined>): V | undefined;
     
+    // TODO wrong API
     merge(k: K, v: V, remapper: ReMapper<K, V | undefined>): V | undefined;
     
     hasKey(k: K): boolean;
@@ -44,6 +45,8 @@ export interface Map<K, V> extends Set<MapEntry<K, V>> {
     get(k: K): V | undefined;
     
     getOrDefault(k: K, defaultValue: V): V;
+    
+    getOrPutDefault(k: K, defaultValue: V): V;
     
     removeKey(k: K): V | undefined;
     

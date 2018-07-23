@@ -136,6 +136,8 @@ const uglifyOptions = {
     sourceMap: true,
 };
 
+const dir = "./src/ts/ProjectScheduleViewer/";
+
 module.exports = {
     // target: "web",
     node: {
@@ -143,8 +145,9 @@ module.exports = {
         net: "empty",
     },
     entry: {
-        client: "./src/ts/ProjectScheduleViewer/client/client.ts",
-        server: "./src/ts/ProjectScheduleViewer/server/server.ts",
+        client: dir + "client/client.ts",
+        server: dir + "server/server.ts",
+        // test: dir + "server/test/test.ts",
     },
     output: {
         filename: "[name].[chunkhash].js",
