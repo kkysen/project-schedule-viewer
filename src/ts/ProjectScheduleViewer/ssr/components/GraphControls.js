@@ -31,10 +31,10 @@ const Accessor = (() => {
         },
     };
 })();
-exports.GraphControls = ({ data, accessors: accessorsArgs, set }) => {
+exports.GraphControls = ({ data, accessors: accessorsArgs, set, current }) => {
     const accessors = Object.entries(accessorsArgs).map(([key, value]) => ({ key, value: Accessor.new(value) }));
     return React.createElement("div", { style: { textAlign: "center" } },
-        React.createElement(OrderControls_1.OrderControls, { orders: accessors, setOrder: set.order }),
-        React.createElement(FilterControls_1.FilterControls, { filters: accessors, data: data, setFilter: set.filter }));
+        React.createElement(OrderControls_1.OrderControls, { orders: accessors, setOrder: set.order, currentIndex: current.orderIndex }),
+        React.createElement(FilterControls_1.FilterControls, { filters: accessors, data: data, setFilter: set.filter, currentIndex: current.filterIndex }));
 };
 //# sourceMappingURL=GraphControls.js.map

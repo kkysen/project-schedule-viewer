@@ -54,18 +54,21 @@ class Graph extends react_1.Component {
         this.state = {
             color: this.baseColor,
             order: OrderControls_1.indexOrder,
+            orderIndex: 0,
             filter: () => true,
+            filterIndex: 0,
         };
         this.set = {
-            order: order => this.setState({ order }),
-            filter: filter => this.setState({ filter }),
+            order: (order, orderIndex) => this.setState({ order, orderIndex }),
+            filter: (filter, filterIndex) => this.setState({ filter, filterIndex }),
         };
     }
     render() {
-        const { data } = this.props;
-        const { color, order, filter } = this.state;
+        const { props, state } = this;
+        const { data } = props;
+        const { color, order, filter } = state;
         return React.createElement(React.Fragment, null,
-            React.createElement(GraphControls_1.GraphControls, { accessors: accessors, data: data, set: this.set }),
+            React.createElement(GraphControls_1.GraphControls, { accessors: accessors, data: data, set: this.set, current: state }),
             VariableAreaStack_1.VariableAreaStack({
                 data: prepareData(data, filter),
                 values: {

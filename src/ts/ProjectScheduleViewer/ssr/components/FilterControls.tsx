@@ -7,8 +7,9 @@ interface FilterControlsProps {
     filters: AccessorsAs<Filter<any>>;
     data: Data;
     setFilter: SetFilter;
+    currentIndex: number;
 }
 
-export const FilterControls: SFC<FilterControlsProps> = ({filters, data, setFilter}) => <>
+export const FilterControls: SFC<FilterControlsProps> = ({filters, data, setFilter, currentIndex}) => <>
 
 </>;

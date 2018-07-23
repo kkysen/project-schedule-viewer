@@ -61,7 +61,7 @@ type Accessors = {[K in keyof AccessorsArgs]: Accessor<GetAccessorArgsType<Acces
 
 export type AccessorKey = keyof Accessors;
 
-export type AccessorsAs<T> = Accessor<Id> extends T ? ReadonlyArray<MapEntry<AccessorKey, T>> : never;
+export type AccessorsAs<T> = Accessor<Id> extends T ? ReadonlyArray<MapEntry<string, T>> : never;
 
 
 const Accessor = (() => {
@@ -97,8 +97,8 @@ const Accessor = (() => {
 })();
 
 
-export type SetOrder = (order: RawOrder) => void;
-export type SetFilter = (filter: RawFilter) => void;
+export type SetOrder = (order: RawOrder, i: number) => void;
+export type SetFilter = (filter: RawFilter, i: number) => void;
 
 
 export interface SetControls {
@@ -106,18 +106,23 @@ export interface SetControls {
     readonly filter: SetFilter;
 }
 
+export interface ControlIndices {
+    readonly orderIndex: number;
+    readonly filterIndex: number;
+}
 
 interface GraphControlsProps {
     readonly data: Data;
     readonly accessors: AccessorsArgs;
     readonly set: SetControls;
+    readonly current: ControlIndices;
 }
 
-export const GraphControls: SFC<GraphControlsProps> = ({data, accessors: accessorsArgs, set}) => {
+export const GraphControls: SFC<GraphControlsProps> = ({data, accessors: accessorsArgs, set, current}) => {
     const accessors = Object.entries(accessorsArgs).map(([key, value]) => ({key, value: Accessor.new(value as Accessor<any>)}));
     return <div style={{textAlign: "center"}}>
         {/*<Br times={3}/>*/}
-        <OrderControls orders={accessors} setOrder={set.order}/>
-        <FilterControls filters={accessors} data={data} setFilter={set.filter}/>
+        <OrderControls orders={accessors} setOrder={set.order} currentIndex={current.orderIndex}/>
+        <FilterControls filters={accessors} data={data} setFilter={set.filter} currentIndex={current.filterIndex}/>
     </div>;
 };

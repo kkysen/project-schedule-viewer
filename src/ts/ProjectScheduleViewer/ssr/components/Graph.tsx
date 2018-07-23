@@ -10,7 +10,7 @@ import {Scale} from "../../../util/components/svg/utils";
 import {moduloIndexer} from "../../../util/utils";
 import {EmployeeCommitment} from "../../share/data/access/Project";
 import {Data} from "../../share/data/Data";
-import {AccessorsArgs, GraphControls, RawFilter, RawOrder, SetControls} from "./GraphControls";
+import {AccessorsArgs, ControlIndices, GraphControls, RawFilter, RawOrder, SetControls} from "./GraphControls";
 import {indexOrder} from "./OrderControls";
 
 const prepareData = function(data: Data, filter: RawFilter): Map<Date, EmployeeCommitment[]> {
@@ -38,7 +38,7 @@ interface GraphProps {
 
 type Color = (i: number) => string;
 
-interface GraphState {
+interface GraphState extends ControlIndices {
     
     color: Color;
     order: RawOrder;
@@ -77,20 +77,23 @@ export class Graph extends Component<GraphProps, GraphState> {
     public readonly state: GraphState = {
         color: this.baseColor,
         order: indexOrder,
+        orderIndex: 0,
         filter: () => true,
+        filterIndex: 0,
     };
     
     private readonly set: SetControls = {
-        order: order => this.setState({order}),
-        filter: filter => this.setState({filter}),
+        order: (order, orderIndex) => this.setState({order, orderIndex}),
+        filter: (filter, filterIndex) => this.setState({filter, filterIndex}),
     };
     
     public render(): ReactNode {
-        const {data} = this.props;
-        const {color, order, filter} = this.state;
+        const {props, state} = this;
+        const {data} = props;
+        const {color, order, filter} = state;
         
         return <>
-            <GraphControls accessors={accessors} data={data} set={this.set}/>
+            <GraphControls accessors={accessors} data={data} set={this.set} current={state}/>
             {VariableAreaStack({
                 data: prepareData(data, filter),
                 values: {
