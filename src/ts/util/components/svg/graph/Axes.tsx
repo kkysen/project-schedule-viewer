@@ -33,7 +33,6 @@ export const Axes = function <XDomain extends AxisDomain, YDomain extends AxisDo
         return render();
     });
     
-    // TODO check magic number 20 in names.x translate
     return renderNodesObj({
     
         axes: <>

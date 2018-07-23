@@ -96,11 +96,11 @@ export const FauxElement = (() => {
             
             const childNodes = arrayToNodeList<Node & ChildNode>([]);
             
-            const classList = arrayToDomTokenList([]);
+            // const classList = arrayToDomTokenList([]);
             
             const props: {[key: string]: string} = {};
             
-            const eventListeners: Map<string, EventListenerOrEventListenerObject[]> = new Map();
+            // const eventListeners: Map<string, EventListenerOrEventListenerObject[]> = new Map();
             
             const getAttribute = (name: string): string | null => {
                 return props[attributeToPropName(name)] || null;
@@ -135,29 +135,29 @@ export const FauxElement = (() => {
                 return attr;
             };
             
-            const addEventListener = (
-                type: string,
-                listener: EventListenerOrEventListenerObject,
-                options?: boolean | AddEventListenerOptions,
-            ): void => {
-                const prop = eventToPropName(type);
-                const emptyListeners: EventListenerOrEventListenerObject[] = [];
-                const listeners = eventListeners.get(prop) || (eventListeners.set(prop,
-                    emptyListeners), emptyListeners);
-                listeners.push(listener);
-            };
+            // const addEventListener = (
+            //     type: string,
+            //     listener: EventListenerOrEventListenerObject,
+            //     options?: boolean | AddEventListenerOptions,
+            // ): void => {
+            //     const prop = eventToPropName(type);
+            //     const emptyListeners: EventListenerOrEventListenerObject[] = [];
+            //     const listeners = eventListeners.get(prop) || (eventListeners.set(prop,
+            //         emptyListeners), emptyListeners);
+            //     listeners.push(listener);
+            // };
             
-            const removeEventListener = (
-                type: string,
-                listener: EventListenerOrEventListenerObject,
-                options?: boolean | EventListenerOptions,
-            ): void => {
-                const prop = eventToPropName(type);
-                const listeners = eventListeners.get(prop);
-                if (listeners) {
-                    listeners.remove(listener);
-                }
-            };
+            // const removeEventListener = (
+            //     type: string,
+            //     listener: EventListenerOrEventListenerObject,
+            //     options?: boolean | EventListenerOptions,
+            // ): void => {
+            //     const prop = eventToPropName(type);
+            //     const listeners = eventListeners.get(prop);
+            //     if (listeners) {
+            //         listeners.remove(listener);
+            //     }
+            // };
             
             const appendChild = <T extends Node>(newChild: T): T => {
                 (newChild as {parentElement: Element}).parentElement = _;
@@ -173,11 +173,11 @@ export const FauxElement = (() => {
                 return oldChild;
             };
             
-            const remove = (): void => {
-                if (parentNode) {
-                    parentNode.removeChild(_);
-                }
-            };
+            // const remove = (): void => {
+            //     if (parentNode) {
+            //         parentNode.removeChild(_);
+            //     }
+            // };
             
             const insertBefore = <T extends Node>(newChild: T, refChild: Node | null): T => {
                 if (!refChild) {
@@ -191,19 +191,19 @@ export const FauxElement = (() => {
                 return newChild;
             };
             
-            const isElement = (node: Node): node is Element => e.nodeType === undefined || e.nodeType === 1;
+            const isElement = (node: Node): node is Element => node.nodeType === undefined || node.nodeType === 1;
             
             const getChildren = (): Element[] & HTMLCollection => {
                 return arrayToHTMLCollection(childNodes.filter(isElement));
             };
             
-            const getSibling = (offset: number): Node | null => {
-                if (!parentNode) {
-                    return null;
-                }
-                const siblings = parentNode.childNodes as any as Node[];
-                return siblings[siblings.indexOf(_) + offset];
-            };
+            // const getSibling = (offset: number): Node | null => {
+            //     if (!parentNode) {
+            //         return null;
+            //     }
+            //     const siblings = parentNode.childNodes as any as Node[];
+            //     return siblings[siblings.indexOf(_) + offset];
+            // };
             
             const querySelectorAll = (selectors: string): NodeListOf<Element> => {
                 return libQuerySelectorAll(selectors, _);
@@ -225,17 +225,17 @@ export const FauxElement = (() => {
                 return arrayToNodeList(allMatches);
             };
             
-            const getElementsByClassName = (className: string): NodeListOf<Element> => {
-                const children = getChildren();
-                if (children.length === 0) {
-                    return arrayToNodeList([]);
-                }
-                const shallowMatches = tagName === "*"
-                    ? children
-                    : children.filter(e => e.className === className || [...e.classList].includes(className));
-                const allMatches = shallowMatches.flatMap(e => [...e.getElementsByTagName(tagName)]);
-                return arrayToNodeList(allMatches);
-            };
+            // const getElementsByClassName = (className: string): NodeListOf<Element> => {
+            //     const children = getChildren();
+            //     if (children.length === 0) {
+            //         return arrayToNodeList([]);
+            //     }
+            //     const shallowMatches = tagName === "*"
+            //         ? children
+            //         : children.filter(e => e.className === className || [...e.classList].includes(className));
+            //     const allMatches = shallowMatches.flatMap(e => [...e.getElementsByTagName(tagName)]);
+            //     return arrayToNodeList(allMatches);
+            // };
             
             const render = (key: number | string = 0): ReactElement<any> => {
                 const children: ReactNode[] = getChildren().map((e, i) => isFaux(e) ? e.render(i) : e);
@@ -275,13 +275,13 @@ export const FauxElement = (() => {
                 // set innerHTML(html) {
                 //     innerHTML = html;
                 // },
-                //
-                // get textContent() {
-                //     return innerHTML;
-                // },
-                // set textContent(text) {
-                //     innerHTML = text;
-                // },
+
+                get textContent() {
+                    return innerHTML;
+                },
+                set textContent(text) {
+                    innerHTML = text;
+                },
                 
                 childNodes,
                 

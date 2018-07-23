@@ -5,5 +5,8 @@ hovering (after a second) over a section shows the name and value
 hovering creates lines to mouse
 separate horizontal and vertical scroll bars that stretch the graph
 download a snapshot
+watch data directory for changes to data to reload it
 
 split webpack into web and server configs
+
+use React Bootstrap from source

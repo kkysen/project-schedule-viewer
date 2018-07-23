@@ -3,17 +3,17 @@ import {schemeCategory10} from "d3-scale-chromatic";
 import {timeFormat} from "d3-time-format";
 import * as React from "react";
 import {Component, ReactNode} from "react";
-import {globalProperties} from "../../../util/anyWindow";
 import {HashMap} from "../../../util/collections/HashMap";
 import {Map} from "../../../util/collections/Map";
 import {VariableAreaStack} from "../../../util/components/svg/graph/VariableAreaStack";
 import {Scale} from "../../../util/components/svg/utils";
-import {isArray} from "../../../util/types/isType";
 import {moduloIndexer} from "../../../util/utils";
-import {EmployeeCommitment, ProjectEmployee} from "../../share/data/access/Project";
+import {EmployeeCommitment} from "../../share/data/access/Project";
 import {Data} from "../../share/data/Data";
+import {AccessorsArgs, GraphControls, RawFilter, RawOrder, SetControls} from "./GraphControls";
+import {indexOrder} from "./OrderControls";
 
-const prepareData = function(data: Data): Map<Date, EmployeeCommitment[]> {
+const prepareData = function(data: Data, filter: RawFilter): Map<Date, EmployeeCommitment[]> {
     const hash = (date: Date) => +date;
     const map = HashMap.perfectHash<Date, EmployeeCommitment[]>({
         keysHashEquals: {
@@ -25,7 +25,8 @@ const prepareData = function(data: Data): Map<Date, EmployeeCommitment[]> {
         .flatMap(e => e.projects._())
         .flatMap(e => e.months._())
         .forEach(({month, employees}) =>
-            map.getOrPutDefault(month.date, []).addAll(employees._())
+            map.getOrPutDefault(month.date, [])
+                .addAll(employees.filter(e => filter(e.employee)))
         );
     return map;
 };
@@ -35,78 +36,71 @@ interface GraphProps {
     data: Data;
 }
 
-type By = (employee: ProjectEmployee, i: number) => number;
-
-type Bys = {
-    Amar: By;
-    index: By;
-    employee: By;
-    project: By;
-    team: By;
-    position: By;
-};
-
-type Color = (employee: ProjectEmployee, i: number) => string;
+type Color = (i: number) => string;
 
 interface GraphState {
     
-    by: By;
-    
     color: Color;
+    order: RawOrder;
+    filter: RawFilter;
     
 }
+
+
+const accessors: AccessorsArgs = {
+    employee: {
+        get: e => e.employee,
+        all: data => data.employees.all,
+        name: e => e.name,
+    },
+    project: {
+        get: e => e.project(),
+        all: data => data.teams.all.flatMap(e => e.projects._()),
+        name: e => e.name,
+    },
+    team: {
+        get: e => e.project().team(),
+        all: data => data.teams.all,
+        name: e => e.leader.name,
+    },
+    position: {
+        get: e => e.employee.position,
+        all: data => data.positions.all,
+        name: e => e.name,
+    },
+};
 
 export class Graph extends Component<GraphProps, GraphState> {
     
     private readonly baseColor = moduloIndexer(schemeCategory10);
     
-    private readonly byColor: Color = (e, i) => this.baseColor(this.state.by(e, i));
-    
-    private readonly by: Bys = {
-        Amar: e => e.employee.firstName === "Amar" ? 1 : 0,
-        index: (e, i) => i,
-        employee: e => e.employee.id,
-        project: e => e.project().id,
-        team: e => e.project().team().id,
-        position: e => e.employee.position.level,
-    };
-    
     public readonly state: GraphState = {
-        by: this.by.index,
-        color: this.byColor,
+        color: this.baseColor,
+        order: indexOrder,
+        filter: () => true,
     };
     
-    public constructor(props: GraphProps) {
-        super(props);
-        const _ = this;
-        globalProperties({
-            set onlyColor(only: number | number[]) {
-                const onlySet = new Set(isArray(only) ? only : [only]);
-                _.setState({
-                    color: (employee, i) => !onlySet.has(i) ? "white" : _.baseColor(i),
-                });
-            },
-            set by(by: keyof Bys) {
-                _.setState({by: _.by[by]});
-            },
-        });
-    }
+    private readonly set: SetControls = {
+        order: order => this.setState({order}),
+        filter: filter => this.setState({filter}),
+    };
     
     public render(): ReactNode {
         const {data} = this.props;
-        const {color, by} = this.state;
+        const {color, order, filter} = this.state;
         
         return <>
+            <GraphControls accessors={accessors} data={data} set={this.set}/>
             {VariableAreaStack({
-                data: prepareData(data),
+                data: prepareData(data, filter),
                 values: {
                     x: d => d,
                     y: d => d.percentCommitted * d.employee.project().percentLikelihood,
                     z: d => d.employee,
                 },
-                orderBy: by,
+                orderBy: order,
                 flat: true,
-                color,
+                color: (e, i) => color(order(e, i)),
                 scale: {
                     x: scaleTime() as Scale<Date>,
                 },

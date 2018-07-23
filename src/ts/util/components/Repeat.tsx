@@ -1,21 +1,10 @@
 import * as React from "react";
-import {Component, ReactNode} from "react";
+import {Fragment, ReactNode, SFC} from "react";
 import {Range} from "../Range";
 
-export class Repeat extends Component<{
-    times: number,
-    render: () => ReactNode,
-}, {}> {
-    
-    public render(): ReactNode {
-        const {props: {times, render}} = this;
-        return (<div>
-            {Range.new(times).map(i => (
-                <div key={i}>
-                    {render()}
-                </div>
-            ))}
-        </div>);
-    }
-    
-}
+export const Repeat: SFC<{times: number, render: () => ReactNode}> = ({times, render}) => {
+    const node = render();
+    return <>
+        {Range.new(times).map(i => <Fragment key={i}>{node}</Fragment>)}
+    </>;
+};

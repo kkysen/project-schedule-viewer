@@ -12,7 +12,6 @@ exports.Axes = function ({ axes, names, size: { width, height }, margins: { left
         axis(d3_selection_1.select(g));
         return render();
     });
-    // TODO check magic number 20 in names.x translate
     return react_1.renderNodesObj({
         axes: React.createElement(React.Fragment, null,
             React.createElement("g", { transform: utils_1.translate(0, height) }, gx),

@@ -147,7 +147,7 @@
 /******/
 /******/
 /******/ 	// add entry module to deferred list
-/******/ 	deferredModules.push(["./src/ts/ProjectScheduleViewer/client/client.ts","vendors~client~server","vendors~client","client~server"]);
+/******/ 	deferredModules.push(["./src/ts/ProjectScheduleViewer/client/client.ts","vendors~client~server","client~server"]);
 /******/ 	// run deferred modules when ready
 /******/ 	return checkDeferredModules();
 /******/ })

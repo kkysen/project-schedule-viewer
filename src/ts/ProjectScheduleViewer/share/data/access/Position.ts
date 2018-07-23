@@ -5,6 +5,7 @@ import {DataAccessor} from "./DataAccessor";
 
 export interface Position {
     
+    readonly id: number;
     readonly level: number;
     readonly name: string;
     readonly rate: number;
@@ -23,7 +24,7 @@ export type PositionsSource = DataSource<RawPosition, PositionsArgs>;
 
 export const positions = DataAccessor.new<Position, Leveled, Position, RawPosition, PositionsArgs>({
     source: e => e.positions,
-    parse: ([level, name, rate]) => ({level, name, rate}),
+    parse: ([level, name, rate]) => ({id: level, level, name, rate}),
     create: identity,
     by: {level: 0},
 }, {});

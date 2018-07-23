@@ -3,11 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
 const react_1 = require("react");
 const Range_1 = require("../Range");
-class Repeat extends react_1.Component {
-    render() {
-        const { props: { times, render } } = this;
-        return (React.createElement("div", null, Range_1.Range.new(times).map(i => (React.createElement("div", { key: i }, render())))));
-    }
-}
-exports.Repeat = Repeat;
+exports.Repeat = ({ times, render }) => {
+    const node = render();
+    return React.createElement(React.Fragment, null, Range_1.Range.new(times).map(i => React.createElement(react_1.Fragment, { key: i }, node)));
+};
 //# sourceMappingURL=Repeat.js.map

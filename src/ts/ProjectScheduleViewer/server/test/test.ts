@@ -22,8 +22,8 @@ const testData = async () => {
 };
 
 const testRenderingPerformance = async () => {
-    anyWindow.i = 0;
-    await Range.new(1).toArray().asyncMap(reRenderApp);
+    // anyWindow.i = 0;
+    await Range.new(100).toArray().asyncMap(reRenderApp);
     const app = await getRenderedApp();
     console.log("done");
 };

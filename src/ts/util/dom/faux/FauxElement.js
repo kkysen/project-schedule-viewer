@@ -57,9 +57,9 @@ exports.FauxElement = (() => {
             };
             let innerHTML = "";
             const childNodes = arrayToNodeList([]);
-            const classList = arrayToDomTokenList([]);
+            // const classList = arrayToDomTokenList([]);
             const props = {};
-            const eventListeners = new Map();
+            // const eventListeners: Map<string, EventListenerOrEventListenerObject[]> = new Map();
             const getAttribute = (name) => {
                 return props[attributeToPropName(name)] || null;
                 // return props.get(attributeToPropName(name)) || null;
@@ -89,19 +89,28 @@ exports.FauxElement = (() => {
                 }
                 return attr;
             };
-            const addEventListener = (type, listener, options) => {
-                const prop = eventToPropName(type);
-                const emptyListeners = [];
-                const listeners = eventListeners.get(prop) || (eventListeners.set(prop, emptyListeners), emptyListeners);
-                listeners.push(listener);
-            };
-            const removeEventListener = (type, listener, options) => {
-                const prop = eventToPropName(type);
-                const listeners = eventListeners.get(prop);
-                if (listeners) {
-                    listeners.remove(listener);
-                }
-            };
+            // const addEventListener = (
+            //     type: string,
+            //     listener: EventListenerOrEventListenerObject,
+            //     options?: boolean | AddEventListenerOptions,
+            // ): void => {
+            //     const prop = eventToPropName(type);
+            //     const emptyListeners: EventListenerOrEventListenerObject[] = [];
+            //     const listeners = eventListeners.get(prop) || (eventListeners.set(prop,
+            //         emptyListeners), emptyListeners);
+            //     listeners.push(listener);
+            // };
+            // const removeEventListener = (
+            //     type: string,
+            //     listener: EventListenerOrEventListenerObject,
+            //     options?: boolean | EventListenerOptions,
+            // ): void => {
+            //     const prop = eventToPropName(type);
+            //     const listeners = eventListeners.get(prop);
+            //     if (listeners) {
+            //         listeners.remove(listener);
+            //     }
+            // };
             const appendChild = (newChild) => {
                 newChild.parentElement = _;
                 childNodes.push(child(newChild));
@@ -114,11 +123,11 @@ exports.FauxElement = (() => {
                 }
                 return oldChild;
             };
-            const remove = () => {
-                if (parentNode) {
-                    parentNode.removeChild(_);
-                }
-            };
+            // const remove = (): void => {
+            //     if (parentNode) {
+            //         parentNode.removeChild(_);
+            //     }
+            // };
             const insertBefore = (newChild, refChild) => {
                 if (!refChild) {
                     return appendChild(newChild);
@@ -130,17 +139,17 @@ exports.FauxElement = (() => {
                 childNodes.add(i, child(newChild));
                 return newChild;
             };
-            const isElement = (node) => e.nodeType === undefined || e.nodeType === 1;
+            const isElement = (node) => node.nodeType === undefined || node.nodeType === 1;
             const getChildren = () => {
                 return arrayToHTMLCollection(childNodes.filter(isElement));
             };
-            const getSibling = (offset) => {
-                if (!parentNode) {
-                    return null;
-                }
-                const siblings = parentNode.childNodes;
-                return siblings[siblings.indexOf(_) + offset];
-            };
+            // const getSibling = (offset: number): Node | null => {
+            //     if (!parentNode) {
+            //         return null;
+            //     }
+            //     const siblings = parentNode.childNodes as any as Node[];
+            //     return siblings[siblings.indexOf(_) + offset];
+            // };
             const querySelectorAll = (selectors) => {
                 return libQuerySelectorAll(selectors, _);
             };
@@ -158,17 +167,17 @@ exports.FauxElement = (() => {
                 const allMatches = shallowMatches.flatMap(e => [...e.getElementsByTagName(tagName)]);
                 return arrayToNodeList(allMatches);
             };
-            const getElementsByClassName = (className) => {
-                const children = getChildren();
-                if (children.length === 0) {
-                    return arrayToNodeList([]);
-                }
-                const shallowMatches = tagName === "*"
-                    ? children
-                    : children.filter(e => e.className === className || [...e.classList].includes(className));
-                const allMatches = shallowMatches.flatMap(e => [...e.getElementsByTagName(tagName)]);
-                return arrayToNodeList(allMatches);
-            };
+            // const getElementsByClassName = (className: string): NodeListOf<Element> => {
+            //     const children = getChildren();
+            //     if (children.length === 0) {
+            //         return arrayToNodeList([]);
+            //     }
+            //     const shallowMatches = tagName === "*"
+            //         ? children
+            //         : children.filter(e => e.className === className || [...e.classList].includes(className));
+            //     const allMatches = shallowMatches.flatMap(e => [...e.getElementsByTagName(tagName)]);
+            //     return arrayToNodeList(allMatches);
+            // };
             const render = (key = 0) => {
                 const children = getChildren().map((e, i) => isFaux(e) ? e.render(i) : e);
                 if (innerHTML) {
@@ -201,13 +210,12 @@ exports.FauxElement = (() => {
                 // set innerHTML(html) {
                 //     innerHTML = html;
                 // },
-                //
-                // get textContent() {
-                //     return innerHTML;
-                // },
-                // set textContent(text) {
-                //     innerHTML = text;
-                // },
+                get textContent() {
+                    return innerHTML;
+                },
+                set textContent(text) {
+                    innerHTML = text;
+                },
                 childNodes,
                 get children() {
                     return getChildren();

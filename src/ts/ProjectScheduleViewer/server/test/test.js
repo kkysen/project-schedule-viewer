@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs-extra");
-const anyWindow_1 = require("../../../util/anyWindow");
 const allExtensions_1 = require("../../../util/extensions/allExtensions");
 const path_1 = require("../../../util/polyfills/path");
 const Range_1 = require("../../../util/Range");
@@ -20,8 +19,8 @@ const testData = async () => {
     ]);
 };
 const testRenderingPerformance = async () => {
-    anyWindow_1.anyWindow.i = 0;
-    await Range_1.Range.new(1).toArray().asyncMap(ssr_1.reRenderApp);
+    // anyWindow.i = 0;
+    await Range_1.Range.new(100).toArray().asyncMap(ssr_1.reRenderApp);
     const app = await ssr_1.getRenderedApp();
     console.log("done");
 };
