@@ -6,6 +6,7 @@ import {compression} from "../../lib/gzip";
 import {withFauxDom} from "../../util/dom/faux/withFauxDom";
 import {MaybePromise} from "../../util/MaybePromise";
 import {path} from "../../util/polyfills/path";
+import {production} from "../../util/production";
 import {Range} from "../../util/Range";
 import {gzipped} from "../server/config";
 import {dir} from "../server/dir";
@@ -27,7 +28,8 @@ interface RenderedApp {
 
 const renderApp = async function(): Promise<RenderedApp> {
     const [template, data] = await Promise.all([readTemplate(), getAppData(fileSystemDataSource)]);
-    const insertionPoint = `<div id="not-${appId}"></div>`;
+    const quote = production ? `` : `"`;
+    const insertionPoint = `<div id=${quote}not-${appId}${quote}></div>`;
     const [before, after] = template.split(insertionPoint);
     console.time("rendering");
     const html = [

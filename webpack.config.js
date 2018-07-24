@@ -5,7 +5,7 @@ const WebpackCleanupPlugin = require("webpack-cleanup-plugin");
 const CompressionWebpackPlugin = require("compression-webpack-plugin");
 const {BundleAnalyzerPlugin} = require("webpack-bundle-analyzer");
 
-const production = false;
+const production = true;
 const mode = production ? "production" : "development";
 
 const htmlPlugin = function(name, chunks) {

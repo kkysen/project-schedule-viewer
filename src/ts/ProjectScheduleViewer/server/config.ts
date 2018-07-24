@@ -1,1 +1,1 @@
-export const gzipped = false; // TODO
+export const gzipped = true; // TODO

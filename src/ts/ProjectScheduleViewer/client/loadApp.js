@@ -10,11 +10,11 @@ const api_1 = require("./api");
 exports.loadApp = async function () {
     const data = anyWindow_1.anyWindow.appData ? await Data_1.getAppData(JsonDataSource_1.jsonDataSource) : await api_1.api.getAppData();
     const appContainer = document.body.appendDiv();
-    let appRoot = document.getElementById(App_1.appId);
-    if (1 === 1 && appRoot) {
-        appRoot.remove();
-        appRoot = null;
-    }
+    const appRoot = document.getElementById(App_1.appId);
+    // if (1 === 1 && appRoot) {
+    //     appRoot.remove();
+    //     appRoot = null;
+    // }
     if (appRoot) {
         console.log("hydrating");
         appRoot.remove();

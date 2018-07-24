@@ -5,6 +5,7 @@ const React = require("react");
 const server_1 = require("react-dom/server");
 const gzip_1 = require("../../lib/gzip");
 const path_1 = require("../../util/polyfills/path");
+const production_1 = require("../../util/production");
 const Range_1 = require("../../util/Range");
 const config_1 = require("../server/config");
 const dir_1 = require("../server/dir");
@@ -18,7 +19,8 @@ const readTemplate = async function () {
 };
 const renderApp = async function () {
     const [template, data] = await Promise.all([readTemplate(), Data_1.getAppData(FileSystemDataSource_1.fileSystemDataSource)]);
-    const insertionPoint = `<div id="not-${App_1.appId}"></div>`;
+    const quote = production_1.production ? `` : `"`;
+    const insertionPoint = `<div id=${quote}not-${App_1.appId}${quote}></div>`;
     const [before, after] = template.split(insertionPoint);
     console.time("rendering");
     const html = [

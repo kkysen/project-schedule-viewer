@@ -49,6 +49,6 @@ app.get("/", async (request, response) => {
     });
 })();
 // force v8 to compile and optimize
-production_1.inProduction(ssr_1.warmUpAppRenderer(10));
+production_1.inProduction(ssr_1.warmUpAppRenderer(16));
 app.listen(8000, () => console.log("listening"));
 //# sourceMappingURL=server.js.map

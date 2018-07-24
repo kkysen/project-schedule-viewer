@@ -53,6 +53,6 @@ app.get("/", async (request: Request, response: Response) => {
 })();
 
 // force v8 to compile and optimize
-inProduction(warmUpAppRenderer(10));
+inProduction(warmUpAppRenderer(16));
 
 app.listen(8000, () => console.log("listening"));
