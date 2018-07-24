@@ -14,7 +14,8 @@ const isType_1 = require("../../../types/isType");
 const utils_2 = require("../../../utils");
 const utils_3 = require("../utils");
 const Axes_1 = require("./Axes");
-exports.VariableAreaStack = function ({ data: nonStandardizedData, values, flat = false, orderBy, offset = d3_shape_1.stackOffsetNone, color = d3_scale_chromatic_1.schemeCategory10, scale: { x: xScale = d3_scale_1.scaleLinear(), y: yScale = d3_scale_1.scaleLinear(), } = {}, axes: { x: xAxis = utils_1.identity, y: yAxis = utils_1.identity, } = {}, axesNames = {}, size, margins = {}, className, curve, defined, glyph, reverse = false, }) {
+exports.VariableAreaStack = function (props) {
+    const { data: nonStandardizedData, values, flat = false, } = props;
     const dataAsEntries = function (data) {
         const a = [...data];
         if (a.length === 0) {
@@ -60,13 +61,8 @@ exports.VariableAreaStack = function ({ data: nonStandardizedData, values, flat 
     };
     const data = standardizeData();
     if (!data) {
-        return;
+        return () => () => null;
     }
-    const { width, height } = size;
-    const { left = 0, top = 0, bottom = 0, right = 0 } = margins;
-    const _margins = { left, top, bottom, right };
-    const outerWidth = width + left + right;
-    const outerHeight = height + top + bottom;
     const xData = data.map(e => e.key);
     const xValues = xData.map(values.x);
     const yData = data.map(e => e.value);
@@ -94,43 +90,59 @@ exports.VariableAreaStack = function ({ data: nonStandardizedData, values, flat 
         const color = utils_2.moduloIndexer(colors);
         return (z, i) => color(i);
     };
-    const x = xScale.range([0, width])
-        .domain(d3_array_1.extent(xValues));
-    const y = yScale.range([height, 0]);
-    const _color = isType_1.isReadonlyArray(color) ? colorFromArray(color) : color;
-    const path = d3_shape_1.area()
-        .x((d, i) => x(xValues[i]))
-        .y0(d => y(d[0]))
-        .y1(d => y(d[1]));
-    curve && path.curve(curve);
-    defined && path.defined((d, i) => defined(d.data, i));
-    const seriesData = d3_shape_1.stack()
-        .keys(keys)
-        .value((d, i) => {
+    const xDomain = d3_array_1.extent(xValues);
+    const value = (d, i) => {
         if (i > d.length) {
             return 0;
         }
         return values.y(d[i]);
-    })
-        .order(!orderBy ? d3_shape_1.stackOrderNone : series => series.map((e, i) => ({ i, value: zData[i].key }))
-        .sortBy(e => orderBy(e.value, e.i))
-        .map(e => e.i))
-        .offset(offset)(yData._());
-    y.domain(d3_array_1.extent(seriesData.flatten(2)));
-    reverse && seriesData.reverse();
-    const paths = seriesData.mapFilter(path);
-    return React.createElement("svg", { width: outerWidth, height: outerHeight },
-        React.createElement("g", { transform: utils_3.translate(left, top) },
-            React.createElement("g", null, paths.map((path, i) => React.createElement("path", { key: i, className: classNames("vx-area-stack", className), d: path, fill: _color(zData[i].key, i), onMouseEnter: () => console.log(zData[i].key, zData[i].value) }))),
-            !!glyph && React.createElement("g", { className: "vx-area-stack-glyphs" }, xData.map(glyph)),
-            React.createElement("g", null, Axes_1.Axes({
-                axes: {
-                    x: xAxis(d3_axis_1.axisBottom(x), xData),
-                    y: yAxis(d3_axis_1.axisLeft(y), yData),
-                },
-                names: axesNames,
-                size,
-                margins: _margins,
-            }))));
+    };
+    return props => {
+        const { orderBy, offset = d3_shape_1.stackOffsetNone, scale: { x: xScale = d3_scale_1.scaleLinear(), y: yScale = d3_scale_1.scaleLinear(), } = {}, axes: { x: xAxis = utils_1.identity, y: yAxis = utils_1.identity, } = {}, axesNames = {}, size, margins = {}, className, curve, defined, glyph, reverse = false, } = props;
+        const { width, height } = size;
+        const { left = 0, top = 0, bottom = 0, right = 0 } = margins;
+        const _margins = { left, top, bottom, right };
+        const outerWidth = width + left + right;
+        const outerHeight = height + top + bottom;
+        const x = xScale.range([0, width])
+            .domain(xDomain);
+        const y = yScale.range([height, 0]);
+        const path = d3_shape_1.area()
+            .x((d, i) => x(xValues[i]))
+            .y0(d => y(d[0]))
+            .y1(d => y(d[1]));
+        curve && path.curve(curve);
+        defined && path.defined((d, i) => defined(d.data, i));
+        const seriesData = d3_shape_1.stack()
+            .keys(keys)
+            .value(value)
+            .order(!orderBy ? d3_shape_1.stackOrderNone : series => series.map((e, i) => ({ i, value: zData[i].key }))
+            .sortBy(e => orderBy(e.value, e.i))
+            .map(e => e.i))
+            .offset(offset)(yData._());
+        y.domain(d3_array_1.extent(seriesData.flatten(2)));
+        reverse && seriesData.reverse();
+        const paths = seriesData.mapFilter(path);
+        const _className = classNames("vx-area-stack", className);
+        const glyphNodes = !!glyph && React.createElement("g", { className: "vx-area-stack-glyphs" }, xData.map(glyph));
+        const axesNode = React.createElement("g", null, Axes_1.Axes({
+            axes: {
+                x: xAxis(d3_axis_1.axisBottom(x), xData),
+                y: yAxis(d3_axis_1.axisLeft(y), yData),
+            },
+            names: axesNames,
+            size,
+            margins: _margins,
+        }));
+        return props => {
+            const { color = d3_scale_chromatic_1.schemeCategory10, } = props;
+            const _color = isType_1.isReadonlyArray(color) ? colorFromArray(color) : color;
+            return React.createElement("svg", { width: outerWidth, height: outerHeight },
+                React.createElement("g", { transform: utils_3.translate(left, top) },
+                    React.createElement("g", null, paths.map((path, i) => React.createElement("path", { key: i, className: _className, d: path, fill: _color(zData[i].key, i) }))),
+                    glyphNodes,
+                    axesNode));
+        };
+    };
 };
 //# sourceMappingURL=VariableAreaStack.js.map

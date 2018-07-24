@@ -20,7 +20,7 @@ type Entry<K, V> = MapEntry<K, V>;
 
 type RA<T> = ReadonlyArray<T>;
 
-interface VariableAreaStackDataProps<T, X, XDomain extends Numeric, Z> {
+interface VariableAreaStackProps<T, X, XDomain extends Numeric, Z> {
     data: Iterable<Entry<X, RA<T>>> | Iterable<[X, RA<T>]>;
     values: {
         x: (d: X) => XDomain;
@@ -28,11 +28,9 @@ interface VariableAreaStackDataProps<T, X, XDomain extends Numeric, Z> {
         z: (d: T) => Z;
     };
     flat?: boolean;
-}
-
-interface VariableAreaStackProps<T, X, XDomain extends Numeric, Z> {
     orderBy?: (z: Z, i: number) => number;
     offset?: StackOffset<RA<T>, number>;
+    color?: RA<string> | ((z: Z, i: number) => string);
     scale?: {
         x?: Scale<XDomain>;
         y?: Scale<number>;
@@ -54,25 +52,32 @@ interface VariableAreaStackProps<T, X, XDomain extends Numeric, Z> {
     className?: string;
 }
 
-export interface VariableAreaStackData<T, X, XDomain extends Numeric, Z> {
-    (props: VariableAreaStackProps<T, X, XDomain, Z>): VariableAreaStack<T, X, XDomain, Z>;
-}
-
-interface VariableAreaStackRenderedProps<Z> {
-    color?: RA<string> | ((z: Z, i: number) => string);
-}
-
-export interface VariableAreaStack<T, X, XDomain, Z> {
-    (props: VariableAreaStackRenderedProps<Z>): ReactNode;
-}
-
-export const VariableAreaStack = function <T, X, XDomain extends Numeric, Z>(
-    props: VariableAreaStackDataProps<T, X, XDomain, Z>): VariableAreaStackData<T, X, XDomain, Z> {
+const _VariableAreaStack = function <T, X, XDomain extends Numeric, Z>(
+    props: VariableAreaStackProps<T, X, XDomain, Z>): ReactNode {
     
     const {
         data: nonStandardizedData,
         values,
         flat = false,
+        orderBy,
+        offset = stackOffsetNone,
+        color = schemeCategory10,
+        scale: {
+            x: xScale = scaleLinear() as any as Scale<XDomain>,
+            y: yScale = scaleLinear() as Scale<number>,
+        } = {},
+        axes: {
+            x: xAxis = identity,
+            y: yAxis = identity,
+        } = {},
+        axesNames = {},
+        size,
+        margins = {},
+        className,
+        curve,
+        defined,
+        glyph,
+        reverse = false,
     } = props;
     
     type DataEntry = Entry<X, RA<T>>;
@@ -126,8 +131,15 @@ export const VariableAreaStack = function <T, X, XDomain extends Numeric, Z>(
     
     const data = standardizeData();
     if (!data) {
-        return () => () => null;
+        return;
     }
+    
+    const {width, height} = size;
+    const {left = 0, top = 0, bottom = 0, right = 0} = margins;
+    const _margins = {left, top, bottom, right};
+    
+    const outerWidth = width + left + right;
+    const outerHeight = height + top + bottom;
     
     const xData: RA<X> = data.map(e => e.key);
     const xValues: RA<XDomain> = xData.map(values.x);
@@ -161,107 +173,65 @@ export const VariableAreaStack = function <T, X, XDomain extends Numeric, Z>(
         return (z, i) => color(i);
     };
     
-    const xDomain = extent(xValues) as [XDomain, XDomain];
+    const x = xScale.range([0, width])
+        .domain(extent(xValues) as [XDomain, XDomain]);
+    const y = yScale.range([height, 0]);
+    const _color = isReadonlyArray(color) ? colorFromArray(color) : color;
     
-    const value = (d: RA<T>, i: Key) => {
-        if (i > d.length) {
-            return 0;
-        }
-        return values.y(d[i]);
-    };
+    const path = area<SeriesPoint<RA<T>>>()
+        .x((d, i) => x(xValues[i]))
+        .y0(d => y(d[0]))
+        .y1(d => y(d[1]));
+    curve && path.curve(curve);
+    defined && path.defined((d, i) => defined(d.data, i));
     
-    return props => {
-        const {
-            orderBy,
-            offset = stackOffsetNone,
-            scale: {
-                x: xScale = scaleLinear() as any as Scale<XDomain>,
-                y: yScale = scaleLinear() as Scale<number>,
-            } = {},
-            axes: {
-                x: xAxis = identity,
-                y: yAxis = identity,
-            } = {},
-            axesNames = {},
-            size,
-            margins = {},
-            className,
-            curve,
-            defined,
-            glyph,
-            reverse = false,
-        } = props;
-        
-        const {width, height} = size;
-        const {left = 0, top = 0, bottom = 0, right = 0} = margins;
-        const _margins = {left, top, bottom, right};
-        
-        const outerWidth = width + left + right;
-        const outerHeight = height + top + bottom;
-        
-        const x = xScale.range([0, width])
-            .domain(xDomain);
-        const y = yScale.range([height, 0]);
-        
-        const path = area<SeriesPoint<RA<T>>>()
-            .x((d, i) => x(xValues[i]))
-            .y0(d => y(d[0]))
-            .y1(d => y(d[1]));
-        curve && path.curve(curve);
-        defined && path.defined((d, i) => defined(d.data, i));
-        
-        const seriesData = stack<RA<T>, Key>()
-            .keys(keys)
-            .value(value)
-            .order(!orderBy ? stackOrderNone : series =>
-                series.map((e, i) => ({i, value: zData[i].key}))
-                    .sortBy(e => orderBy(e.value, e.i))
-                    .map(e => e.i)
-            )
-            .offset(offset)
-            (yData._());
-        y.domain(extent(seriesData.flatten(2)) as [number, number]);
-        reverse && seriesData.reverse();
-        const paths = seriesData.mapFilter<string>(path);
-        
-        const _className = classNames("vx-area-stack", className);
-        
-        const glyphNodes = !!glyph && <g className="vx-area-stack-glyphs">{xData.map(glyph)}</g>;
-        
-        const axesNode = <g>
-            {Axes({
-                axes: {
-                    x: xAxis(axisBottom(x), xData),
-                    y: yAxis(axisLeft(y), yData),
-                },
-                names: axesNames,
-                size,
-                margins: _margins,
-            })}
-        </g>;
-        
-        return props => {
-            const {
-                color = schemeCategory10,
-            } = props;
-            
-            const _color = isReadonlyArray(color) ? colorFromArray(color) : color;
-            
-            return <svg width={outerWidth} height={outerHeight}>
-                <g transform={translate(left, top)}>
-                    <g>
-                        {paths.map((path, i) => <path
-                            key={i}
-                            className={_className}
-                            d={path}
-                            fill={_color(zData[i].key, i)}
-                            // onMouseEnter={() => console.log(zData[i].key, zData[i].value)}
-                        />)}
-                    </g>
-                    {glyphNodes}
-                    {axesNode}
-                </g>
-            </svg>;
-        };
-    };
+    const seriesData = stack<RA<T>, Key>()
+        .keys(keys)
+        .value((d, i) => {
+            if (i > d.length) {
+                return 0;
+            }
+            return values.y(d[i]);
+        })
+        .order(!orderBy ? stackOrderNone : series =>
+            series.map((e, i) => ({i, value: zData[i].key}))
+                .sortBy(e => orderBy(e.value, e.i))
+                .map(e => e.i)
+        )
+        .offset(offset)
+        (yData._());
+    y.domain(extent(seriesData.flatten(2)) as [number, number]);
+    reverse && seriesData.reverse();
+    const paths = seriesData.mapFilter<string>(path);
+    
+    return <svg width={outerWidth} height={outerHeight}>
+        <g transform={translate(left, top)}>
+            <g>
+                {paths.map((path, i) => <path
+                    key={i}
+                    className={classNames("vx-area-stack", className)}
+                    d={path}
+                    fill={_color(zData[i].key, i)}
+                    // onMouseEnter={() => console.log(zData[i].key, zData[i].value)}
+                />)}
+            </g>
+            {!!glyph && <g className="vx-area-stack-glyphs">{xData.map(glyph)}</g>}
+            <g>
+                {Axes({
+                    axes: {
+                        x: xAxis(axisBottom(x), xData),
+                        y: yAxis(axisLeft(y), yData),
+                    },
+                    names: axesNames,
+                    size,
+                    margins: _margins,
+                })}
+            </g>
+        </g>
+    </svg>;
+};
+
+export const VariableAreaStack = function <T, X, XDomain extends Numeric, Z>(
+    props: VariableAreaStackProps<T, X, XDomain, Z>): ReactNode {
+    return createElement(_VariableAreaStack as SFC<VariableAreaStackProps<T, X, XDomain, Z>>, props);
 };

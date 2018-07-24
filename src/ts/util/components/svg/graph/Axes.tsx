@@ -1,11 +1,10 @@
 import {Axis, AxisDomain} from "d3-axis";
 import {select} from "d3-selection";
 import * as React from "react";
-import {ReactNode} from "react";
+import {createElement, ReactNode, SFC} from "react";
 import {FauxComponent} from "../../../dom/faux/FauxComponent";
 import {renderNodesObj} from "../../../react";
-import {Margins, Size, translate} from "../utils";
-import {rotate} from "../utils";
+import {Margins, rotate, Size, translate} from "../utils";
 
 interface AxesProps<XDomain extends AxisDomain, YDomain extends AxisDomain> {
     axes: {
@@ -20,13 +19,14 @@ interface AxesProps<XDomain extends AxisDomain, YDomain extends AxisDomain> {
     margins: Margins;
 }
 
-export const Axes = function <XDomain extends AxisDomain, YDomain extends AxisDomain>(
-    {
+const _Axes = function <XDomain extends AxisDomain, YDomain extends AxisDomain>(
+    props: AxesProps<XDomain, YDomain>): ReactNode {
+    const {
         axes,
         names,
         size: {width, height},
         margins: {left, top, right, bottom},
-    }: AxesProps<XDomain, YDomain>): ReactNode {
+    } = props;
     const [gx, gy] = Object.values(axes).map(axis => {
         const {element: g, render} = FauxComponent.new("g");
         axis(select(g));
@@ -34,15 +34,15 @@ export const Axes = function <XDomain extends AxisDomain, YDomain extends AxisDo
     });
     
     return renderNodesObj({
-    
+        
         axes: <>
             <g transform={translate(0, height)}>
                 {gx}
             </g>
-        
+            
             {gy}
         </>,
-    
+        
         names: <>
             {names.x && <text
                 transform={translate(width / 2, height + top)}
@@ -50,7 +50,7 @@ export const Axes = function <XDomain extends AxisDomain, YDomain extends AxisDo
             >
                 {names.x}
             </text>}
-        
+            
             {names.y && <text
                 transform={rotate(-90)}
                 y={-left}
@@ -61,6 +61,11 @@ export const Axes = function <XDomain extends AxisDomain, YDomain extends AxisDo
                 {names.y}
             </text>}
         </>,
-    
+        
     });
+};
+
+export const Axes = function <XDomain extends AxisDomain, YDomain extends AxisDomain>(
+    props: AxesProps<XDomain, YDomain>): ReactNode {
+    return createElement(_Axes as SFC<AxesProps<XDomain, YDomain>>, props);
 };

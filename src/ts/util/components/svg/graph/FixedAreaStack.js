@@ -6,14 +6,14 @@ const d3_axis_1 = require("d3-axis");
 const d3_scale_1 = require("d3-scale");
 const d3_shape_1 = require("d3-shape");
 const React = require("react");
+const react_1 = require("react");
 const utils_1 = require("../../../functional/utils");
 const isType_1 = require("../../../types/isType");
 const utils_2 = require("../../../utils");
 const utils_3 = require("../utils");
 const Axes_1 = require("./Axes");
-// allows me to specify generics easier
-// generic components work in typescript, but not WebStorm yet
-exports.FixedAreaStack = function ({ data, xKey, values, order = d3_shape_1.stackOrderNone, offset = d3_shape_1.stackOffsetNone, color = ["red", "blue", "green"], scale: { x: xScale = d3_scale_1.scaleLinear(), y: yScale = d3_scale_1.scaleLinear(), } = {}, axes: { x: xAxis = utils_1.identity, y: yAxis = utils_1.identity, } = {}, axesNames = {}, size: { width, height }, margins: { left = 0, top = 0, bottom = 0, right = 0 }, className, curve, defined, glyph, reverse = false, }) {
+const _FixedAreaStack = function (props) {
+    const { data, xKey, values, order = d3_shape_1.stackOrderNone, offset = d3_shape_1.stackOffsetNone, color = ["red", "blue", "green"], scale: { x: xScale = d3_scale_1.scaleLinear(), y: yScale = d3_scale_1.scaleLinear(), } = {}, axes: { x: xAxis = utils_1.identity, y: yAxis = utils_1.identity, } = {}, axesNames = {}, size: { width, height }, margins: { left = 0, top = 0, bottom = 0, right = 0 }, className, curve, defined, glyph, reverse = false, } = props;
     if (data.length === 0) {
         return;
     }
@@ -58,5 +58,8 @@ exports.FixedAreaStack = function ({ data, xKey, values, order = d3_shape_1.stac
                 size: { width, height },
                 margins: { left, top, right, bottom },
             })));
+};
+exports.FixedAreaStack = function (props) {
+    return react_1.createElement(_FixedAreaStack, props);
 };
 //# sourceMappingURL=FixedAreaStack.js.map

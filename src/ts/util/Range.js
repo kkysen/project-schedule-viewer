@@ -23,7 +23,16 @@ exports.Range = {
             toInterval() {
                 return [_from, _to];
             },
+            has(i) {
+                return i >= _from && i < _to;
+            },
         };
+    },
+    open(from, to) {
+        return exports.Range.new(from + 1, to);
+    },
+    closed(from, to) {
+        return exports.Range.new(from, to + 1);
     },
     ofDomain(domain) {
         return this.new(Math.min(...domain), Math.max(...domain));

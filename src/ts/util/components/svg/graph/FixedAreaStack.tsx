@@ -1,12 +1,12 @@
 import * as classNames from "classnames";
 import {extent} from "d3-array";
-import {Axis, axisBottom, AxisDomain, axisLeft} from "d3-axis";
+import {Axis, axisBottom, axisLeft} from "d3-axis";
 import {scaleLinear} from "d3-scale";
-import {area, CurveFactory, Series, SeriesPoint, stack, stackOffsetNone, stackOrderNone} from "d3-shape";
+import {area, CurveFactory, SeriesPoint, stack, stackOffsetNone, stackOrderNone} from "d3-shape";
 import * as React from "react";
-import {ReactNode} from "react";
+import {createElement, ReactNode, SFC} from "react";
 import {identity} from "../../../functional/utils";
-import {isArray, isReadonlyArray} from "../../../types/isType";
+import {isReadonlyArray} from "../../../types/isType";
 import {moduloIndexer} from "../../../utils";
 import {Accessor, Margins, Numeric, Scale, Size, translate} from "../utils";
 import {Axes} from "./Axes";
@@ -44,10 +44,9 @@ interface FixedAreaStackProps<T, XKey extends keyof T, XDomain extends Numeric> 
     className?: string;
 }
 
-// allows me to specify generics easier
-// generic components work in typescript, but not WebStorm yet
-export const FixedAreaStack = function <T, XKey extends keyof T, XDomain extends Numeric>(
-    {
+const _FixedAreaStack = function <T, XKey extends keyof T, XDomain extends Numeric>(
+    props: FixedAreaStackProps<T, XKey, XDomain>): ReactNode {
+    const {
         data,
         xKey,
         values,
@@ -70,7 +69,8 @@ export const FixedAreaStack = function <T, XKey extends keyof T, XDomain extends
         defined,
         glyph,
         reverse = false,
-    }: FixedAreaStackProps<T, XKey, XDomain>): ReactNode {
+    } = props;
+    
     type X = T[XKey];
     
     if (data.length === 0) {
@@ -136,4 +136,9 @@ export const FixedAreaStack = function <T, XKey extends keyof T, XDomain extends
             })}
         </g>
     </svg>;
+};
+
+export const FixedAreaStack = function <T, XKey extends keyof T, XDomain extends Numeric>(
+    props: FixedAreaStackProps<T, XKey, XDomain>): ReactNode {
+    return createElement(_FixedAreaStack as SFC<FixedAreaStackProps<T, XKey, XDomain>>, props);
 };

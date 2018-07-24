@@ -1,17 +1,77 @@
-<!DOCTYPE html>
-<html lang="en-US">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Project Schedule Viewer</title>
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-          crossorigin="anonymous"
-    >
-    <!--<link rel="stylesheet" href="https://unpkg.com/react-table@latest/react-table.css">-->
-  </head>
-  <body>
-    <div id="not-app"></div>
-  <script src="vendors~client~server.a85f346c50a6665c43f5.js"></script><script src="client~server.19673e628a82e7ea98c6.js"></script><script src="client.2a883e3d3111d5c6d5d1.js"></script></body>
-</html>
+Html Webpack Plugin:
+<pre>
+  Error: Child compilation failed:
+  Module build failed: Error: ENOENT: no such file or directory, open 'C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\webpack\buildin\global.js':
+  Error: ENOENT: no such file or directory, open 'C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\webpack\buildin\global.js'
+  Module build failed: Error: ENOENT: no such file or directory, open 'C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\webpack\buildin\module.js':
+  Error: ENOENT: no such file or directory, open 'C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\webpack\buildin\module.js'
+  
+  - compiler.js:77 childCompiler.runAsChild
+    [ProjectScheduleViewer]/[html-webpack-plugin]/lib/compiler.js:77:16
+  
+  - Compiler.js:296 compile
+    [ProjectScheduleViewer]/[webpack]/lib/Compiler.js:296:11
+  
+  - Compiler.js:553 hooks.afterCompile.callAsync.err
+    [ProjectScheduleViewer]/[webpack]/lib/Compiler.js:553:14
+  
+  
+  - after-compile.js:13 
+    [ProjectScheduleViewer]/[ts-loader]/dist/after-compile.js:13:13
+  
+  
+  - Hook.js:35 AsyncSeriesHook.lazyCompileHook [as _callAsync]
+    [ProjectScheduleViewer]/[tapable]/lib/Hook.js:35:21
+  
+  - Compiler.js:550 compilation.seal.err
+    [ProjectScheduleViewer]/[webpack]/lib/Compiler.js:550:30
+  
+  
+  - Hook.js:35 AsyncSeriesHook.lazyCompileHook [as _callAsync]
+    [ProjectScheduleViewer]/[tapable]/lib/Hook.js:35:21
+  
+  - Compilation.js:1283 hooks.optimizeAssets.callAsync.err
+    [ProjectScheduleViewer]/[webpack]/lib/Compilation.js:1283:35
+  
+  
+  - Hook.js:35 AsyncSeriesHook.lazyCompileHook [as _callAsync]
+    [ProjectScheduleViewer]/[tapable]/lib/Hook.js:35:21
+  
+  - Compilation.js:1274 hooks.optimizeChunkAssets.callAsync.err
+    [ProjectScheduleViewer]/[webpack]/lib/Compilation.js:1274:32
+  
+  
+  - Hook.js:35 AsyncSeriesHook.lazyCompileHook [as _callAsync]
+    [ProjectScheduleViewer]/[tapable]/lib/Hook.js:35:21
+  
+  - Compilation.js:1269 hooks.additionalAssets.callAsync.err
+    [ProjectScheduleViewer]/[webpack]/lib/Compilation.js:1269:36
+  
+  
+  - Hook.js:35 AsyncSeriesHook.lazyCompileHook [as _callAsync]
+    [ProjectScheduleViewer]/[tapable]/lib/Hook.js:35:21
+  
+  - Compilation.js:1265 hooks.optimizeTree.callAsync.err
+    [ProjectScheduleViewer]/[webpack]/lib/Compilation.js:1265:32
+  
+  
+  - Hook.js:35 AsyncSeriesHook.lazyCompileHook [as _callAsync]
+    [ProjectScheduleViewer]/[tapable]/lib/Hook.js:35:21
+  
+  - Compilation.js:1202 Compilation.seal
+    [ProjectScheduleViewer]/[webpack]/lib/Compilation.js:1202:27
+  
+  - Compiler.js:547 hooks.make.callAsync.err
+    [ProjectScheduleViewer]/[webpack]/lib/Compiler.js:547:17
+  
+  
+  - Compilation.js:1053 _addModuleChain
+    [ProjectScheduleViewer]/[webpack]/lib/Compilation.js:1053:12
+  
+  - Compilation.js:979 processModuleDependencies.err
+    [ProjectScheduleViewer]/[webpack]/lib/Compilation.js:979:9
+  
+  - next_tick.js:172 process._tickCallback
+    internal/process/next_tick.js:172:11
+  
+</pre><script src="vendors~client~server.77df785dc8055210be5b.js"></script><script src="client~server.b5f73885264ee62f8e4a.js"></script><script src="client.4d002414a2a75ef98983.js"></script>

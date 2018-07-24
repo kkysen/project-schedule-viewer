@@ -2564,8 +2564,8 @@ tick,0x7ffb7838a954,836924,1,0x7ff674aba880,6,0x7ff675276c70,0x8aa38c5e4a,0x8aa3
 code-creation,Script,11,837946,0x13e8116610a,8, C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\collections\HashSet.js:1:1,0x13e81165e50,~
 code-creation,Script,11,837970,0x13e811663da,149, C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\collections\HashSet.js:1:11,0x13e81165ff8,~
 tick,0x7ff6752f2581,838919,0,0x162d011e0a8,4,0x7ff675171af0,0x8aa38c15cf,0x8aa38c9f7f,0x8aa38c9b17,0x8aa38c344e,0x8aa38d3e7d,0x8aa38d3bc1,0x8996d86067,0x8aa38d0712,0x8aa38cbab5,0x8aa38c9fc5,0x8aa38c9b17,0x8aa38c344e,0x8aa38d3e7d,0x8aa38d3bc1,0x26f74172176,0x8aa38d0712,0x8aa38cbab5,0x8aa38c9fc5,0x8aa38c9b17,0x8aa38c344e,0x8aa38d3e7d,0x8aa38d3bc1,0x1b9580143e8,0x8aa38d0712,0x8aa38cbab5,0x8aa38c9fc5,0x8aa38c9b17,0x8aa38c344e,0x8aa38d3e7d,0x8aa38d3bc1,0x8aa38d2a09,0x8aa38d0712,0x8aa38cbab5,0x8aa38c9fc5,0x8aa38c9b17,0x8aa38c344e,0x8aa38c2eac,0x3b604433399,0x3b60442bbdf
-code-creation,Script,11,840334,0x13e8116762a,8, C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:1:1,0x13e81167300,~
-code-creation,Script,11,840372,0x13e81167962,225, C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:1:11,0x13e81167518,~
+code-creation,Script,11,840334,0x13e8116762a,8, C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:1:1,0x13e81167300,~
+code-creation,Script,11,840372,0x13e81167962,225, C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:1:11,0x13e81167518,~
 tick,0x7ffb78303100,840894,1,0x7ff674aba880,6,0x7ff675276c70,0x8aa38c5e4a,0x8aa38d5adf,0x8aa38d591e,0x8aa38c531f,0x8aa38c3a34,0x8aa38c3398,0x8aa38d3e7d,0x8aa38d3bc1,0x13e811679b1,0x8aa38d0712,0x8aa38cbab5,0x8aa38c9fc5,0x8aa38c9b17,0x8aa38c344e,0x8aa38d3e7d,0x8aa38d3bc1,0x8996d86067,0x8aa38d0712,0x8aa38cbab5,0x8aa38c9fc5,0x8aa38c9b17,0x8aa38c344e,0x8aa38d3e7d,0x8aa38d3bc1,0x26f74172176,0x8aa38d0712,0x8aa38cbab5,0x8aa38c9fc5,0x8aa38c9b17,0x8aa38c344e,0x8aa38d3e7d,0x8aa38d3bc1,0x1b9580143e8,0x8aa38d0712,0x8aa38cbab5,0x8aa38c9fc5,0x8aa38c9b17,0x8aa38c344e,0x8aa38d3e7d,0x8aa38d3bc1,0x8aa38d2a09,0x8aa38d0712,0x8aa38cbab5,0x8aa38c9fc5,0x8aa38c9b17,0x8aa38c344e,0x8aa38c2eac,0x3b604433399,0x3b60442bbdf
 code-creation,Script,11,842317,0x13e81168f1a,8, C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\classnames\index.js:1:1,0x13e81168c60,~
 code-creation,Script,11,842343,0x13e81169062,20, C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\classnames\index.js:1:11,0x13e81168e08,~
@@ -3380,28 +3380,28 @@ code-creation,LazyCompile,11,1145508,0x1ffc65e022,36,number$1 C:\Users\Khyber\wo
 code-creation,LazyCompile,11,1145567,0x1ffc65e1f2,60,scale.domain C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\d3-scale\dist\d3-scale.js:251:26,0x1ffc65c008,~
 code-creation,LazyCompile,11,1145604,0x1ffc65e3a2,6,number C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\d3-scale\dist\d3-scale.js:162:16,0x3faeecb38e8,~
 tick,0x7ff6750dde62,1145934,0,0x162d06e6801,2,0x7ff675171720,0x1ffc64ccd6,0x1ffc64521d,0x1ffc6448fd,0x1ffc643df7,0x1ffc643481,0x1ffc642571,0x610928c752
-code-creation,LazyCompile,11,1146170,0x1ffc65f7c2,1744,exports.VariableAreaStack C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:17:38,0x13e81167658,~
+code-creation,LazyCompile,11,1146170,0x1ffc65f7c2,1744,exports.VariableAreaStack C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:17:38,0x13e81167658,~
 code-creation,LazyCompile,11,1146252,0x1ffc660cca,63,linear C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\d3-scale\dist\d3-scale.js:358:16,0x3faeec97cf0,~
 code-creation,LazyCompile,11,1146348,0x1ffc66133a,58,linearish C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\d3-scale\dist\d3-scale.js:303:19,0x3faeec9c1f0,~
-code-creation,LazyCompile,11,1146412,0x1ffc661642,58,standardizeData C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:50:38,0x1ffc65e8e8,~
-code-creation,LazyCompile,11,1146497,0x1ffc6618fa,137,dataAsEntries C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:18:36,0x1ffc65e7b8,~
+code-creation,LazyCompile,11,1146412,0x1ffc661642,58,standardizeData C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:50:38,0x1ffc65e8e8,~
+code-creation,LazyCompile,11,1146497,0x1ffc6618fa,137,dataAsEntries C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:18:36,0x1ffc65e7b8,~
 code-creation,LazyCompile,11,1146617,0x1ffc661d72,360,base C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\collections\HashMap.js:121:42,0x1ffc64ee68,~
 code-creation,Builtin,3,1146674,0x2b0e680bc40,333,MapPrototypeValues
 code-creation,Builtin,3,1146704,0x2b0e680be00,1147,MapIteratorPrototypeNext
-code-creation,LazyCompile,11,1146804,0x1ffc6621da,30,flattenData C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:33:34,0x1ffc65e850,~
-code-creation,LazyCompile,11,1146878,0x1ffc6623f2,69,data.flatMap C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:37:29,0x1ffc6620b0,~
-code-creation,LazyCompile,11,1146974,0x1ffc662712,6,data.map.e C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:70:28,0x1ffc65e980,~
+code-creation,LazyCompile,11,1146804,0x1ffc6621da,30,flattenData C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:33:34,0x1ffc65e850,~
+code-creation,LazyCompile,11,1146878,0x1ffc6623f2,69,data.flatMap C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:37:29,0x1ffc6620b0,~
+code-creation,LazyCompile,11,1146974,0x1ffc662712,6,data.map.e C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:70:28,0x1ffc65e980,~
 code-creation,LazyCompile,11,1147020,0x1ffc66282a,4,x C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\ProjectScheduleViewer\ssr\components\Graph.js:63:20,0x1ffc64c510,~
-code-creation,LazyCompile,11,1147064,0x1ffc66292a,6,data.map.e C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:72:28,0x1ffc65ea18,~
-code-creation,LazyCompile,11,1147111,0x1ffc662a6a,6,Math.max.yData.map.e C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:73:40,0x1ffc65eab0,~
+code-creation,LazyCompile,11,1147064,0x1ffc66292a,6,data.map.e C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:72:28,0x1ffc65ea18,~
+code-creation,LazyCompile,11,1147111,0x1ffc662a6a,6,Math.max.yData.map.e C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:73:40,0x1ffc65eab0,~
 code-creation,Builtin,3,1147148,0x2b0e680c2e0,468,MathMax
 code-creation,LazyCompile,11,1147222,0x1ffc662f7a,82,new C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\Range.js:5:8,0x3faeecc1878,~
 code-creation,LazyCompile,11,1147315,0x1ffc66331a,118,toArray C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\Range.js:9:20,0x1ffc662b50,~
 code-creation,LazyCompile,11,1147379,0x1ffc66365a,9,map C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\Range.js:10:56,0x1ffc663198,~
 code-creation,LazyCompile,11,1147428,0x1ffc6637a2,25,map C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\Range.js:12:16,0x1ffc662be8,~
-code-creation,LazyCompile,11,1147497,0x1ffc663a5a,47,zRange.map.i C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:78:14,0x1ffc65eb48,~
-code-creation,LazyCompile,11,1147553,0x1ffc663c2a,7,yData._.mapFilter.e C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:78:39,0x1ffc663928,~
-code-creation,LazyCompile,11,1147869,0x1ffc663e72,166,zRange.map.mapFilter.e C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:79:20,0x1ffc65ebe0,~
+code-creation,LazyCompile,11,1147497,0x1ffc663a5a,47,zRange.map.i C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:78:14,0x1ffc65eb48,~
+code-creation,LazyCompile,11,1147553,0x1ffc663c2a,7,yData._.mapFilter.e C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:78:39,0x1ffc663928,~
+code-creation,LazyCompile,11,1147869,0x1ffc663e72,166,zRange.map.mapFilter.e C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:79:20,0x1ffc65ebe0,~
 code-creation,LazyCompile,11,1147942,0x1ffc66419a,6,z C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\ProjectScheduleViewer\ssr\components\Graph.js:65:20,0x1ffc64c640,~
 code-creation,LazyCompile,11,1147982,0x1ffc6642f2,33,y C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\ProjectScheduleViewer\ssr\components\Graph.js:64:20,0x1ffc64c5a8,~
 code-creation,LazyCompile,11,1148013,0x1ffc66448a,6,project C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\ProjectScheduleViewer\share\data\access\Team.js:13:26,0x1ffc63f860,~
@@ -3420,12 +3420,12 @@ code-creation,LazyCompile,11,1149386,0x1ffc6672ca,69,stack.order C:\Users\Khyber
 code-creation,LazyCompile,11,1149436,0x1ffc667482,32,stack.offset C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\d3-shape\build\d3-shape.js:1775:26,0x1ffc6669e8,~
 code-creation,LazyCompile,11,1149614,0x1ffc6676ea,239,stack C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\d3-shape\build\d3-shape.js:1739:17,0x1ffc666788,~
 code-creation,LazyCompile,11,1149689,0x1ffc667aaa,4,constant C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\d3-shape\build\d3-shape.js:9:27,0x1ffc665cf8,~
-code-creation,LazyCompile,11,1149780,0x1ffc667cc2,39,d3_shape_1.stack.keys.value C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:109:16,0x1ffc65ef70,~
-code-creation,LazyCompile,11,1150569,0x1ffc668192,57,d3_shape_1.stack.keys.value.order.series C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:115:55,0x1ffc65f008,~
-code-creation,LazyCompile,11,1150636,0x1ffc668402,36,series.map C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:115:76,0x1ffc667f20,~
-code-creation,LazyCompile,11,1150736,0x1ffc66864a,27,series.map.sortBy.e C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:116:17,0x1ffc667fb8,~
+code-creation,LazyCompile,11,1149780,0x1ffc667cc2,39,d3_shape_1.stack.keys.value C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:109:16,0x1ffc65ef70,~
+code-creation,LazyCompile,11,1150569,0x1ffc668192,57,d3_shape_1.stack.keys.value.order.series C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:115:55,0x1ffc65f008,~
+code-creation,LazyCompile,11,1150636,0x1ffc668402,36,series.map C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:115:76,0x1ffc667f20,~
+code-creation,LazyCompile,11,1150736,0x1ffc66864a,27,series.map.sortBy.e C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:116:17,0x1ffc667fb8,~
 code-creation,LazyCompile,11,1150780,0x1ffc6687a2,4,index C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\ProjectScheduleViewer\ssr\components\Graph.js:34:20,0x1ffc64b418,~
-code-creation,LazyCompile,11,1150894,0x1ffc6688a2,6,series.map.sortBy.map.e C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:117:14,0x1ffc668050,~
+code-creation,LazyCompile,11,1150894,0x1ffc6688a2,6,series.map.sortBy.map.e C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:117:14,0x1ffc668050,~
 code-creation,LazyCompile,11,1151017,0x1ffc668a8a,178,none C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\d3-shape\build\d3-shape.js:1713:20,0x2403ccfab10,~
 code-creation,LazyCompile,11,1151339,0x1ffc668f02,57,flatten C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\extensions\allExtensions.js:241:12,0x2d510ff2a28,~
 code-creation,Builtin,3,1151378,0x2b0e680c520,1816,ArrayReduce
@@ -3438,7 +3438,7 @@ code-creation,LazyCompile,11,1153931,0x1ffc669ec2,13,curveLinear C:\Users\Khyber
 code-creation,LazyCompile,11,1154002,0x1ffc66a00a,9,Linear C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\d3-shape\build\d3-shape.js:291:16,0x2403ccf4738,~
 code-creation,LazyCompile,11,1154083,0x1ffc66a16a,8,areaStart C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\d3-shape\build\d3-shape.js:296:22,0x2403ccf6688,~
 code-creation,LazyCompile,11,1154132,0x1ffc66a2ba,8,lineStart C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\d3-shape\build\d3-shape.js:302:22,0x2403ccf67b8,~
-code-creation,LazyCompile,11,1154183,0x1ffc66a41a,25,d3_shape_1.area.x C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:102:12,0x1ffc65ed10,~
+code-creation,LazyCompile,11,1154183,0x1ffc66a41a,25,d3_shape_1.area.x C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:102:12,0x1ffc65ed10,~
 code-creation,LazyCompile,11,1154254,0x1ffc66a56a,65,scale C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\d3-scale\dist\d3-scale.js:243:17,0x1ffc65bed8,~
 tick,0x7ff6750dac10,1154356,0,0x47cd6fcb00,2,0x7ff675171720,0x1ffc66a597,0x1ffc66a42e,0x1ffc66966d,0x2b0e6671396,0x6109297d29,0x1ffc65fcae,0x1ffc64ccd6,0x1ffc64521d,0x1ffc6448fd,0x1ffc643df7,0x1ffc643481,0x1ffc642571,0x610928c752
 code-creation,LazyCompile,11,1154412,0x1ffc66a81a,89,bimap C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\d3-scale\dist\d3-scale.js:188:15,0x3faeeca7a60,~
@@ -3448,8 +3448,8 @@ code-creation,LazyCompile,11,1155010,0x1ffc66b0ca,35,number C:\Users\Khyber\work
 code-creation,LazyCompile,11,1155065,0x1ffc66b222,20, C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\d3-scale\dist\d3-scale.js:192:18,0x1ffc66a6d8,~
 code-creation,LazyCompile,11,1155110,0x1ffc66b362,14, C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\d3-scale\dist\d3-scale.js:170:17,0x1ffc66a9f0,~
 code-creation,LazyCompile,11,1155161,0x1ffc66b48a,18, C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\d3-interpolate\build\d3-interpolate.js:149:34,0x1ffc66afb0,~
-code-creation,LazyCompile,11,1155222,0x1ffc66b5ea,18,d3_shape_1.area.x.y0.d C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:103:13,0x1ffc65eda8,~
-code-creation,LazyCompile,11,1155284,0x1ffc66b76a,19,d3_shape_1.area.x.y0.y1.d C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:104:13,0x1ffc65ee40,~
+code-creation,LazyCompile,11,1155222,0x1ffc66b5ea,18,d3_shape_1.area.x.y0.d C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:103:13,0x1ffc65eda8,~
+code-creation,LazyCompile,11,1155284,0x1ffc66b76a,19,d3_shape_1.area.x.y0.y1.d C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:104:13,0x1ffc65ee40,~
 code-creation,LazyCompile,11,1155387,0x1ffc66b922,114,point C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\d3-shape\build\d3-shape.js:309:18,0x2403ccf68e8,~
 code-creation,LazyCompile,11,1155459,0x1ffc66bc12,71,moveTo C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\d3-path\build\d3-path.js:25:19,0x2403ccffc40,~
 code-creation,LazyCompile,11,1155570,0x1ffc66bffa,59,lineTo C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\d3-path\build\d3-path.js:34:19,0x2403ccffd70,~
@@ -3461,7 +3461,7 @@ code-creation,LazyCompile,11,1156443,0x1ffc66cc8a,6,toString C:\Users\Khyber\wor
 tick,0x2b0e65eb9d5,1158319,0,0x2b0e659477e,0,0x1ffc66a56a,0x1ffc66b5f7,0x1ffc669685,0x2b0e6671396,0x6109297d29,0x1ffc65fcae,0x1ffc64ccd6,0x1ffc64521d,0x1ffc6448fd,0x1ffc643df7,0x1ffc643481,0x1ffc642571,0x610928c752
 tick,0x2b0e66056b6,1160321,0,0x1ffc66bfc1,0,0x1ffc66b922,0x1ffc669631,0x2b0e6671396,0x6109297d29,0x1ffc65fcae,0x1ffc64ccd6,0x1ffc64521d,0x1ffc6448fd,0x1ffc643df7,0x1ffc643481,0x1ffc642571,0x610928c752
 code-creation,LazyCompile,11,1160535,0x1ffc66ef7a,36,exports.translate C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\utils.js:3:21,0x3faeecc27d8,~
-code-creation,LazyCompile,11,1160673,0x1ffc66f272,130,React.createElement.React.createElement.React.createElement.paths.map C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:124:54,0x1ffc65f0a0,~
+code-creation,LazyCompile,11,1160673,0x1ffc66f272,130,React.createElement.React.createElement.React.createElement.paths.map C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:124:54,0x1ffc65f0a0,~
 code-creation,LazyCompile,11,1161046,0x1ffc66f622,232,classNames C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\classnames\index.js:13:22,0x13e81169098,~
 code-creation,LazyCompile,11,1161146,0x1ffc66fa4a,43,Graph.byColor C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\ProjectScheduleViewer\ssr\components\Graph.js:31:24,0x1ffc64b2e8,~
 code-creation,LazyCompile,11,1161210,0x1ffc66fc02,20,i C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\utils.js:102:12,0x1ffc64be70,~
@@ -3816,11 +3816,11 @@ tick,0x7ffb78389f94,1336856,1,0x7ff674a63b80,6,0x7ff675276c70,0x3bcaa3b93a5,0x3b
 tick,0x7ff67505b22c,1338863,0,0x2,4,0x7ff675171af0,0x3bcaa3b90ff,0x3bcaa3b8a23,0x3bcaa3b8648,0x3bcaa3b83dc,0x3bcaa3b7df4,0x3bcaa3b7642,0x3bcaa3b6b9a,0x3bcaa3b46df,0x7ff674a33110,0x3bcaa3b4307,0x7ff674a33110,0x610928c788
 tick,0x2b0e66067b6,1340927,0,0x1b9eac31951,0,0x1ffc64b968,0x1ffc645054,0x2b0e6816a0d,0x1ffc643df7,0x2b0e6821a2f,0x1ffc642571,0x610928c752
 tick,0x0,1342824,0,0x0,5
-code-creation,LazyCompile,0,1343842,0x2b0e6821e20,377,d3_shape_1.stack.keys.value C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:109:16,0x1ffc65ef70,*
+code-creation,LazyCompile,0,1343842,0x2b0e6821e20,377,d3_shape_1.stack.keys.value C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:109:16,0x1ffc65ef70,*
 tick,0x0,1344912,0,0x0,5
 code-creation,LazyCompile,0,1345735,0x2b0e6822000,3324,afterWriteDispatched internal/stream_base_commons.js:73:30,0x24cd43de100,*
 code-creation,LazyCompile,0,1345975,0x2b0e6822d60,930,depth.reduce C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\extensions\allExtensions.js:244:27,0x1ffc668de0,*
-code-creation,LazyCompile,0,1346724,0x2b0e6823180,516,d3_shape_1.area.x.y0.y1.d C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:104:13,0x1ffc65ee40,*
+code-creation,LazyCompile,0,1346724,0x2b0e6823180,516,d3_shape_1.area.x.y0.y1.d C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:104:13,0x1ffc65ee40,*
 tick,0x7ffb78389fb4,1347005,0,0x7ffb748b25f9,4,0x7ff6753881c0,0x3bcaa39d212,0x1ffc675419,0x1ffc6736a3,0x2b0e6671396,0x1ffc672da6,0x1ffc65fe63,0x1ffc64ccd6,0x1ffc64521d,0x2b0e6816a0d,0x1ffc643df7,0x2b0e6821a2f,0x1ffc642571,0x610928c752
 tick,0x2b0e6608574,1349049,0,0x81,0,0x3bcaa3a64ea,0x3bcaa3a606f,0x3bcaa3a6b4a,0x2b0e6671396,0x3bcaa3a6124,0x3bcaa3a5c47,0x1ffc6736a7,0x2b0e6671396,0x1ffc672da6,0x1ffc65fe63,0x1ffc64ccd6,0x1ffc64521d,0x2b0e6816a0d,0x1ffc643df7,0x2b0e6821a2f,0x1ffc642571,0x610928c752
 tick,0x2b0e66056f2,1352982,0,0x200000000,0,0x3bcaa3b2347,0x1ffc6450b6,0x2b0e6816a0d,0x1ffc643df7,0x2b0e6821a2f,0x1ffc642571,0x610928c752
@@ -3931,13 +3931,13 @@ tick,0x7ffb78389f94,1561279,1,0x7ff674a63b80,6,0x7ff675276c70,0x3bcaa3b93a5,0x3b
 tick,0x7ffb78303026,1563239,1,0x7ff674adb040,5,0x7ff675276c70,0x3e31a7a5226,0x3e31a7a4d1d,0x3bcaa3c4b50,0x3bcaa3c4950,0x3bcaa3c47bd
 code-creation,LazyCompile,0,1567411,0x2b0e682cdc0,186,project C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\ProjectScheduleViewer\share\data\access\Team.js:13:26,0x1ffc63f860,*
 tick,0x7ff674ee9089,1567468,0,0x16a9cc24a1,0,0x7ff674ee9a70,0x2b0e6825a86,0x2b0e680c753,0x2b0e6825a38,0x2b0e680c753,0x1ffc668f34,0x1ffc65fc87,0x1ffc64ccd6,0x1ffc64521d,0x2b0e6823627,0x2b0e6821a2f,0x1ffc642571,0x610928c752
-code-creation,LazyCompile,0,1569051,0x2b0e682cee0,496,d3_shape_1.area.x C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:102:12,0x1ffc65ed10,*
+code-creation,LazyCompile,0,1569051,0x2b0e682cee0,496,d3_shape_1.area.x C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:102:12,0x1ffc65ed10,*
 tick,0x2b0e6594636,1569697,0,0x2b0e658cce3,0,0x2b0e682b061,0x2b0e6671396,0x6109297d29,0x1ffc65fcae,0x1ffc64ccd6,0x1ffc64521d,0x2b0e6823627,0x2b0e6821a2f,0x1ffc642571,0x610928c752
 tick,0x7ff674de45c0,1570362,0,0x0,0
 tick,0x2b0e681bb56,1572247,0,0x600000000,0,0x2b0e68238ac,0x2b0e6821a2f,0x1ffc642571,0x610928c752
 tick,0x2b0e65b86bf,1574208,0,0xeb00000000,0,0x2b0e681afdd,0x2b0e68238ac,0x2b0e6821a2f,0x1ffc642571,0x610928c752
 tick,0x7ff674d8cae4,1576203,0,0x162ccf85ca0,0,0x7ff675071ac0,0xe5e01effc1,0x2b0e660f856,0xe5e01efa93,0xe5e01f0561,0x1ffc651d85,0x1ffc650077,0x1ffc64e56b,0x1ffc64e23d,0x1ffc64cc6b,0x1ffc64521d,0x2b0e6823627,0x2b0e6821a2f,0x1ffc642571,0x610928c752
-code-creation,LazyCompile,0,1578402,0x2b0e682d140,516,d3_shape_1.area.x.y0.y1.d C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:104:13,0x1ffc65ee40,*
+code-creation,LazyCompile,0,1578402,0x2b0e682d140,516,d3_shape_1.area.x.y0.y1.d C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:104:13,0x1ffc65ee40,*
 tick,0x2b0e659c11a,1578494,0,0x3b604407811,0,0x2b0e6828fd0,0x1ffc66f2ed,0x2b0e6671396,0x1ffc65fd33,0x1ffc64ccd6,0x1ffc64521d,0x2b0e6823627,0x2b0e6821a2f,0x1ffc642571,0x610928c752
 tick,0x2b0e681aa7f,1580217,0,0x0,0,0x2b0e68238ac,0x2b0e6821a2f,0x1ffc642571,0x610928c752
 tick,0x7ffb78389f34,1583814,0,0x0,1
@@ -4014,7 +4014,7 @@ tick,0x2b0e6824c1e,1751848,0,0x2,0,0x3bcaa39fb1e,0x3bcaa39f8f9,0x3bcaa39f6f3,0x3
 tick,0x2b0e666d834,1753940,0,0xfffffffffffffb14,0,0x7ff675165ec0,0x2b0e662f46d,0x2b0e682f684,0x2b0e681bb6c,0x2b0e68238ac,0x2b0e6821a2f,0x1ffc642571,0x610928c752
 tick,0x2b0e660b481,1755814,0,0x421,0,0x2b0e681bda8,0x2b0e68238ac,0x2b0e6821a2f,0x1ffc642571,0x610928c752
 tick,0x7ff674f09195,1757857,0,0x7ff674f0a2ba,0,0x7ff6750aa5c0,0x1ffc6418af,0x610928c6f8
-code-creation,LazyCompile,0,1760037,0x2b0e6831680,377,d3_shape_1.stack.keys.value C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:109:16,0x1ffc65ef70,*
+code-creation,LazyCompile,0,1760037,0x2b0e6831680,377,d3_shape_1.stack.keys.value C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:109:16,0x1ffc65ef70,*
 tick,0x7ffb78389fb4,1760106,0,0x7ffb748b25f9,4,0x7ff6753881c0,0x2b0e6825aa2,0x2b0e680c753,0x2b0e6825a38,0x2b0e680c753,0x1ffc668f34,0x1ffc65fc87,0x1ffc64ccd6,0x1ffc64521d,0x2b0e6823627,0x2b0e6821a2f,0x1ffc642571,0x610928c752
 code-creation,LazyCompile,0,1761380,0x2b0e6831860,12816,Element.toReact C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\react-faux-dom\lib\_element.js:255:40,0x6109287578,*
 tick,0x2b0e6607825,1761747,0,0x2b0e659477e,0,0x1ffc66f294,0x2b0e6671396,0x1ffc65fd33,0x1ffc64ccd6,0x1ffc64521d,0x2b0e6823627,0x2b0e6821a2f,0x1ffc642571,0x610928c752
@@ -4049,7 +4049,7 @@ tick,0x7ffb78389f94,1825529,1,0x7ff674a63b80,6,0x7ff675276c70,0x3bcaa3b93a5,0x3b
 tick,0x7ff674d55874,1826135,0,0x7ff674f0ae58,0,0x7ff6750aa5c0,0x1ffc6418af,0x610928c6f8
 tick,0x7ff674ee4497,1826168,0,0x47cd6fd208,0,0x7ff674ee9a70,0x2b0e6825a86,0x2b0e680c753,0x2b0e6825a38,0x2b0e680c753,0x1ffc668f34,0x1ffc65fc87,0x1ffc64ccd6,0x1ffc64521d,0x2b0e6823627,0x2b0e6821a2f,0x1ffc642571,0x610928c752
 tick,0x7ff675539640,1827712,0,0x7ff674d720cc,0,0x7ff675097100,0x1ffc677da7,0x1ffc677928,0x1ffc676520,0x1ffc6752b8,0x1ffc6736a3,0x2b0e6671396,0x1ffc672da6,0x1ffc65fe63,0x1ffc64ccd6,0x1ffc64521d,0x2b0e6823627,0x2b0e6821a2f,0x1ffc642571,0x610928c752
-code-creation,LazyCompile,0,1827819,0x2b0e6835980,516,d3_shape_1.area.x.y0.d C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:103:13,0x1ffc65eda8,*
+code-creation,LazyCompile,0,1827819,0x2b0e6835980,516,d3_shape_1.area.x.y0.d C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:103:13,0x1ffc65eda8,*
 tick,0x7ff6749fe570,1829607,0,0x7ff674ffb308,4,0x7ff675171af0,0x1ffc673b29,0x3bcaa39e7b9,0x3bcaa39e5d8,0x3bcaa39e3d6,0x3bcaa39e03e,0x3bcaa39d6b9,0x1ffc6754ec,0x1ffc6736a3,0x2b0e6671396,0x1ffc672da6,0x1ffc65fe63,0x1ffc64ccd6,0x1ffc64521d,0x2b0e6823627,0x2b0e6821a2f,0x1ffc642571,0x610928c752
 code-creation,LazyCompile,0,1830891,0x2b0e6835c00,2124,selection_each C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\d3-selection\dist\d3-selection.js:370:24,0x3faeecc8040,*
 code-creation,LazyCompile,0,1832705,0x2b0e68364c0,4777,Element C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\react-faux-dom\lib\_element.js:12:20,0x6109286b60,*
@@ -4135,7 +4135,7 @@ tick,0x7ffb78389f94,2004662,1,0x7ff674a63b80,6,0x7ff675276c70,0x3bcaa3b93a5,0x3b
 tick,0x7ffb78389f94,2006618,1,0x7ff674a63b80,6,0x7ff675276c70,0x3bcaa3b93a5,0x3bcaa3b90e8,0x3bcaa3b8a23,0x3bcaa3b8648,0x3bcaa3b83dc,0x3bcaa3b7df4,0x3bcaa3b7642,0x3bcaa3b6b9a,0x3bcaa3b46df,0x7ff674a33110,0x3bcaa3b4307,0x7ff674a33110,0x610928c788
 tick,0x7ff674aefd2a,2008575,0,0x0,6
 tick,0x2b0e658cc6b,2010635,0,0x0,0,0x2b0e66288d6,0x6109297d42,0x1ffc663a83,0x2b0e6671396,0x1ffc6637b5,0x1ffc65fad6,0x1ffc64ccd6,0x1ffc64521d,0x2b0e6823627,0x2b0e6821a2f,0x1ffc642571,0x610928c752
-code-creation,LazyCompile,0,2011559,0x2b0e6839ec0,273,series.map.sortBy.e C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:116:17,0x1ffc667fb8,*
+code-creation,LazyCompile,0,2011559,0x2b0e6839ec0,273,series.map.sortBy.e C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:116:17,0x1ffc667fb8,*
 tick,0x2b0e659de7a,2012564,0,0x47cd6fd140,0,0x2b0e6831d49,0x2b0e6832be2,0x2b0e6832be2,0x3bcaa3a5c47,0x1ffc6736a7,0x2b0e6671396,0x1ffc672da6,0x1ffc65fe63,0x1ffc64ccd6,0x1ffc64521d,0x2b0e6823627,0x2b0e6821a2f,0x1ffc642571,0x610928c752
 tick,0x2b0e658d52e,2014642,0,0x2b0e659477e,0,0x3bcaa3b89e1,0x3bcaa3b8648,0x3bcaa3b83dc,0x3bcaa3b7df4,0x3bcaa3b7642,0x3bcaa3b6b9a,0x3bcaa3b46df,0x7ff674a33110,0x3bcaa3b4307,0x7ff674a33110,0x610928c788
 tick,0x7ffb7838cba4,2019244,0,0x0,6
@@ -4197,7 +4197,7 @@ tick,0x7ffb78389f94,2134317,1,0x7ff674a63b80,6,0x7ff675276c70,0x3bcaa3b93a5,0x3b
 tick,0x7ffb78389f94,2136258,1,0x7ff674a63b80,6,0x7ff675276c70,0x3bcaa3b93a5,0x3bcaa3b90e8,0x3bcaa3b8a23,0x3bcaa3b8648,0x3bcaa3b83dc,0x3bcaa3b7df4,0x3bcaa3b7642,0x3bcaa3b6b9a,0x3bcaa3b46df,0x7ff674a33110,0x3bcaa3b4307,0x7ff674a33110,0x610928c788
 tick,0x7ff674e58dad,2138240,1,0x7ff674adb040,6,0x7ff675276c70,0x3e31a7a5226,0x3e31a7a4d1d,0x3bcaa3c4b50,0x3bcaa3c4950,0x3bcaa3c47bd
 tick,0x7ff674d95ce1,2140210,0,0x162cf42be78,0,0x7ff674edfdd0,0xe5e01efaad,0xe5e01f0561,0x1ffc651d85,0x1ffc650077,0x1ffc64e56b,0x1ffc64e23d,0x1ffc64cc6b,0x1ffc64521d,0x2b0e6823627,0x2b0e6821a2f,0x1ffc642571,0x610928c752
-code-creation,LazyCompile,0,2141300,0x2b0e683cbe0,267,yData._.mapFilter.e C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:78:39,0x1ffc663928,*
+code-creation,LazyCompile,0,2141300,0x2b0e683cbe0,267,yData._.mapFilter.e C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:78:39,0x1ffc663928,*
 tick,0x2b0e683a044,2142201,0,0x2b0e658cce3,0,0x2b0e682a156,0x2b0e6671396,0x6109297d29,0x1ffc65fcae,0x1ffc64ccd6,0x1ffc64521d,0x2b0e6823627,0x2b0e6821a2f,0x1ffc642571,0x610928c752
 tick,0x7ff674db4c4c,2144190,0,0x4ee,0,0x7ff675165ec0,0x2b0e662f46d,0x2b0e682f684,0x2b0e681bb6c,0x2b0e68238ac,0x2b0e6821a2f,0x1ffc642571,0x610928c752
 tick,0x7ffb78389f94,2146184,1,0x7ff674a63b80,6,0x7ff675276c70,0x3bcaa3b93a5,0x3bcaa3b90e8,0x3bcaa3b8a23,0x3bcaa3b8648,0x3bcaa3b83dc,0x3bcaa3b7df4,0x3bcaa3b7642,0x3bcaa3b6b9a,0x3bcaa3b46df,0x7ff674a33110,0x3bcaa3b4307,0x7ff674a33110,0x610928c788
@@ -4286,7 +4286,7 @@ code-creation,LazyCompile,0,2343526,0x2b0e683e9c0,12036,area C:\Users\Khyber\wor
 tick,0x2b0e66058d1,2343657,0,0x5a00000000,0,0x1b95807a51c,0x610928cab1,0x610928c793
 tick,0x7ff674d58633,2345654,0,0x3b604404479,0,0x7ff6750aa5c0,0x1ffc6418af,0x610928c6f8
 tick,0x0,2348048,0,0x0,5
-code-creation,LazyCompile,0,2348348,0x2b0e6841940,377,d3_shape_1.stack.keys.value C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:109:16,0x1ffc65ef70,*
+code-creation,LazyCompile,0,2348348,0x2b0e6841940,377,d3_shape_1.stack.keys.value C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:109:16,0x1ffc65ef70,*
 tick,0x2b0e65aa640,2349844,0,0x2b0e659477e,0,0x1ffc669150,0x2b0e680c753,0x1ffc668f34,0x1ffc669145,0x2b0e680c753,0x1ffc668f34,0x1ffc65fc87,0x1ffc64ccd6,0x1ffc64521d,0x2b0e6823627,0x2b0e6821a2f,0x1ffc642571,0x610928c752
 code-creation,LazyCompile,0,2351402,0x2b0e6841b20,930,depth.reduce C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\extensions\allExtensions.js:244:27,0x1ffc668de0,*
 code-creation,LazyCompile,0,2353021,0x2b0e6841f40,936,flatten C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\extensions\allExtensions.js:241:12,0x2d510ff2a28,*
@@ -4365,7 +4365,7 @@ tick,0x2b0e6607ab4,2505354,0,0x2b0e659477e,0,0x61092952d1,0x6109294cd4
 code-creation,LazyCompile,0,2508455,0x2b0e6844de0,765,data.teams.all.flatMap.flatMap.forEach C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\ProjectScheduleViewer\ssr\components\Graph.js:24:18,0x1ffc64dff0,*
 tick,0x7ffb78389fb4,2508557,0,0x7ffb748b25f9,4,0x7ff6753881c0,0x2b0e6841da2,0x2b0e680c753,0x2b0e6841d38,0x2b0e6842180,0x1ffc65fc87,0x1ffc64ccd6,0x1ffc64521d,0x2b0e6823627,0x2b0e6821a2f,0x1ffc642571,0x610928c752
 tick,0x7ffb78389f34,2510565,0,0x0,1
-code-creation,LazyCompile,0,2511656,0x2b0e6845140,496,d3_shape_1.area.x C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:102:12,0x1ffc65ed10,*
+code-creation,LazyCompile,0,2511656,0x2b0e6845140,496,d3_shape_1.area.x C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:102:12,0x1ffc65ed10,*
 code-creation,LazyCompile,0,2512610,0x2b0e68453a0,455,isXML C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\query-selector\lib\query-selector.js:397:15,0x3b60446bf88,*
 tick,0x7ffb78389fb4,2512691,0,0x7ffb748b25f9,4,0x7ff6753881c0,0x3bcaa39f8ea,0x2b0e6835fa5,0x3bcaa39f15a,0x1ffc675501,0x1ffc6736a3,0x2b0e6671396,0x1ffc672da6,0x1ffc65fe63,0x1ffc64ccd6,0x1ffc64521d,0x2b0e6823627,0x2b0e6821a2f,0x1ffc642571,0x610928c752
 code-creation,LazyCompile,0,2514678,0x2b0e68455e0,99,emptyFunction.thatReturnsArgument C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\fbjs\lib\emptyFunction.js:32:46,0x1b95801d1e0,*
@@ -4405,7 +4405,7 @@ tick,0x7ffb78389f94,2587622,1,0x7ff674a63b80,6,0x7ff675276c70,0x3bcaa3b93a5,0x3b
 tick,0x7ff674e82f8e,2589809,1,0x7ff674adb040,5,0x7ff675276c70,0x3e31a7a5226,0x3e31a7a4d1d,0x3bcaa3c4b50,0x3bcaa3c4950,0x3bcaa3c47bd
 tick,0x2b0e658cc6b,2591548,0,0x0,0,0x2b0e66288d6,0x6109297d42,0x1ffc663a83,0x2b0e6671396,0x1ffc6637b5,0x1ffc65fad6,0x1ffc64ccd6,0x1ffc64521d,0x2b0e6823627,0x2b0e6821a2f,0x1ffc642571,0x610928c752
 tick,0x0,2593527,0,0x0,5
-code-creation,LazyCompile,0,2593651,0x2b0e6846d20,516,d3_shape_1.area.x.y0.y1.d C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:104:13,0x1ffc65ee40,*
+code-creation,LazyCompile,0,2593651,0x2b0e6846d20,516,d3_shape_1.area.x.y0.y1.d C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:104:13,0x1ffc65ee40,*
 tick,0x7ff6753f0633,2595522,0,0x0,1
 tick,0x7ffb78389f94,2597553,1,0x7ff674a63b80,6,0x7ff675276c70,0x3bcaa3b93a5,0x3bcaa3b90e8,0x3bcaa3b8a23,0x3bcaa3b8648,0x3bcaa3b83dc,0x3bcaa3b7df4,0x3bcaa3b7642,0x3bcaa3b6b9a,0x3bcaa3b46df,0x7ff674a33110,0x3bcaa3b4307,0x7ff674a33110,0x610928c788
 tick,0x2b0e658d534,2600433,0,0x2b0e6671396,0,0x6109297d29,0x1ffc663a83,0x2b0e6671396,0x1ffc6637b5,0x1ffc65fad6,0x1ffc64ccd6,0x1ffc64521d,0x2b0e6823627,0x2b0e6821a2f,0x1ffc642571,0x610928c752
@@ -4414,14 +4414,14 @@ tick,0x2b0e659c5aa,2606509,0,0x7ff674d56eda,0,0x2b0e68444fc,0x2b0e6671396,0x3bca
 tick,0x7ffb78389f94,2609012,1,0x7ff674a63b80,6,0x7ff675276c70,0x3bcaa3b93a5,0x3bcaa3b90e8,0x3bcaa3b8a23,0x3bcaa3b8648,0x3bcaa3b83dc,0x3bcaa3b7df4,0x3bcaa3b7642,0x3bcaa3b6b9a,0x3bcaa3b46df,0x7ff674a33110,0x3bcaa3b4307,0x7ff674a33110,0x610928c788
 tick,0x2b0e660571c,2610540,0,0x4200000000,0,0x3bcaa3c52fb,0x3bcaa3c4f8b,0x3bcaa3c4b96,0x3bcaa3c4950,0x3bcaa3c47bd
 tick,0x7ff674ee44c3,2612627,0,0x47cd6fd2b8,0,0x7ff674ee9a70,0x2b0e6841d86,0x2b0e680c753,0x2b0e6841d38,0x2b0e6842180,0x1ffc65fc87,0x1ffc64ccd6,0x1ffc64521d,0x2b0e6823627,0x2b0e6821a2f,0x1ffc642571,0x610928c752
-code-creation,LazyCompile,0,2614356,0x2b0e6846fa0,516,d3_shape_1.area.x.y0.d C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:103:13,0x1ffc65eda8,*
+code-creation,LazyCompile,0,2614356,0x2b0e6846fa0,516,d3_shape_1.area.x.y0.d C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:103:13,0x1ffc65eda8,*
 tick,0x7ff674f92a30,2615500,0,0x7ff67533628d,4,0x7ff675171af0,0x3bcaa39e5d8,0x3bcaa39e3d6,0x2b0e683a8f8,0x3bcaa39d6b9,0x1ffc67554a,0x1ffc6736a3,0x2b0e6671396,0x1ffc672da6,0x1ffc65fe63,0x1ffc64ccd6,0x1ffc64521d,0x2b0e6823627,0x2b0e6821a2f,0x1ffc642571,0x610928c752
 tick,0x2b0e6816e94,2618552,0,0x2b0e6674ada,0,0x2b0e6817408,0x2b0e68177f1,0x2b0e682f205,0x2b0e681c66b,0x2b0e68238ac,0x2b0e6821a2f,0x1ffc642571,0x610928c752
 tick,0x7ffb78389f94,2620478,1,0x7ff674a63b80,6,0x7ff675276c70,0x3bcaa3b93a5,0x3bcaa3b90e8,0x3bcaa3b8a23,0x3bcaa3b8648,0x3bcaa3b83dc,0x3bcaa3b7df4,0x3bcaa3b7642,0x3bcaa3b6b9a,0x3bcaa3b46df,0x7ff674a33110,0x3bcaa3b4307,0x7ff674a33110,0x610928c788
 code-creation,LazyCompile,0,2621496,0x2b0e6847220,4441,createElementNS C:\Users\Khyber\workspace\ProjectScheduleViewer\node_modules\react-faux-dom\lib\factory.js:15:31,0x6109286178,*
 tick,0x2b0e658d0a8,2622517,0,0x2b0e659477e,0,0x8aa38b68cc,0x1ffc64b927,0x1ffc645054,0x2b0e6823627,0x2b0e6821a2f,0x1ffc642571,0x610928c752
 tick,0x7ff674ee90c0,2624466,0,0x162cf42b3a0,0,0x7ff674ee9a70,0x2b0e6841d86,0x2b0e680c753,0x2b0e6841d38,0x2b0e6842180,0x1ffc65fc87,0x1ffc64ccd6,0x1ffc64521d,0x2b0e6823627,0x2b0e6821a2f,0x1ffc642571,0x610928c752
-code-creation,LazyCompile,0,2624527,0x2b0e68483e0,273,series.map.sortBy.e C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:116:17,0x1ffc667fb8,*
+code-creation,LazyCompile,0,2624527,0x2b0e68483e0,273,series.map.sortBy.e C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:116:17,0x1ffc667fb8,*
 tick,0x2b0e65b85e5,2626464,0,0x100000000,0,0x2b0e6832dda,0x3bcaa3a5c47,0x1ffc6736a7,0x2b0e6671396,0x1ffc672da6,0x1ffc65fe63,0x1ffc64ccd6,0x1ffc64521d,0x2b0e6823627,0x2b0e6821a2f,0x1ffc642571,0x610928c752
 tick,0x0,2628434,0,0x0,5
 tick,0x2b0e659b944,2630433,0,0x0,0,0x8aa38c7b84,0x3bcaa3bc77d,0x3bcaa3bc405,0x3bcaa3bbfbf,0x3bcaa3bbd51,0x610928d971,0x2b0e6627822,0x610928d67d,0x610928cabf,0x610928c793
@@ -4446,7 +4446,7 @@ tick,0x7ff674ea5230,2669394,0,0x7ff674eb20cb,0,0x7ff675167700,0x2b0e6674ada,0x2b
 tick,0x2b0e65ec812,2671514,0,0x7977f0aa31,0,0x2b0e681aed4,0x2b0e68238ac,0x2b0e6821a2f,0x1ffc642571,0x610928c752
 tick,0x7ffb78389f94,2673348,1,0x7ff674a63b80,6,0x7ff675276c70,0x3bcaa3b93a5,0x3bcaa3b90e8,0x3bcaa3b8a23,0x3bcaa3b8648,0x3bcaa3b83dc,0x3bcaa3b7df4,0x3bcaa3b7642,0x3bcaa3b6b9a,0x3bcaa3b46df,0x7ff674a33110,0x3bcaa3b4307,0x7ff674a33110,0x610928c788
 tick,0x2b0e659478f,2675388,0,0x362459891b1,0,0x1ffc64cc6b,0x1ffc64521d,0x2b0e6823627,0x2b0e6821a2f,0x1ffc642571,0x610928c752
-code-creation,LazyCompile,0,2676346,0x2b0e6848560,267,yData._.mapFilter.e C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\VariableAreaStack.js:78:39,0x1ffc663928,*
+code-creation,LazyCompile,0,2676346,0x2b0e6848560,267,yData._.mapFilter.e C:\Users\Khyber\workspace\ProjectScheduleViewer\src\ts\util\components\svg\graph\OldVariableAreaStack.js:78:39,0x1ffc663928,*
 tick,0x2b0e661d3e0,2677345,0,0x2b0e659477e,0,0x1ffc65fd2a,0x1ffc64ccd6,0x1ffc64521d,0x2b0e6823627,0x2b0e6821a2f,0x1ffc642571,0x610928c752
 tick,0x2b0e6586a93,2679457,0,0x2b0e6821a54,0,0x1ffc642571,0x610928c752
 tick,0x7ffb78389f94,2681814,1,0x7ff674a63b80,6,0x7ff675276c70,0x3bcaa3b93a5,0x3bcaa3b90e8,0x3bcaa3b8a23,0x3bcaa3b8648,0x3bcaa3b83dc,0x3bcaa3b7df4,0x3bcaa3b7642,0x3bcaa3b6b9a,0x3bcaa3b46df,0x7ff674a33110,0x3bcaa3b4307,0x7ff674a33110,0x610928c788

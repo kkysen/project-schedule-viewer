@@ -12,6 +12,8 @@ export interface Range {
     
     toInterval(): number[];
     
+    has(i: number): boolean;
+    
 }
 
 export type RangeClass = {
@@ -19,6 +21,10 @@ export type RangeClass = {
     "new"(to: number): Range;
     
     "new"(from: number, to: number): Range;
+    
+    open(from: number, to: number): Range;
+    
+    closed(from: number, to: number): Range;
     
     ofDomain(domain: number[]): Range;
     
@@ -54,8 +60,20 @@ export const Range: RangeClass = {
                 return [_from, _to];
             },
             
+            has(i: number) {
+                return i >= _from && i < _to;
+            },
+            
         };
         
+    },
+    
+    open(from: number, to: number): Range {
+        return Range.new(from + 1, to);
+    },
+    
+    closed(from: number, to: number): Range {
+        return Range.new(from, to + 1);
     },
     
     ofDomain(domain: number[]): Range {

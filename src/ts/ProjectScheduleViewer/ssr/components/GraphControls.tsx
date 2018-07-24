@@ -2,6 +2,7 @@ import * as React from "react";
 import {SFC} from "react";
 import {MapEntry} from "../../../util/collections/Map";
 import {Br} from "../../../util/components/Br";
+import {multiEvent, tripleEvent} from "../../../util/multiEvent";
 import {isBoolean} from "../../../util/types/isType";
 import {Employee} from "../../share/data/access/Employee";
 import {Position} from "../../share/data/access/Position";
@@ -122,7 +123,16 @@ export const GraphControls: SFC<GraphControlsProps> = ({data, accessors: accesso
     const accessors = Object.entries(accessorsArgs).map(([key, value]) => ({key, value: Accessor.new(value as Accessor<any>)}));
     return <div style={{textAlign: "center"}}>
         {/*<Br times={3}/>*/}
+        
+        {/*<h1 onClick={multiEvent()((events) => console.log(events.length))}>Hello</h1>*/}
+        {/*<h1 onClick={tripleEvent()(*/}
+            {/*() => console.log(1),*/}
+            {/*() => console.log(2),*/}
+            {/*() => console.log(3),*/}
+        {/*)}>World</h1>*/}
+        
         <OrderControls orders={accessors} setOrder={set.order} currentIndex={current.orderIndex}/>
+        <Br times={1}/>
         <FilterControls filters={accessors} data={data} setFilter={set.filter} currentIndex={current.filterIndex}/>
     </div>;
 };
