@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const chrome_promise_1 = require("chrome-promise");
-const anyWindow_1 = require("../anyWindow");
-const Callables_1 = require("../Callables");
+const anyWindow_1 = require("../window/anyWindow");
+const Callables_1 = require("../functional/Callables");
 const allExtensions_1 = require("../extensions/allExtensions");
 const addRefreshers = function (storage) {
     return {

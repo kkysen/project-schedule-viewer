@@ -1,5 +1,5 @@
 import * as nodePath from "path";
-import {isBrowser} from "../anyWindow";
+import {isBrowser} from "../window/anyWindow";
 import {addExtensions} from "../extensions/allExtensions";
 
 export const path: typeof nodePath = (() => {
@@ -23,4 +23,4 @@ export const path: typeof nodePath = (() => {
     }
 })();
 
-
+export const pathLib = path;

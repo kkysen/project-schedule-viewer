@@ -1,1 +1,1 @@
-{"version":3,"file":"JsonData.js","sourceRoot":"","sources":["JsonData.ts"],"names":[],"mappings":";;AAiBa,QAAA,cAAc,GAAG,UAAS,IAAkB;IACrD,OAAO,IAAI,CAAC,SAAS,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,GAAG,CAAC,CAAC;AACtC,CAAC,CAAC;AAEW,QAAA,UAAU,GAAG,UAAS,IAAU;IACzC,OAAO,IAAI,CAAC,SAAS,CAAC,sBAAc,CAAC,IAAI,CAAC,CAAC,CAAC;AAChD,CAAC,CAAC"}
+{"version":3,"file":"JsonData.js","sourceRoot":"","sources":["JsonData.ts"],"names":[],"mappings":";;AAiBa,QAAA,cAAc,GAAG,UAAS,IAAkB;IACrD,OAAO,IAAI,CAAC,SAAS,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,GAAG,CAAC,CAAC;AACtC,CAAC,CAAC"}

@@ -1,8 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const anyWindow_1 = require("../../../../util/anyWindow");
-const cache_1 = require("../../../../util/cache");
-const jsonData = JSON.parse(anyWindow_1.anyWindow.appData);
-// const jsonData: JsonData = fs.readJsonSync(path.join(dir.test, "appData.json"));
-exports.jsonDataSource = jsonData.mapFields(e => cache_1.getter(e));
+const cache_1 = require("../../../../util/cache/cache");
+const ClientLoader_1 = require("../../../../util/ssr/ClientLoader");
+exports.jsonDataSource = () => ClientLoader_1.getClientJsonData()
+    .mapFields(e => cache_1.getter(e));
 //# sourceMappingURL=JsonDataSource.js.map

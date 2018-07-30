@@ -1,12 +1,12 @@
 import {createElement, ReactElement, ReactNode} from "react";
-import {anyWindow} from "../../anyWindow";
-import {cache} from "../../cache";
-import {DebugProxy} from "../../DebugProxy";
-import {ElementByTag, ElementTag} from "../../ElementTags";
-import {development} from "../../production";
-import {Range} from "../../Range";
+import {anyWindow} from "../../window/anyWindow";
+import {cache} from "../../cache/cache";
+import {DebugProxy} from "../../debug/DebugProxy";
+import {ElementByTag, ElementTag} from "../../types/ElementTags";
+import {development} from "../../env/production";
+import {Range} from "../../collections/Range";
 import {Is} from "../../types/isType";
-import {camelCase} from "../../utils";
+import {camelCase} from "../../misc/utils";
 
 type LibQuerySelectorAll = (selectors: string, node: ParentNode) => NodeListOf<Element>;
 const libQuerySelectorAll: LibQuerySelectorAll = require("query-selector");

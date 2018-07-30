@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const bind_1 = require("../decorators/bind");
-const iterables_1 = require("../iterables");
+const iterables_1 = require("../functional/iterables");
 const typeAliases_1 = require("../types/typeAliases");
 const Collection_1 = require("./Collection");
 const HashEquals_1 = require("./HashEquals");

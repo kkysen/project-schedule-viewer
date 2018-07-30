@@ -3,7 +3,7 @@ import {select} from "d3-selection";
 import * as React from "react";
 import {createElement, ReactNode, SFC} from "react";
 import {FauxComponent} from "../../../dom/faux/FauxComponent";
-import {renderNodesObj} from "../../../react";
+import {renderNodesObj} from "../../react";
 import {Margins, rotate, Size, translate} from "../utils";
 
 interface AxesProps<XDomain extends AxisDomain, YDomain extends AxisDomain> {

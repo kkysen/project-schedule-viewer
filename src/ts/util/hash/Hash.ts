@@ -1,15 +1,5 @@
 import {isString} from "../types/isType";
-
-export type TypedArray =
-    Int8Array
-    | Uint8Array
-    | Int16Array
-    | Uint16Array
-    | Int32Array
-    | Uint32Array
-    | Uint8ClampedArray
-    | Float32Array
-    | Float64Array;
+import {TypedArray} from "../types/TypedArray";
 
 export type Buffer = TypedArray | ArrayBuffer | DataView;
 

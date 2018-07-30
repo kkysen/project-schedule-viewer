@@ -10,3 +10,5 @@ watch data directory for changes to data to reload it
 split webpack into web and server configs
 
 use React Bootstrap from source
+
+refactor renderApp() for app and login

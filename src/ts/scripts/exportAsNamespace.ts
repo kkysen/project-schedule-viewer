@@ -1,6 +1,6 @@
 import * as fs from "fs-extra";
-import {path} from "../util/polyfills/path";
-import {regex} from "../util/regex";
+import {path as _path} from "../util/polyfills/path";
+import {regex} from "../util/misc/regex";
 import matchAll = regex.matchAll;
 
 type CoercedExportType = "const" | "type";
@@ -70,17 +70,17 @@ type ExportAsNamespaceArgs = {
 
 export const exportAsNamespace = async function(
     {namespace, importPath, typeDeclarationsPath, nodeModule = true, outDirectory = "../lib", aliases = {}}: ExportAsNamespaceArgs): Promise<void> {
-    const _path = nodeModule ? fromNodeModule(importPath, typeDeclarationsPath) : typeDeclarationsPath;
-    const buffer = await fs.readFile(_path);
+    const path = nodeModule ? fromNodeModule(importPath, typeDeclarationsPath) : typeDeclarationsPath;
+    const buffer = await fs.readFile(path);
     const code = buffer.toString("utf8");
     await fs.writeFile(
-        path.join(outDirectory, `${namespace}.ts`),
+        _path.join(outDirectory, `${namespace}.ts`),
         exportAsNamespaceString({namespace, importPath, code, aliases}),
     );
 };
 
-export const fromNodeModule = function(nodeModule: string, _path: string): string {
-    return path.join("../../../node_modules", nodeModule, _path);
+export const fromNodeModule = function(nodeModule: string, path: string): string {
+    return _path.join("../../../node_modules", nodeModule, path);
 };
 
 const dir = "C:/Users/Khyber/workspace/ProjectScheduleViewer/";

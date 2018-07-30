@@ -1,10 +1,11 @@
-import {All} from "../../../../util/All";
+import {All} from "../../../../util/collections/query/All";
 import {DataSource} from "../../../../util/data/DataSource";
+import {sparseTreeTranspose} from "../../../../util/misc/sparseTranspose";
 import {DataAccessor} from "./DataAccessor";
-import {Employee, employees, Employees, leaders, TeamLeader, TeamLeaders} from "./Employee";
-import {Months} from "./Month";
+import {Day} from "./Day";
+import {employees, Employees, leaders, TeamLeader, TeamLeaders} from "./Employee";
 import {Positions, positions} from "./Position";
-import {ParsedProject, Project, RawProject} from "./Project";
+import {ParsedProject, Project, ProjectEmployee, RawProject} from "./Project";
 
 export interface Team {
     
@@ -26,29 +27,46 @@ type TeamsArgs = {leaders: TeamLeaders, employees: Employees, positions: Positio
 
 export type TeamsSource = DataSource<RawTeam, TeamsArgs>;
 
+interface EmployeeDates {
+    employee: ProjectEmployee;
+    dates: {date: Day, percentCommitted: number}[];
+}
+
+interface DateEmployees {
+    date: Day;
+    employees: {employee: ProjectEmployee, percentCommitted: number}[];
+}
+
+const transposeEmployeeDates = function(employeeDates: EmployeeDates[]): DateEmployees[] {
+    const a = employeeDates.map(({employee, dates}) => ({
+        i: employee,
+        row: dates.map(({date, percentCommitted}) => ({j: date, value: percentCommitted})),
+    }));
+    // Day.sinceEpoch is pretty fast, so use it
+    const b = sparseTreeTranspose(a, date => date.day, Day.sinceEpoch);
+    return b.map(({i, row}) => ({
+        date: i,
+        employees: row.map(({j, value}) => ({employee: j, percentCommitted: value})),
+    }));
+};
+
 const makeProject = function(employees: Employees, leader: TeamLeader, team: () => Team) {
     const byId = employees.by.index;
-    return ({id, name, percentLikelihood, employees: parsedEmployees}: ParsedProject): Project => {
-        const employees = parsedEmployees.map(({employee, months}) => ({
+    return ({id, name, firstDate, percentLikelihood, employees: parsedEmployees}: ParsedProject): Project => {
+        const employeeDates = parsedEmployees.map(({employee, dates}) => ({
             employee: {
                 employee: byId(employee)!,
                 project: () => project,
             },
-            months: months.map(({month, percentCommitted}) => ({month: Months[month], percentCommitted})),
-        })).filter(e => !!e.employee);
+            dates: dates.map(({date, percentCommitted}) => ({date: Day.sinceEpoch(date + firstDate), percentCommitted})),
+        })).filter(e => !!e.employee.employee);
         const project: Project = {
             id,
             team,
             leader,
             name,
-            employees: employees.map(e => e.employee),
-            months: Months.map((month, i) => ({
-                month,
-                employees: employees.map(({employee, months}) => ({
-                    employee,
-                    percentCommitted: months[i].percentCommitted,
-                })),
-            })),
+            employees: employeeDates.map(e => e.employee),
+            dates: transposeEmployeeDates(employeeDates),
             percentLikelihood,
         };
         return project;
@@ -68,12 +86,13 @@ const makeTeam = function(employees: Employees, leader: TeamLeader, {projects}: 
 export const teams = DataAccessor.new<Team, {}, ParsedTeam, RawTeam, TeamsArgs>({
     source: e => e.teams,
     parse: projects => ({
-        projects: projects.map(([id, name, employees, percentLikelihood]) => ({
+        projects: projects.map(([id, name, firstDate, employees, percentLikelihood]) => ({
             id,
             name,
-            employees: employees.map(([employee, months]) => ({
+            firstDate,
+            employees: employees.map(([employee, dates]) => ({
                 employee,
-                months: months.map((percentCommitted, i) => ({month: i, percentCommitted}))
+                dates: dates.map(([date, percentCommitted]) => ({date, percentCommitted}))
             })),
             percentLikelihood,
         })).sortBy(e => e.id),

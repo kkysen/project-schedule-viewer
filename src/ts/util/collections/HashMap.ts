@@ -1,9 +1,9 @@
 import {bind} from "../decorators/bind";
-import {iterables} from "../iterables";
+import {iterables} from "../functional/iterables";
 import {IfElse} from "../types/IfElse";
 import {NativeMap} from "../types/typeAliases";
-import {Difference} from "../types/types";
-import {NotImplementedError} from "../utils";
+import {Difference} from "../types/difference";
+import {NotImplementedError} from "../misc/utils";
 import {ArrayStack} from "./ArrayStack";
 import {
     BaseCollection,

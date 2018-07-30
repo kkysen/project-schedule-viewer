@@ -1,5 +1,5 @@
 import {Component, ComponentClass, createElement, ReactNode} from "react";
-import {ElementByTag, ElementTag} from "../../ElementTags";
+import {ElementByTag, ElementTag} from "../../types/ElementTags";
 import {FauxComponent, FauxComponentClass} from "./FauxComponent";
 
 interface InjectedFauxDom {

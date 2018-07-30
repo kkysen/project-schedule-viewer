@@ -1,4 +1,4 @@
-import {anyWindow, globals} from "../anyWindow";
+import {anyWindow, globals} from "../window/anyWindow";
 import {addExtensions} from "../extensions/allExtensions";
 
 addExtensions();

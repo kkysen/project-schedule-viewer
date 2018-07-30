@@ -1,14 +1,14 @@
 import * as fs from "fs-extra";
+import {boolAsInt} from "../../util/misc/utils";
+import {readWorkBookAsCsv, Row} from "../../util/misc/xlsx";
 import {path} from "../../util/polyfills/path";
-import {boolAsInt} from "../../util/utils";
-import {Row} from "../../util/xlsx";
-import {DataSources} from "../share/data/source/DataSources";
+import {Day} from "../share/data/access/Day";
 import {Employee, Employees, genericEmployeeName, RawEmployee} from "../share/data/access/Employee";
 import {Months} from "../share/data/access/Month";
-import {Position, Positions, positions, RawPosition} from "../share/data/access/Position";
+import {Positions, RawPosition} from "../share/data/access/Position";
 import {RawProject, RawProjectEmployee} from "../share/data/access/Project";
+import {DataSources} from "../share/data/source/DataSources";
 import {dir} from "./dir";
-import {readWorkBookAsCsv} from "../../util/xlsx";
 
 
 type string$ = string | null;
@@ -62,17 +62,31 @@ const parseProject = function(employees: Employees, positions: Positions) {
     };
     
     const parseProjectEmployees = function* (rows: Row[]): IterableIterator<RawProjectEmployee> {
+        const year = 2018; // FIXME
         for (const row of rows.slice(6)) {
             const [, , , level, rate, name, ...months] = row;
             const employee = employeeByName(name, level, rate);
             if (!employee) {
                 continue;
             }
+            const parse = parsePercent();
+            const map = (percent: string$, month: number): [number, number] => {
+                return [Day.of(new Date(year, month)).day, parse(percent)];
+            };
             yield [
                 employee.id,
-                months.slice(0, Months.length).map(parsePercent()),
+                months.slice(0, Months.length).map(map),
             ];
         }
+    };
+    
+    const subtractFirstDate = function(employees: ReadonlyArray<RawProjectEmployee>): number {
+        const datesField = 1;
+        const dateField = 0;
+        const dateCommitments = employees.flatMap(e => e[datesField]);
+        const firstDate = Math.min(...dateCommitments.map(e => e[dateField]));
+        dateCommitments.forEach(e => e[dateField] -= firstDate);
+        return firstDate;
     };
     
     return (rows: Row[]): RawProject => {
@@ -81,10 +95,14 @@ const parseProject = function(employees: Employees, positions: Positions) {
             rows.find(row => row[1] === "%AGE LIKELIHOOD:")![5]
         );
         
+        const employees = [...parseProjectEmployees(rows)];
+        const firstDate = subtractFirstDate(employees);
+        
         return [
             parseInt(id),
             name,
-            [...parseProjectEmployees(rows)],
+            firstDate,
+            employees,
             percentLikelihood,
         ];
     };

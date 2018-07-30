@@ -1,7 +1,9 @@
-import {All} from "../All";
-import {cache, Function, RefreshableCache, refreshableCache} from "../cache";
-import {MaybePromise} from "../MaybePromise";
-import {AwaitType, objectFields, Values} from "../objectFields";
+import {All} from "../collections/query/All";
+import {cache, Function, refreshableAsyncCache, RefreshableCache, refreshableCache} from "../cache/cache";
+import {MaybePromise} from "../maybePromise/MaybePromise";
+import {AwaitType, objectFields, Values} from "../object/objectFields";
+import {isFunction} from "../types/isType";
+import {ValueOrGetter} from "../types/ValueOrGetter";
 import {DataSource} from "./DataSource";
 import AwaitAll = objectFields.AwaitAll;
 import AwaitFunctions = objectFields.AwaitFunctions;
@@ -51,7 +53,7 @@ interface DataAccessorClass<DataSources> {
     ): DataAccessor<DataSources, MappedData<All<T, By>>>;
     
     data<DataAccessors extends Values<Function<MaybePromise<any>>>>(dataAccessors: DataAccessors):
-        RefreshableCache<(source: DataSources) => MaybePromise<AccessData<DataAccessors>>>;
+        RefreshableCache<(source: ValueOrGetter<DataSources>) => MaybePromise<AccessData<DataAccessors>>>;
     
 }
 
@@ -86,8 +88,9 @@ export const DataAccessorFactory = {
             
             data: <DataAccessors extends Values<Function<MaybePromise<any>>>>(dataAccessors: DataAccessors) => {
                 type Data = AccessData<DataAccessors>;
-                return refreshableCache((source: DataSources): MaybePromise<Data> => {
-                    const dataPromises = objectFields.callEachArgs<AwaitAll<Data>, DataSources>(dataAccessors, source);
+                return refreshableAsyncCache((source: ValueOrGetter<DataSources>): MaybePromise<Data> => {
+                    const _source = isFunction(source) ? source() : source;
+                    const dataPromises = objectFields.callEachArgs<AwaitAll<Data>, DataSources>(dataAccessors, _source);
                     return objectFields.awaitAll(dataPromises);
                 });
             },

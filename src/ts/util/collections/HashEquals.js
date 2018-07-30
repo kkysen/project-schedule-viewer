@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const cache_1 = require("../cache");
+const cache_1 = require("../cache/cache");
 const utils_1 = require("../functional/utils");
 const fnv1a_1 = require("../hash/fnv1a");
-const regex_1 = require("../regex");
+const regex_1 = require("../misc/regex");
 const isType_1 = require("../types/isType");
 const isReferentialEqualitySource = (() => {
     const twoArgs = /\(([^\s,]*)\s*,\s*([^\s)]*)\)/;
@@ -54,5 +54,9 @@ exports.HashEquals = {
     referential: () => referentialHashEquals,
     isReferential: hashEquals => hashEquals === referentialHashEquals,
     fastEquals: ({ hash, equals }) => ({ hash, equals: exports.Equals.fastEquals(equals) }),
+    fromHash: hash => ({
+        hash,
+        equals: (a, b) => hash(a) === hash(b),
+    }),
 };
 //# sourceMappingURL=HashEquals.js.map

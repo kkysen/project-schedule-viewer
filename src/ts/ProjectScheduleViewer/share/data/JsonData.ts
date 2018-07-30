@@ -1,5 +1,5 @@
 import {AccessDatum} from "../../../util/data/DataAccessor";
-import {Difference} from "../../../util/types/types";
+import {Difference} from "../../../util/types/difference";
 import {Data} from "./Data";
 import {leaders, RawEmployee} from "./access/Employee";
 import {RawPosition} from "./access/Position";
@@ -17,8 +17,4 @@ type OriginalData = Difference<Data, {leaders: AccessDatum<typeof leaders>}>;
 
 export const dataToJsonData = function(data: OriginalData): JsonData {
     return data.mapFields(e => e.raw);
-};
-
-export const dataToJson = function(data: Data): string {
-    return JSON.stringify(dataToJsonData(data));
 };

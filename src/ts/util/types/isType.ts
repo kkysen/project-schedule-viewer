@@ -1,4 +1,4 @@
-import {capitalize} from "../utils";
+import {capitalize} from "../misc/utils";
 
 export interface NativeTypes {
     
@@ -35,6 +35,9 @@ export const isReadonlyArray: Is<ReadonlyArray<any>> = Array.isArray;
 export const isRegExp = isNativeType("RegExp");
 export const isDate = isNativeType("Date");
 export const isObject = isNativeType("object");
+
+export const _isTruthy = <T>(o: OrFalsy<T>): o is T => !!o;
+export const isTruthy = <T>(): Is<T> => _isTruthy as Is<T>;
 
 export const isByConstructor = function <T>(constructor: new (...args: any[]) => T): Is<T> {
     return (o: any): o is T => o.constructor === constructor;

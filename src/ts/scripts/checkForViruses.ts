@@ -2,8 +2,8 @@ import {exec as execCallback} from "child_process";
 import * as fs from "fs-extra";
 import {promisify} from "util";
 import {addExtensions} from "../util/extensions/allExtensions";
-import {regex} from "../util/regex";
-import {boundSurrounding, snippet} from "../util/utils";
+import {regex} from "../util/misc/regex";
+import {boundSurrounding, snippet} from "../util/misc/utils";
 
 addExtensions();
 

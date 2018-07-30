@@ -1,5 +1,5 @@
 import {ReactElement} from "react";
-import {ElementByTag, ElementTag} from "../../ElementTags";
+import {ElementByTag, ElementTag} from "../../types/ElementTags";
 import {FauxElement} from "./FauxElement";
 
 export interface FauxComponent<Real extends Element> {

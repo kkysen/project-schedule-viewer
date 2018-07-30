@@ -1,54 +1,42 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs-extra");
+const Brotli_1 = require("../../util/compression/Brotli");
+const production_1 = require("../../util/env/production");
 const allExtensions_1 = require("../../util/extensions/allExtensions");
-const path_1 = require("../../util/polyfills/path");
-const production_1 = require("../../util/production");
-const ssr_1 = require("../ssr/ssr");
+const headers_1 = require("../../util/http/headers");
+const appRenderer_1 = require("../ssr/appRenderer");
+const renderers_1 = require("../ssr/renderers");
 const config_1 = require("./config");
-const dir_1 = require("./dir");
+const jsDist_1 = require("./jsDist");
+const watchData_1 = require("./watchData");
 const e = require("express");
 allExtensions_1.addExtensions();
-const app = e();
-const setGzipHeaders = function (response, type, gzipped) {
-    console.log(type);
-    if (!gzipped) {
-        return;
-    }
-    response.setHeader("Vary", "Accept-Encoding");
-    for (const [key, value] of Object.entries({
-        Vary: "Accept-Encoding",
-        "Content-Encoding": "gzip",
-        "Content-Type": {
-            "html": "text/html",
-            "js": "text/javascript",
-        }[type],
-    })) {
-        response.setHeader(key, value);
-    }
-};
-app.get("/", async (request, response) => {
-    try {
-        await ssr_1.reRenderApp(); // TODO for debugging
-        const { html, gzipped } = await ssr_1.getRenderedApp();
-        setGzipHeaders(response, "html", gzipped);
-        response.send(html);
-    }
-    catch (e) {
-        console.error(e);
-    }
-});
-(async () => {
-    (await fs.readdir(dir_1.dir.dist))
-        .filter(e => e.endsWith("js"))
-        .forEach(file => {
-        app.get(`/${file}`, (request, response) => {
-            setGzipHeaders(response, "js", config_1.gzipped);
-            response.sendFile(path_1.path.join(dir_1.dir.dist, `${file}${config_1.gzipped ? ".gz" : ""}`));
+const server = e();
+const serveJS = function (files) {
+    files.all.forEach(async ({ filename, path }) => {
+        const compressedFilename = `${path}${config_1.compressed ? ".br" : ""}`;
+        if (config_1.compressed) {
+            const inBuffer = await fs.readFile(path);
+            console.log(`read ${path}`);
+            const outBuffer = await Brotli_1.brotli.node.compress(inBuffer, Brotli_1.brotliOptions.staticText);
+            await fs.writeFile(compressedFilename, outBuffer);
+            console.log(`wrote ${compressedFilename}`);
+        }
+        server.get(`/${filename}`, (request, response) => {
+            headers_1.setBrotliHeaders(response, "js", config_1.compressed);
+            response.sendFile(compressedFilename);
         });
     });
-})();
+};
+renderers_1.renderers.attachTo(server);
+server.get("/", appRenderer_1.app.handler);
 // force v8 to compile and optimize
-production_1.inProduction(ssr_1.warmUpAppRenderer(16));
-app.listen(8000, () => console.log("listening"));
+renderers_1.renderers.warmUp(production_1.production ? 16 : 1);
+exports.dataWatchers = watchData_1.watchData();
+(async () => {
+    serveJS(await jsDist_1.jsDistFiles.get());
+})();
+console.time("listening");
+server.listen(8000, () => console.timeEnd("listening"));
 //# sourceMappingURL=server.js.map

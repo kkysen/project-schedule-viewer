@@ -1,4 +1,4 @@
-import {Callables} from "../Callables";
+import {Callables} from "../functional/Callables";
 import {StorageImpl, storages} from "./Storages";
 
 /**

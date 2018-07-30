@@ -1,58 +1,50 @@
 import {Request, Response} from "express";
 import * as fs from "fs-extra";
+import {brotli, brotliOptions} from "../../util/compression/Brotli";
+import {production} from "../../util/env/production";
 import {addExtensions} from "../../util/extensions/allExtensions";
-import {path} from "../../util/polyfills/path";
-import {inProduction} from "../../util/production";
-import {getRenderedApp, reRenderApp, warmUpAppRenderer} from "../ssr/ssr";
-import {gzipped} from "./config";
-import {dir} from "./dir";
+import {setBrotliHeaders} from "../../util/http/headers";
+import {DistFiles} from "../../util/ssr/DistFiles";
+import {app} from "../ssr/appRenderer";
+import {renderers} from "../ssr/renderers";
+import {compressed} from "./config";
+import {jsDistFiles} from "./jsDist";
+import {watchData} from "./watchData";
 import e = require("express");
 
 addExtensions();
 
-const app = e();
+const server = e();
 
-const setGzipHeaders = function(response: Response, type: "html" | "js", gzipped: boolean): void {
-    console.log(type);
-    if (!gzipped) {
-        return;
-    }
-    response.setHeader("Vary", "Accept-Encoding");
-    for (const [key, value] of Object.entries({
-        Vary: "Accept-Encoding",
-        "Content-Encoding": "gzip",
-        "Content-Type": {
-            "html": "text/html",
-            "js": "text/javascript",
-        }[type],
-    })) {
-        response.setHeader(key, value);
-    }
+const serveJS = function(files: DistFiles): void {
+    files.all.forEach(async ({filename, path}) => {
+        const compressedFilename = `${path}${compressed ? ".br" : ""}`;
+        if (compressed) {
+            const inBuffer = await fs.readFile(path);
+            console.log(`read ${path}`);
+            const outBuffer = await brotli.node.compress(inBuffer, brotliOptions.staticText);
+            await fs.writeFile(compressedFilename, outBuffer);
+            console.log(`wrote ${compressedFilename}`);
+        }
+        server.get(`/${filename}`, (request: Request, response: Response) => {
+            setBrotliHeaders(response, "js", compressed);
+            response.sendFile(compressedFilename);
+        });
+    });
 };
 
-app.get("/", async (request: Request, response: Response) => {
-    try {
-        await reRenderApp(); // TODO for debugging
-        const {html, gzipped} = await getRenderedApp();
-        setGzipHeaders(response, "html", gzipped);
-        response.send(html);
-    } catch (e) {
-        console.error(e);
-    }
-});
+renderers.attachTo(server);
 
-(async () => {
-    (await fs.readdir(dir.dist))
-        .filter(e => e.endsWith("js"))
-        .forEach(file => {
-            app.get(`/${file}`, (request: Request, response: Response) => {
-                setGzipHeaders(response, "js", gzipped);
-                response.sendFile(path.join(dir.dist, `${file}${gzipped ? ".gz" : ""}`));
-            });
-        });
-})();
+server.get("/", app.handler);
 
 // force v8 to compile and optimize
-inProduction(warmUpAppRenderer(16));
+renderers.warmUp(production ? 16 : 1);
 
-app.listen(8000, () => console.log("listening"));
+export const dataWatchers = watchData();
+
+(async () => {
+    serveJS(await jsDistFiles.get());
+})();
+
+console.time("listening");
+server.listen(8000, () => console.timeEnd("listening"));

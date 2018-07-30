@@ -1,7 +1,7 @@
 import {AsyncFilter, Filter} from "../functional/Filter";
 import {Mapper} from "../functional/Mapper";
 import {IfElse} from "../types/IfElse";
-import {Difference, PartialDifference} from "../types/types";
+import {Difference, PartialDifference} from "../types/difference";
 import {Equals, Hash, HashEqualable, HashEquals, HashValue} from "./HashEquals";
 
 export interface BaseCollection<E> extends Iterable<E> {

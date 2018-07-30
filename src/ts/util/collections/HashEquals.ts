@@ -1,9 +1,8 @@
-import {getter} from "../cache";
-import {addExtensions} from "../extensions/allExtensions";
+import {getter} from "../cache/cache";
 import {Test} from "../functional/Test";
 import {identity} from "../functional/utils";
 import {fnv1a} from "../hash/fnv1a";
-import {regex} from "../regex";
+import {regex} from "../misc/regex";
 import {isNumber, isString} from "../types/isType";
 
 export type HashValue = number | string;
@@ -115,6 +114,8 @@ export interface HashEqualsClass {
     
     fastEquals<T, H>(hashEquals: HashEquals<T, H>): HashEquals<T, H>;
     
+    fromHash<T, H>(hash: Hash<T, H>): HashEquals<T, H>;
+    
 }
 
 const defaultHashEquals: HashEquals<any, any> = {
@@ -138,5 +139,10 @@ export const HashEquals: HashEqualsClass = {
     isReferential: hashEquals => hashEquals === referentialHashEquals,
     
     fastEquals: ({hash, equals}) => ({hash, equals: Equals.fastEquals(equals)}),
+    
+    fromHash: hash => ({
+        hash,
+        equals: (a, b) => hash(a) === hash(b),
+    }),
     
 };

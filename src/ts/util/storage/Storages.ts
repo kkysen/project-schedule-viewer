@@ -1,7 +1,7 @@
 import chromep from "chrome-promise";
 import {chromepApi} from "chrome-promise/chrome-promise";
-import {anyWindow, globals} from "../anyWindow";
-import {Callables} from "../Callables";
+import {anyWindow, globals} from "../window/anyWindow";
+import {Callables} from "../functional/Callables";
 import {addExtensions} from "../extensions/allExtensions";
 import {NativeStorage} from "../types/typeAliases";
 import {StorageKey} from "./StorageItem";

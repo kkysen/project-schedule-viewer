@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = require("react");
-const cache_1 = require("../../cache");
-const DebugProxy_1 = require("../../DebugProxy");
-const production_1 = require("../../production");
-const utils_1 = require("../../utils");
+const cache_1 = require("../../cache/cache");
+const DebugProxy_1 = require("../../debug/DebugProxy");
+const production_1 = require("../../env/production");
+const utils_1 = require("../../misc/utils");
 const libQuerySelectorAll = require("query-selector");
 exports.FauxElement = (() => {
     const skipNameTransformationExpressions = [

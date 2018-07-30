@@ -7,7 +7,7 @@ import * as React from "react";
 import {createElement, ReactNode, SFC} from "react";
 import {identity} from "../../../functional/utils";
 import {isReadonlyArray} from "../../../types/isType";
-import {moduloIndexer} from "../../../utils";
+import {moduloIndexer} from "../../../misc/utils";
 import {Accessor, Margins, Numeric, Scale, Size, translate} from "../utils";
 import {Axes} from "./Axes";
 import {StackOffset, StackOrder} from "./utils";

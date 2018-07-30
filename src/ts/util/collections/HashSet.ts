@@ -1,7 +1,7 @@
 import {bind} from "../decorators/bind";
 import {AsyncFilter, Filter} from "../functional/Filter";
 import {Mapper} from "../functional/Mapper";
-import {iterables} from "../iterables";
+import {iterables} from "../functional/iterables";
 import {NativeSet} from "../types/typeAliases";
 import {checkSizeChanged, Collection, CollectionArgs, CollectionConstructor, NewCollectionArgs} from "./Collection";
 import {HashEquals, HashValue} from "./HashEquals";

@@ -1,32 +1,39 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const sparseTranspose_1 = require("../../../../util/misc/sparseTranspose");
 const DataAccessor_1 = require("./DataAccessor");
+const Day_1 = require("./Day");
 const Employee_1 = require("./Employee");
-const Month_1 = require("./Month");
 const Position_1 = require("./Position");
+const transposeEmployeeDates = function (employeeDates) {
+    const a = employeeDates.map(({ employee, dates }) => ({
+        i: employee,
+        row: dates.map(({ date, percentCommitted }) => ({ j: date, value: percentCommitted })),
+    }));
+    // Day.sinceEpoch is pretty fast, so use it
+    const b = sparseTranspose_1.sparseTreeTranspose(a, date => date.day, Day_1.Day.sinceEpoch);
+    return b.map(({ i, row }) => ({
+        date: i,
+        employees: row.map(({ j, value }) => ({ employee: j, percentCommitted: value })),
+    }));
+};
 const makeProject = function (employees, leader, team) {
     const byId = employees.by.index;
-    return ({ id, name, percentLikelihood, employees: parsedEmployees }) => {
-        const employees = parsedEmployees.map(({ employee, months }) => ({
+    return ({ id, name, firstDate, percentLikelihood, employees: parsedEmployees }) => {
+        const employeeDates = parsedEmployees.map(({ employee, dates }) => ({
             employee: {
                 employee: byId(employee),
                 project: () => project,
             },
-            months: months.map(({ month, percentCommitted }) => ({ month: Month_1.Months[month], percentCommitted })),
-        })).filter(e => !!e.employee);
+            dates: dates.map(({ date, percentCommitted }) => ({ date: Day_1.Day.sinceEpoch(date + firstDate), percentCommitted })),
+        })).filter(e => !!e.employee.employee);
         const project = {
             id,
             team,
             leader,
             name,
-            employees: employees.map(e => e.employee),
-            months: Month_1.Months.map((month, i) => ({
-                month,
-                employees: employees.map(({ employee, months }) => ({
-                    employee,
-                    percentCommitted: months[i].percentCommitted,
-                })),
-            })),
+            employees: employeeDates.map(e => e.employee),
+            dates: transposeEmployeeDates(employeeDates),
             percentLikelihood,
         };
         return project;
@@ -44,12 +51,13 @@ const makeTeam = function (employees, leader, { projects }) {
 exports.teams = DataAccessor_1.DataAccessor.new({
     source: e => e.teams,
     parse: projects => ({
-        projects: projects.map(([id, name, employees, percentLikelihood]) => ({
+        projects: projects.map(([id, name, firstDate, employees, percentLikelihood]) => ({
             id,
             name,
-            employees: employees.map(([employee, months]) => ({
+            firstDate,
+            employees: employees.map(([employee, dates]) => ({
                 employee,
-                months: months.map((percentCommitted, i) => ({ month: i, percentCommitted }))
+                dates: dates.map(([date, percentCommitted]) => ({ date, percentCommitted }))
             })),
             percentLikelihood,
         })).sortBy(e => e.id),

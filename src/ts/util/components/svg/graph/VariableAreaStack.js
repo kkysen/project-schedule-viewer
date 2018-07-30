@@ -8,14 +8,14 @@ const d3_scale_chromatic_1 = require("d3-scale-chromatic");
 const d3_shape_1 = require("d3-shape");
 const React = require("react");
 const utils_1 = require("../../../functional/utils");
-const production_1 = require("../../../production");
-const Range_1 = require("../../../Range");
+const production_1 = require("../../../env/production");
+const Range_1 = require("../../../collections/Range");
 const isType_1 = require("../../../types/isType");
-const utils_2 = require("../../../utils");
+const utils_2 = require("../../../misc/utils");
 const utils_3 = require("../utils");
 const Axes_1 = require("./Axes");
 exports.VariableAreaStack = function (props) {
-    const { data: nonStandardizedData, values, flat = false, } = props;
+    const { data: nonStandardizedData, values, flat = false, forceDomain = {}, } = props;
     const dataAsEntries = function (data) {
         const a = [...data];
         if (a.length === 0) {
@@ -61,7 +61,13 @@ exports.VariableAreaStack = function (props) {
     };
     const data = standardizeData();
     if (!data) {
-        return () => () => null;
+        return () => ({
+            domain: {
+                x: [undefined, undefined],
+                y: [NaN, NaN],
+            },
+            render: () => null,
+        });
     }
     const xData = data.map(e => e.key);
     const xValues = xData.map(values.x);
@@ -90,7 +96,7 @@ exports.VariableAreaStack = function (props) {
         const color = utils_2.moduloIndexer(colors);
         return (z, i) => color(i);
     };
-    const xDomain = d3_array_1.extent(xValues);
+    const xDomain = forceDomain.x || d3_array_1.extent(xValues);
     const value = (d, i) => {
         if (i > d.length) {
             return 0;
@@ -120,7 +126,8 @@ exports.VariableAreaStack = function (props) {
             .sortBy(e => orderBy(e.value, e.i))
             .map(e => e.i))
             .offset(offset)(yData._());
-        y.domain(d3_array_1.extent(seriesData.flatten(2)));
+        const yDomain = forceDomain.y || d3_array_1.extent(seriesData.flatten(2));
+        y.domain(yDomain);
         reverse && seriesData.reverse();
         const paths = seriesData.mapFilter(path);
         const _className = classNames("vx-area-stack", className);
@@ -134,14 +141,20 @@ exports.VariableAreaStack = function (props) {
             size,
             margins: _margins,
         }));
-        return props => {
-            const { color = d3_scale_chromatic_1.schemeCategory10, } = props;
-            const _color = isType_1.isReadonlyArray(color) ? colorFromArray(color) : color;
-            return React.createElement("svg", { width: outerWidth, height: outerHeight },
-                React.createElement("g", { transform: utils_3.translate(left, top) },
-                    React.createElement("g", null, paths.map((path, i) => React.createElement("path", { key: i, className: _className, d: path, fill: _color(zData[i].key, i) }))),
-                    glyphNodes,
-                    axesNode));
+        return {
+            domain: {
+                x: xDomain,
+                y: yDomain,
+            },
+            render: props => {
+                const { color = d3_scale_chromatic_1.schemeCategory10, } = props;
+                const _color = isType_1.isReadonlyArray(color) ? colorFromArray(color) : color;
+                return React.createElement("svg", { width: outerWidth, height: outerHeight },
+                    React.createElement("g", { transform: utils_3.translate(left, top) },
+                        React.createElement("g", null, paths.map((path, i) => React.createElement("path", { key: i, className: _className, d: path, fill: _color(zData[i].key, i) }))),
+                        glyphNodes,
+                        axesNode));
+            }
         };
     };
 };

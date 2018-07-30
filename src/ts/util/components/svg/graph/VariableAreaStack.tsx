@@ -5,13 +5,13 @@ import {scaleLinear} from "d3-scale";
 import {schemeCategory10} from "d3-scale-chromatic";
 import {area, CurveFactory, SeriesPoint, stack, stackOffsetNone, stackOrderNone} from "d3-shape";
 import * as React from "react";
-import {createElement, ReactNode, SFC, SFCFactory} from "react";
+import {ReactNode} from "react";
 import {MapEntry} from "../../../collections/Map";
 import {identity} from "../../../functional/utils";
-import {development} from "../../../production";
-import {Range} from "../../../Range";
+import {development} from "../../../env/production";
+import {Range} from "../../../collections/Range";
 import {isArray, isReadonlyArray} from "../../../types/isType";
-import {moduloIndexer} from "../../../utils";
+import {moduloIndexer} from "../../../misc/utils";
 import {Accessor, Margins, Numeric, Scale, Size, translate} from "../utils";
 import {Axes} from "./Axes";
 import {StackOffset} from "./utils";
@@ -28,6 +28,10 @@ interface VariableAreaStackDataProps<T, X, XDomain extends Numeric, Z> {
         z: (d: T) => Z;
     };
     flat?: boolean;
+    forceDomain?: {
+        x?: [XDomain, XDomain];
+        y?: [number, number];
+    };
 }
 
 interface VariableAreaStackProps<T, X, XDomain extends Numeric, Z> {
@@ -63,7 +67,14 @@ interface VariableAreaStackRenderedProps<Z> {
 }
 
 export interface VariableAreaStack<T, X, XDomain, Z> {
-    (props: VariableAreaStackRenderedProps<Z>): ReactNode;
+    
+    readonly domain: {
+        readonly x: [XDomain, XDomain];
+        readonly y: [number, number];
+    }
+    
+    readonly render: (props: VariableAreaStackRenderedProps<Z>) => ReactNode;
+    
 }
 
 export const VariableAreaStack = function <T, X, XDomain extends Numeric, Z>(
@@ -73,6 +84,7 @@ export const VariableAreaStack = function <T, X, XDomain extends Numeric, Z>(
         data: nonStandardizedData,
         values,
         flat = false,
+        forceDomain = {},
     } = props;
     
     type DataEntry = Entry<X, RA<T>>;
@@ -126,7 +138,13 @@ export const VariableAreaStack = function <T, X, XDomain extends Numeric, Z>(
     
     const data = standardizeData();
     if (!data) {
-        return () => () => null;
+        return () => ({
+            domain: {
+                x: [undefined, undefined] as any as [XDomain, XDomain],
+                y: [NaN, NaN],
+            },
+            render: () => null,
+        });
     }
     
     const xData: RA<X> = data.map(e => e.key);
@@ -161,7 +179,7 @@ export const VariableAreaStack = function <T, X, XDomain extends Numeric, Z>(
         return (z, i) => color(i);
     };
     
-    const xDomain = extent(xValues) as [XDomain, XDomain];
+    const xDomain = forceDomain.x || extent(xValues) as [XDomain, XDomain];
     
     const value = (d: RA<T>, i: Key) => {
         if (i > d.length) {
@@ -220,7 +238,9 @@ export const VariableAreaStack = function <T, X, XDomain extends Numeric, Z>(
             )
             .offset(offset)
             (yData._());
-        y.domain(extent(seriesData.flatten(2)) as [number, number]);
+        
+        const yDomain = forceDomain.y || extent(seriesData.flatten(2)) as [number, number];
+        y.domain(yDomain);
         reverse && seriesData.reverse();
         const paths = seriesData.mapFilter<string>(path);
         
@@ -240,28 +260,37 @@ export const VariableAreaStack = function <T, X, XDomain extends Numeric, Z>(
             })}
         </g>;
         
-        return props => {
-            const {
-                color = schemeCategory10,
-            } = props;
+        return {
             
-            const _color = isReadonlyArray(color) ? colorFromArray(color) : color;
+            domain: {
+                x: xDomain,
+                y: yDomain,
+            },
             
-            return <svg width={outerWidth} height={outerHeight}>
-                <g transform={translate(left, top)}>
-                    <g>
-                        {paths.map((path, i) => <path
-                            key={i}
-                            className={_className}
-                            d={path}
-                            fill={_color(zData[i].key, i)}
-                            // onMouseEnter={() => console.log(zData[i].key, zData[i].value)}
-                        />)}
+            render: props => {
+                const {
+                    color = schemeCategory10,
+                } = props;
+    
+                const _color = isReadonlyArray(color) ? colorFromArray(color) : color;
+    
+                return <svg width={outerWidth} height={outerHeight}>
+                    <g transform={translate(left, top)}>
+                        <g>
+                            {paths.map((path, i) => <path
+                                key={i}
+                                className={_className}
+                                d={path}
+                                fill={_color(zData[i].key, i)}
+                                // onMouseEnter={() => console.log(zData[i].key, zData[i].value)}
+                            />)}
+                        </g>
+                        {glyphNodes}
+                        {axesNode}
                     </g>
-                    {glyphNodes}
-                    {axesNode}
-                </g>
-            </svg>;
+                </svg>;
+            }
+            
         };
     };
 };

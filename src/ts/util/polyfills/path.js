@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const nodePath = require("path");
-const anyWindow_1 = require("../anyWindow");
+const anyWindow_1 = require("../window/anyWindow");
 const allExtensions_1 = require("../extensions/allExtensions");
 exports.path = (() => {
     if (anyWindow_1.isBrowser) {
@@ -20,4 +20,5 @@ exports.path = (() => {
         return nodePath;
     }
 })();
+exports.pathLib = exports.path;
 //# sourceMappingURL=path.js.map

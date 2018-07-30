@@ -1,9 +1,12 @@
 import {Equals} from "../collections/HashEquals";
+import {mapFields} from "../object/mapFields";
 import {truthy} from "../types/Truthy";
 import {ValueOf} from "../types/ValueOf";
+import {isBrowser} from "../window/anyWindow";
+import {writableExtensions} from "./extensionsConfig";
 
 const immutableDescriptor: PropertyDescriptor = Object.freeze({
-    writable: false,
+    writable: writableExtensions,
     enumerable: false,
     configurable: true,
 });
@@ -90,7 +93,7 @@ Object.defineImmutableProperties(Object, {
 
 Object.defineImmutableProperties(Object.prototype, {
     
-    hasProperty(this: object, property: PropertyKey): boolean {
+    _hasProperty(this: object, property: PropertyKey): boolean {
         for (let o = this; o !== null; o = Object.getPrototypeOf(o)) {
             if (o.hasOwnProperty(property)) {
                 return true;
@@ -107,7 +110,7 @@ Object.defineImmutableProperties(Object.prototype, {
         return Object.seal(this);
     },
     
-    _clone<T>(this: T): T {
+    shallowClone<T>(this: T): T {
         return Object.assign(Object.create(null), this);
     },
     
@@ -116,11 +119,7 @@ Object.defineImmutableProperties(Object.prototype, {
     },
     
     mapFields<T, U>(this: {[field: string]: T}, mapper: (field: T) => U): {[field: string]: U} {
-        const obj: {[field: string]: U} = {};
-        for (const [key, value] of Object.entries(this)) {
-            obj[key] = mapper(value);
-        }
-        return obj;
+        return mapFields(this, mapper);
     },
     
     freezeFields<T>(this: T): T {
@@ -387,7 +386,7 @@ Object.defineImmutableProperties(Set.prototype, {
 // don't touch RegExp.prototype,
 // since modifying it will bail out of RegExp's fast paths.
 
-if (typeof window !== "undefined") {
+if (isBrowser) {
     
     Object.defineImmutableProperties(Node.prototype, {
         

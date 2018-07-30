@@ -1,4 +1,4 @@
-import {All} from "../../../../util/All";
+import {All} from "../../../../util/collections/query/All";
 import {DataSource} from "../../../../util/data/DataSource";
 import {DataAccessor} from "./DataAccessor";
 import {Position, Positions, positions} from "./Position";

@@ -1,30 +1,31 @@
+import {Day} from "./Day";
 import {Employee, TeamLeader} from "./Employee";
-import {Month} from "./Month";
 import {Team} from "./Team";
 
 
-interface ParsedEmployeeMonth {
-    readonly month: number;
+interface ParsedEmployeeDate {
+    readonly date: number;
     readonly percentCommitted: number;
 }
 
-type RawEmployeeMonth = number;
+type RawEmployeeDate = [number, number];
 
 export interface ParsedProjectEmployee {
     readonly employee: number;
-    readonly months: ReadonlyArray<ParsedEmployeeMonth>;
+    readonly dates: ReadonlyArray<ParsedEmployeeDate>;
 }
 
-export type RawProjectEmployee = [number, RawEmployeeMonth[]];
+export type RawProjectEmployee = [number, RawEmployeeDate[]];
 
 export interface ParsedProject {
     readonly id: number;
     readonly name: string;
+    readonly firstDate: number; // keep dates as delta for compression
     readonly employees: ReadonlyArray<ParsedProjectEmployee>;
     readonly percentLikelihood: number;
 }
 
-export type RawProject = [number, string, RawProjectEmployee[], number];
+export type RawProject = [number, string, number, RawProjectEmployee[], number];
 
 export interface ProjectEmployee {
     
@@ -40,9 +41,9 @@ export interface EmployeeCommitment {
     
 }
 
-export interface ProjectMonth {
+export interface ProjectDate {
     
-    readonly month: Month;
+    readonly date: Day;
     readonly employees: ReadonlyArray<EmployeeCommitment>;
     
 }
@@ -55,7 +56,7 @@ export interface Project {
     readonly leader: TeamLeader;
     readonly employees: ReadonlyArray<ProjectEmployee>;
     
-    readonly months: ReadonlyArray<ProjectMonth>;
+    readonly dates: ReadonlyArray<ProjectDate>;
     
     readonly percentLikelihood: number;
     

@@ -1,17 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs");
-const path_1 = require("../../util/polyfills/path");
-const dirParts = path_1.path.parse(__filename).dir.split(path_1.path.sep);
-while (!fs.existsSync(path_1.path.join(...dirParts, ".git"))) {
+const path = require("path");
+const dirParts = path.parse(__filename).dir.split(path.sep);
+while (!fs.existsSync(path.join(...dirParts, ".git"))) {
     dirParts.pop();
 }
 var dir;
 (function (dir) {
-    dir.root = path_1.path.join(...dirParts);
-    dir.dist = path_1.path.join(dir.root, "dist");
-    dir.src = path_1.path.join(dir.root, "src");
-    dir.data = path_1.path.join(dir.src, "data");
-    dir.test = path_1.path.join(dir.src, "ts", "ProjectScheduleViewer", "server", "test", "data");
+    dir.root = path.join(...dirParts);
+    dir.dist = path.join(dir.root, "dist");
+    dir.clientDist = path.join(dir.dist, "client");
+    dir.serverDist = path.join(dir.dist, "server");
+    dir.src = path.join(dir.root, "src");
+    dir.data = path.join(dir.src, "data");
+    dir.ts = path.join(dir.src, "ts");
+    dir.project = path.join(dir.ts, "ProjectScheduleViewer");
+    dir.client = path.join(dir.project, "client");
+    dir.server = path.join(dir.project, "server");
+    dir.test = path.join(dir.server, "test", "data");
 })(dir = exports.dir || (exports.dir = {}));
 //# sourceMappingURL=dir.js.map

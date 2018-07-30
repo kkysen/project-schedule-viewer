@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const utils_1 = require("../utils");
+const utils_1 = require("../misc/utils");
 exports.isNativeType = function (type) {
     const typeName = `[object ${utils_1.capitalize(type)}]`;
     const toString = Object.prototype.toString;
@@ -18,6 +18,8 @@ exports.isReadonlyArray = Array.isArray;
 exports.isRegExp = exports.isNativeType("RegExp");
 exports.isDate = exports.isNativeType("Date");
 exports.isObject = exports.isNativeType("object");
+exports._isTruthy = (o) => !!o;
+exports.isTruthy = () => exports._isTruthy;
 exports.isByConstructor = function (constructor) {
     return (o) => o.constructor === constructor;
 };

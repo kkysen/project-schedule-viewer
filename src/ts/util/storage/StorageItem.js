@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Callables_1 = require("../Callables");
+const Callables_1 = require("../functional/Callables");
 const Storages_1 = require("./Storages");
 exports.identitySerializer = function () {
     return {

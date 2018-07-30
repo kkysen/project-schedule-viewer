@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const All_1 = require("../All");
-const cache_1 = require("../cache");
-const objectFields_1 = require("../objectFields");
+const All_1 = require("../collections/query/All");
+const cache_1 = require("../cache/cache");
+const objectFields_1 = require("../object/objectFields");
+const isType_1 = require("../types/isType");
 exports.DataAccessorFactory = {
     for() {
         return {
@@ -29,8 +30,9 @@ exports.DataAccessorFactory = {
                 });
             },
             data: (dataAccessors) => {
-                return cache_1.refreshableCache((source) => {
-                    const dataPromises = objectFields_1.objectFields.callEachArgs(dataAccessors, source);
+                return cache_1.refreshableAsyncCache((source) => {
+                    const _source = isType_1.isFunction(source) ? source() : source;
+                    const dataPromises = objectFields_1.objectFields.callEachArgs(dataAccessors, _source);
                     return objectFields_1.objectFields.awaitAll(dataPromises);
                 });
             },

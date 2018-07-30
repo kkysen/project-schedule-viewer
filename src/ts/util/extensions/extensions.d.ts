@@ -52,14 +52,14 @@ declare interface ObjectConstructor {
 
 declare interface Object {
     
-    hasProperty(v: PropertyKey): boolean;
+    _hasProperty(v: PropertyKey): boolean;
     
     freeze<T>(this: T): T;
     
     seal<T>(this: T): T;
     
     // _ is b/c there are other objects with slightly different clone methods
-    _clone<T>(this: T): T;
+    shallowClone<T>(this: T): T;
     
     // copies complete property descriptors
     fullClone<T>(this: T): T;
@@ -116,7 +116,7 @@ declare interface Array<T> {
     
     add(index: number, value: T): void;
     
-    addAll(values: T[], index?: number): void;
+    addAll(values: ReadonlyArray<T>, index?: number): void;
     
     applyOn<U>(func: (args: T[]) => U): U;
     

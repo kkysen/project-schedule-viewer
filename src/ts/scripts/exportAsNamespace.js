@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs-extra");
 const path_1 = require("../util/polyfills/path");
-const regex_1 = require("../util/regex");
+const regex_1 = require("../util/misc/regex");
 var matchAll = regex_1.regex.matchAll;
 const coerceExportType = function (type) {
     switch (type) {
@@ -40,13 +40,13 @@ ${namespaceBody}
 `;
 };
 exports.exportAsNamespace = async function ({ namespace, importPath, typeDeclarationsPath, nodeModule = true, outDirectory = "../lib", aliases = {} }) {
-    const _path = nodeModule ? exports.fromNodeModule(importPath, typeDeclarationsPath) : typeDeclarationsPath;
-    const buffer = await fs.readFile(_path);
+    const path = nodeModule ? exports.fromNodeModule(importPath, typeDeclarationsPath) : typeDeclarationsPath;
+    const buffer = await fs.readFile(path);
     const code = buffer.toString("utf8");
     await fs.writeFile(path_1.path.join(outDirectory, `${namespace}.ts`), exportAsNamespaceString({ namespace, importPath, code, aliases }));
 };
-exports.fromNodeModule = function (nodeModule, _path) {
-    return path_1.path.join("../../../node_modules", nodeModule, _path);
+exports.fromNodeModule = function (nodeModule, path) {
+    return path_1.path.join("../../../node_modules", nodeModule, path);
 };
 const dir = "C:/Users/Khyber/workspace/ProjectScheduleViewer/";
 (async () => {

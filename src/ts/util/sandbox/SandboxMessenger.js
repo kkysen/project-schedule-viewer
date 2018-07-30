@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const anyWindow_1 = require("../anyWindow");
+const anyWindow_1 = require("../window/anyWindow");
 const allExtensions_1 = require("../extensions/allExtensions");
 allExtensions_1.addExtensions();
 const createIframeSandbox = function (src) {

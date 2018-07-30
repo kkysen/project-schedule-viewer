@@ -1,9 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const HashEquals_1 = require("../collections/HashEquals");
+const mapFields_1 = require("../object/mapFields");
 const Truthy_1 = require("../types/Truthy");
+const anyWindow_1 = require("../window/anyWindow");
+const extensionsConfig_1 = require("./extensionsConfig");
 const immutableDescriptor = Object.freeze({
-    writable: false,
+    writable: extensionsConfig_1.writableExtensions,
     enumerable: false,
     configurable: true,
 });
@@ -67,7 +70,7 @@ Object.defineImmutableProperties(Object, {
     },
 });
 Object.defineImmutableProperties(Object.prototype, {
-    hasProperty(property) {
+    _hasProperty(property) {
         for (let o = this; o !== null; o = Object.getPrototypeOf(o)) {
             if (o.hasOwnProperty(property)) {
                 return true;
@@ -81,18 +84,14 @@ Object.defineImmutableProperties(Object.prototype, {
     seal() {
         return Object.seal(this);
     },
-    _clone() {
+    shallowClone() {
         return Object.assign(Object.create(null), this);
     },
     fullClone() {
         return Object.create(Object.getPrototypeOf(this), Object.getOwnPropertyDescriptors(this));
     },
     mapFields(mapper) {
-        const obj = {};
-        for (const [key, value] of Object.entries(this)) {
-            obj[key] = mapper(value);
-        }
-        return obj;
+        return mapFields_1.mapFields(this, mapper);
     },
     freezeFields() {
         for (const value of Object.values(this)) {
@@ -289,7 +288,7 @@ Object.defineImmutableProperties(Set.prototype, {
 });
 // don't touch RegExp.prototype,
 // since modifying it will bail out of RegExp's fast paths.
-if (typeof window !== "undefined") {
+if (anyWindow_1.isBrowser) {
     Object.defineImmutableProperties(Node.prototype, {
         appendBefore(node) {
             const { parentNode } = this;

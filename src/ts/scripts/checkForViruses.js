@@ -4,8 +4,8 @@ const child_process_1 = require("child_process");
 const fs = require("fs-extra");
 const util_1 = require("util");
 const allExtensions_1 = require("../util/extensions/allExtensions");
-const regex_1 = require("../util/regex");
-const utils_1 = require("../util/utils");
+const regex_1 = require("../util/misc/regex");
+const utils_1 = require("../util/misc/utils");
 allExtensions_1.addExtensions();
 const exec = util_1.promisify(child_process_1.exec);
 (async function checkForEvalInEsLintScope() {
