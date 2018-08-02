@@ -1,5 +1,5 @@
+import {refreshableAsyncCache, RefreshableAsyncCacheGetter, RefreshableCacheType} from "../cache/cache";
 import {All} from "../collections/query/All";
-import {cache, Function, refreshableAsyncCache, RefreshableCache, refreshableCache} from "../cache/cache";
 import {MaybePromise} from "../maybePromise/MaybePromise";
 import {AwaitType, objectFields, Values} from "../object/objectFields";
 import {isFunction} from "../types/isType";
@@ -7,6 +7,7 @@ import {ValueOrGetter} from "../types/ValueOrGetter";
 import {DataSource} from "./DataSource";
 import AwaitAll = objectFields.AwaitAll;
 import AwaitFunctions = objectFields.AwaitFunctions;
+import AwaitRefreshableCaches = objectFields.AwaitRefreshableCaches;
 
 interface DataAccessorArgs<DataSources, T extends By, By, Parsed, Raw, Args> {
     
@@ -29,31 +30,29 @@ export type OriginalData<All, Parsed, Raw> = All & {
 
 export type MappedData<All> = All;
 
-interface DataAccessor<DataSources, Data> {
-    
-    (source: DataSources): MaybePromise<Data>;
-    
-}
+type DataAccessor<DataSources, Data> = RefreshableAsyncCacheGetter<Data, DataSources>;
 
-export type AccessDatum<T extends Function<MaybePromise<any>>> = AwaitType<ReturnType<T>>;
+export type AccessDatum<T extends RefreshableAsyncCacheGetter<any, any>> = AwaitType<RefreshableCacheType<T>>;
 
-export type AccessData<T extends Values<Function<MaybePromise<any>>>> = {[K in keyof T]: AccessDatum<T[K]>};
+export type AccessData<T extends Values<RefreshableAsyncCacheGetter<any, any>>> = {[K in keyof T]: AccessDatum<T[K]>};
 
 interface DataAccessorClass<DataSources> {
     
+    // f<Args>(): {[K in keyof Args]: RefreshableAsyncCacheGetter<Args[K], DataSources>};
+    
     "new"<T extends By, By, Parsed, Raw, Args>(
         args: DataAccessorArgs<DataSources, T, By, Parsed, Raw, Args>,
-        argsGetter: AwaitFunctions<Args, DataSources>,
+        argsGetter: AwaitRefreshableCaches<Args, DataSources>,
     ): DataAccessor<DataSources, OriginalData<All<T, By>, Parsed, Raw>>;
     
     mapped<T extends By, By, Args>(
         create: (args: Args) => ReadonlyArray<T>,
         by: By,
-        argsGetter: AwaitFunctions<Args, DataSources>,
+        argsGetter: AwaitRefreshableCaches<Args, DataSources>,
     ): DataAccessor<DataSources, MappedData<All<T, By>>>;
     
-    data<DataAccessors extends Values<Function<MaybePromise<any>>>>(dataAccessors: DataAccessors):
-        RefreshableCache<(source: ValueOrGetter<DataSources>) => MaybePromise<AccessData<DataAccessors>>>;
+    data<DataAccessors extends Values<RefreshableAsyncCacheGetter<any, any>>>(dataAccessors: DataAccessors):
+        RefreshableAsyncCacheGetter<AccessData<DataAccessors>, ValueOrGetter<DataSources>>;
     
 }
 
@@ -63,8 +62,8 @@ export const DataAccessorFactory = {
         return {
             
             new: ({source, parse, preParsed = () => [], create, by}, argsGetter) => {
-                return cache(async (sources: DataSources) => {
-                    const args = await objectFields.awaitFunctions(argsGetter, sources);
+                return refreshableAsyncCache(async (sources: DataSources) => {
+                    const args = await objectFields.awaitRefreshableCaches(argsGetter, sources);
                     const raw = await source(sources)(args);
                     const parsed = raw.map(parse);
                     // do it twice so index is correct 2nd time
@@ -81,18 +80,18 @@ export const DataAccessorFactory = {
             },
             
             mapped: (create, by, argsGetter) => {
-                return cache(async (source: DataSources) => {
-                    return All.of(create(await objectFields.awaitFunctions(argsGetter, source)), by);
+                return refreshableAsyncCache(async (source: DataSources) => {
+                    return All.of(create(await objectFields.awaitRefreshableCaches(argsGetter, source)), by);
                 });
             },
             
-            data: <DataAccessors extends Values<Function<MaybePromise<any>>>>(dataAccessors: DataAccessors) => {
+            data: <DataAccessors extends Values<RefreshableAsyncCacheGetter<any, any>>>(dataAccessors: DataAccessors) => {
                 type Data = AccessData<DataAccessors>;
                 return refreshableAsyncCache((source: ValueOrGetter<DataSources>): MaybePromise<Data> => {
                     const _source = isFunction(source) ? source() : source;
-                    const dataPromises = objectFields.callEachArgs<AwaitAll<Data>, DataSources>(dataAccessors, _source);
+                    const dataPromises = dataAccessors.mapFields<DataAccessors, AwaitAll<Data>>(e => e.get(_source));
                     return objectFields.awaitAll(dataPromises);
-                });
+                }, () => Object.values(dataAccessors).forEach(e => e.refresh()));
             },
             
         };

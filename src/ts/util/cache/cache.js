@@ -9,19 +9,33 @@ exports.makeGetter = function () {
 exports.cache = function (getter) {
     return exports.refreshableCache(getter).get;
 };
-exports.refreshableCache = function (getter) {
+exports.refreshableCache = function (getter, onRefresh = () => {
+}) {
     let cache;
+    const get = ((...args) => cache !== undefined ? cache : (cache = getter(...args)));
+    const refresh = () => {
+        cache = undefined;
+        onRefresh();
+    };
     return {
-        get: ((...args) => cache !== undefined ? cache : (cache = getter(...args))),
-        refresh: () => cache = undefined,
+        get,
+        refresh,
+        getRefreshed: ((...args) => {
+            refresh();
+            return get(...args);
+        }),
     };
 };
-exports.asyncCache = function (getter) {
-    return exports.refreshableAsyncCache(getter).get;
+exports.asyncCache = function (getter, onRefresh) {
+    return exports.refreshableAsyncCache(getter, onRefresh).get;
 };
-exports.refreshableAsyncCache = function (getter) {
+exports.refreshableAsyncCache = function (getter, onRefresh = () => {
+}) {
     let cache;
-    const refresh = () => cache = undefined;
+    const refresh = () => {
+        cache = undefined;
+        onRefresh();
+    };
     const get = (args) => cache !== undefined ? cache : cache = (async () => cache = await getter(args))();
     return {
         get,

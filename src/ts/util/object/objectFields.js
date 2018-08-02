@@ -25,5 +25,8 @@ var objectFields;
     objectFields.awaitFunctions = function (asyncFunctions, args) {
         return objectFields.awaitAll(objectFields.callEachArgs(asyncFunctions, args));
     };
+    objectFields.awaitRefreshableCaches = function (caches, args) {
+        return objectFields.awaitAll(objectFields.map(caches, e => e.get(args)));
+    };
 })(objectFields = exports.objectFields || (exports.objectFields = {}));
 //# sourceMappingURL=objectFields.js.map

@@ -1,3 +1,4 @@
+import {RefreshableAsyncCacheGetter} from "../cache/cache";
 import {MaybePromise} from "../maybePromise/MaybePromise";
 import {isPromise} from "../types/isType";
 import {ValueOf} from "../types/ValueOf";
@@ -52,6 +53,15 @@ export namespace objectFields {
         args: Args,
     ): MaybePromise<T> {
         return awaitAll(callEachArgs(asyncFunctions, args));
+    };
+    
+    export type AwaitRefreshableCaches<T, Args> = {[K in keyof T]: RefreshableAsyncCacheGetter<T[K], Args>};
+    
+    export const awaitRefreshableCaches = function <T, Args>(
+        caches: AwaitRefreshableCaches<T, Args>,
+        args: Args,
+    ): MaybePromise<T> {
+        return awaitAll(map<AwaitRefreshableCaches<T, Args>, AwaitAll<T>>(caches, e => e.get(args)));
     };
     
 }
