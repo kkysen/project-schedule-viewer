@@ -1,9 +1,10 @@
 import {AsyncFilter, Filter} from "../functional/Filter";
 import {Mapper} from "../functional/Mapper";
+import {hash} from "../misc/hash";
 import {CollectionArgs} from "./Collection";
-import {HashEquals, HashValue} from "./HashEquals";
 import {Queue} from "./Queue";
 import {Stack} from "./Stack";
+import HashValue = hash.HashValue;
 
 export interface Deque<E> extends Queue<E>, Stack<E> {
     

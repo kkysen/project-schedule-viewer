@@ -3,7 +3,7 @@ import {renderers} from "../ssr/renderers";
 
 const {BundleAnalyzerPlugin}: {BundleAnalyzerPlugin: {new(): Plugin}} = require("webpack-bundle-analyzer");
 
-const analyzeBundles = false;
+const analyzeBundles = true;
 
 export const plugins = function(compileHtml: boolean): Plugin[] {
     const plugins: Plugin[] = [];

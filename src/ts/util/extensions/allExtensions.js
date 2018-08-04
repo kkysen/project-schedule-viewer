@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const HashEquals_1 = require("../collections/HashEquals");
+const compare_1 = require("../misc/compare");
+const equals_1 = require("../misc/equals");
 const mapFields_1 = require("../object/mapFields");
 const Truthy_1 = require("../types/Truthy");
 const anyWindow_1 = require("../window/anyWindow");
@@ -174,7 +175,7 @@ Object.defineImmutableProperties(Array.prototype, {
         return this.splice(index, 1)[0];
     },
     remove(value, equals) {
-        const i = !equals ? this.indexOf(value) : this.findIndex(HashEquals_1.Equals.bind(equals, value));
+        const i = !equals ? this.indexOf(value) : this.findIndex(equals_1.equals.bind(equals, value));
         if (i !== -1) {
             return this.removeAt(i);
         }
@@ -204,8 +205,7 @@ Object.defineImmutableProperties(Array.prototype, {
         return o;
     },
     sortBy(key) {
-        this.sort((a, b) => key(a) - key(b));
-        return this;
+        return this.sort(compare_1.cmp.byNumber(key));
     },
     random() {
         return this[Math.floor(Math.random() * this.length)];

@@ -1,7 +1,9 @@
 import {bind} from "../decorators/bind";
+import {hash} from "../misc/hash";
+import {hashEquals as hashEqualsLib} from "../misc/hashEquals";
 import {checkSizeChanged, Collection, NewCollectionArgs} from "./Collection";
-import {HashEquals, HashValue} from "./HashEquals";
 import {Stack} from "./Stack";
+import HashValue = hash.HashValue;
 
 // TODO make ArrayStack interface
 
@@ -13,7 +15,7 @@ export interface ArrayStackClass {
 
 export const ArrayStack: ArrayStackClass = {
     
-    new<E, H>({elements = [], hashEquals = HashEquals.default()}: NewCollectionArgs<E, H>): Stack<E> {
+    new<E, H>({elements = [], hashEquals = hashEqualsLib.default_()}: NewCollectionArgs<E, H>): Stack<E> {
         const {equals} = hashEquals;
         const a: E[] = bind([...elements]);
         const {size, push, pop, last: peek, clear, remove} = a;

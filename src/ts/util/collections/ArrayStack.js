@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const bind_1 = require("../decorators/bind");
+const hashEquals_1 = require("../misc/hashEquals");
 const Collection_1 = require("./Collection");
-const HashEquals_1 = require("./HashEquals");
 exports.ArrayStack = {
-    new({ elements = [], hashEquals = HashEquals_1.HashEquals.default() }) {
+    new({ elements = [], hashEquals = hashEquals_1.hashEquals.default_() }) {
         const { equals } = hashEquals;
         const a = bind_1.bind([...elements]);
         const { size, push, pop, last: peek, clear, remove } = a;

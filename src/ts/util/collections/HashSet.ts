@@ -1,13 +1,14 @@
 import {bind} from "../decorators/bind";
 import {AsyncFilter, Filter} from "../functional/Filter";
-import {Mapper} from "../functional/Mapper";
 import {iterables} from "../functional/iterables";
+import {Mapper} from "../functional/Mapper";
+import {hash} from "../misc/hash";
+import {hashEquals as hashEqualsLib} from "../misc/hashEquals";
 import {NativeSet} from "../types/typeAliases";
 import {checkSizeChanged, Collection, CollectionArgs, CollectionConstructor, NewCollectionArgs} from "./Collection";
-import {HashEquals, HashValue} from "./HashEquals";
 import {HashMap} from "./HashMap";
-import {Map} from "./Map";
 import {Set} from "./Set";
+import HashValue = hash.HashValue;
 
 export interface HashSet<E> extends Set<E> {
     
@@ -45,8 +46,8 @@ export interface HashSetClass {
 
 export const HashSet: HashSetClass = {
     
-    new<E, H>({elements = [], hashEquals = HashEquals.default()}: NewCollectionArgs<E, H>): HashSet<E> {
-        if (HashEquals.isReferential(hashEquals)) {
+    new<E, H>({elements = [], hashEquals = hashEqualsLib.default_()}: NewCollectionArgs<E, H>): HashSet<E> {
+        if (hashEqualsLib.isReferential(hashEquals)) {
             // if using referential HashEquals, use optimized referential version
             return HashSet.referential({elements});
         }
@@ -56,7 +57,7 @@ export const HashSet: HashSetClass = {
             // if using a primitive type, always use referential version
             return HashSet.referential({elements}); // don't need hashEquals
         }
-    
+        
         const {
             size,
             clear,
@@ -89,7 +90,7 @@ export const HashSet: HashSetClass = {
     referential<E>(args: NewCollectionArgs<E, E>): HashSet<E> {
         const {elements = []} = args;
         // always use referential HashEquals, ignore args
-        const hashEquals = HashEquals.referential<E>();
+        const hashEquals = hashEqualsLib.referential<E>();
         const nativeSet: NativeSet<E> = bind(new NativeSet<E>(elements));
         const {add, has, delete: remove, clear, [Symbol.iterator]: iterator, forEach} = nativeSet;
         const size = () => nativeSet.size;

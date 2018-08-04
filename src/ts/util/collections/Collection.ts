@@ -1,8 +1,13 @@
 import {AsyncFilter, Filter} from "../functional/Filter";
 import {Mapper} from "../functional/Mapper";
+import {hash as hashLib} from "../misc/hash";
+import {hashEquals as hashEqualsLib} from "../misc/hashEquals";
+import {PartialDifference} from "../types/difference";
 import {IfElse} from "../types/IfElse";
-import {Difference, PartialDifference} from "../types/difference";
-import {Equals, Hash, HashEqualable, HashEquals, HashValue} from "./HashEquals";
+import {equals as equalsLib} from "../misc/equals";
+import HashEqualable = hashEqualsLib.HashEqualable;
+import HashValue = hashLib.HashValue;
+import HashEquals = hashEqualsLib.HashEquals;
 
 export interface BaseCollection<E> extends Iterable<E> {
     
@@ -120,10 +125,10 @@ export const Collection: CollectionClass = {
     ): This {
         const {size, add, remove, clear} = base;
         
-        const {hash, equals} = HashEquals.fastEquals(hashEquals);
+        const {hash, equals} = hashEqualsLib.fastEquals(hashEquals);
         
         const makeHas = function(iter: Iterable<E>): typeof _.has {
-            return e => [...iter].some(Equals.bind(equals, e));
+            return e => [...iter].some(equalsLib.bind(equals, e));
         };
         
         const iterArray = function <R>(method: (a: E[]) => R) {
@@ -176,7 +181,7 @@ export const Collection: CollectionClass = {
                 // b/c Collection can't have higher kinded generic types.
                 return returner({
                     ...{
-                        hashEquals: HashEquals.default(),
+                        hashEquals: hashEqualsLib.default_(),
                     },
                     ...args || {},
                     ...{
@@ -244,7 +249,7 @@ export const Collection: CollectionClass = {
                 return _.toArray().every((e, i) => equals(e, a[i]));
             })(),
             
-            hash: () => _.toArray().map(hash).map(Hash.makeNumber).reduce((hash, h) => 31 * (hash | 0) + h, 1),
+            hash: () => _.toArray().map(hash).map(hashLib.makeNumber).reduce((hash, h) => 31 * (hash | 0) + h, 1),
             
             filter: filteringMethod(a => a.filter, false),
             

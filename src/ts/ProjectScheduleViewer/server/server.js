@@ -33,7 +33,7 @@ renderers_1.renderers.attachTo(server);
 server.get("/", appRenderer_1.app.handler);
 // force v8 to compile and optimize
 renderers_1.renderers.warmUp(production_1.production ? 16 : 1);
-exports.dataWatchers = watchData_1.watchData();
+watchData_1.watchData();
 (async () => {
     serveJS(await jsDist_1.jsDistFiles.get());
 })();

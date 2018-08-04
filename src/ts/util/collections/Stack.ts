@@ -1,7 +1,8 @@
 import {AsyncFilter, Filter} from "../functional/Filter";
 import {Mapper} from "../functional/Mapper";
+import {hash} from "../misc/hash";
 import {Collection, CollectionArgs} from "./Collection";
-import {HashEquals, HashValue} from "./HashEquals";
+import HashValue = hash.HashValue;
 
 export interface PureStack<E> {
     

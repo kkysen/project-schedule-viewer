@@ -1,9 +1,11 @@
-import {Equals} from "../collections/HashEquals";
+import {cmp} from "../misc/compare";
+import {equals as equalsLib} from "../misc/equals";
 import {mapFields} from "../object/mapFields";
 import {truthy} from "../types/Truthy";
 import {ValueOf} from "../types/ValueOf";
 import {isBrowser} from "../window/anyWindow";
 import {writableExtensions} from "./extensionsConfig";
+import Equals = equalsLib.Equals;
 
 const immutableDescriptor: PropertyDescriptor = Object.freeze({
     writable: writableExtensions,
@@ -223,7 +225,7 @@ Object.defineImmutableProperties(Array.prototype, {
     },
     
     remove<T>(this: T[], value: T, equals?: Equals<T>): T | undefined {
-        const i: number = !equals ? this.indexOf(value) : this.findIndex(Equals.bind(equals, value));
+        const i: number = !equals ? this.indexOf(value) : this.findIndex(equalsLib.bind(equals, value));
         if (i !== -1) {
             return this.removeAt(i);
         }
@@ -258,8 +260,7 @@ Object.defineImmutableProperties(Array.prototype, {
     },
     
     sortBy<T, U extends number>(this: T[], key: (t: T) => U): T[] {
-        this.sort((a, b) => key(a) - key(b));
-        return this;
+        return this.sort(cmp.byNumber(key));
     },
     
     random<T>(this: T[]): T {
@@ -368,7 +369,7 @@ Object.defineImmutableProperties(Number, {
 });
 
 Object.defineImmutableProperties(Map.prototype, {
-   
+    
     map<K, V, T>(this: Map<K, V>, map: (v: V, k: K) => T): Map<K, T> {
         return new Map([...this].map(([k, v]) => [k, map(v, k)] as [K, T]));
     },

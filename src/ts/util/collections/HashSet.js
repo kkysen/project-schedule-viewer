@@ -2,13 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const bind_1 = require("../decorators/bind");
 const iterables_1 = require("../functional/iterables");
+const hashEquals_1 = require("../misc/hashEquals");
 const typeAliases_1 = require("../types/typeAliases");
 const Collection_1 = require("./Collection");
-const HashEquals_1 = require("./HashEquals");
 const HashMap_1 = require("./HashMap");
 exports.HashSet = {
-    new({ elements = [], hashEquals = HashEquals_1.HashEquals.default() }) {
-        if (HashEquals_1.HashEquals.isReferential(hashEquals)) {
+    new({ elements = [], hashEquals = hashEquals_1.hashEquals.default_() }) {
+        if (hashEquals_1.hashEquals.isReferential(hashEquals)) {
             // if using referential HashEquals, use optimized referential version
             return exports.HashSet.referential({ elements });
         }
@@ -39,7 +39,7 @@ exports.HashSet = {
     referential(args) {
         const { elements = [] } = args;
         // always use referential HashEquals, ignore args
-        const hashEquals = HashEquals_1.HashEquals.referential();
+        const hashEquals = hashEquals_1.hashEquals.referential();
         const nativeSet = bind_1.bind(new typeAliases_1.NativeSet(elements));
         const { add, has, delete: remove, clear, [Symbol.iterator]: iterator, forEach } = nativeSet;
         const size = () => nativeSet.size;

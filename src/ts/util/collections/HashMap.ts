@@ -1,9 +1,11 @@
 import {bind} from "../decorators/bind";
 import {iterables} from "../functional/iterables";
+import {hash as hashLib} from "../misc/hash";
+import {hashEquals as hashEqualsLib} from "../misc/hashEquals";
+import {NotImplementedError} from "../misc/utils";
+import {Difference} from "../types/difference";
 import {IfElse} from "../types/IfElse";
 import {NativeMap} from "../types/typeAliases";
-import {Difference} from "../types/difference";
-import {NotImplementedError} from "../misc/utils";
 import {ArrayStack} from "./ArrayStack";
 import {
     BaseCollection,
@@ -13,10 +15,11 @@ import {
     ExtendedCollection,
     NewCollectionArgs
 } from "./Collection";
-import {Hash, HashEquals, HashValue} from "./HashEquals";
 import {HashSet} from "./HashSet";
 import {Map, MapEntry} from "./Map";
 import {Set} from "./Set";
+import HashEquals = hashEqualsLib.HashEquals;
+import HashValue = hashLib.HashValue;
 
 export interface HashMap<K, V> extends Map<K, V> {
     
@@ -52,8 +55,8 @@ export const HashMap: HashMapClass = {
         {
             elements = [],
             hashEquals,
-            keysHashEquals = HashEquals.default(),
-            valuesHashEquals = HashEquals.default(),
+            keysHashEquals = hashEqualsLib.default_(),
+            valuesHashEquals = hashEqualsLib.default_(),
         }: HashMapArgs<K, H, V, VH>): HashMap<K, V> {
         
         type This = HashMap<K, V>;
@@ -87,11 +90,11 @@ export const HashMap: HashMapClass = {
         
         const exists = (node: ReturnedNode): node is ExistingReturnedNode => node.exists;
         
-        const {hash, equals} = HashEquals.fastEquals(keysHashEquals);
-        const {hash: valueHash, equals: valueEquals} = HashEquals.fastEquals(valuesHashEquals);
+        const {hash, equals} = hashEqualsLib.fastEquals(keysHashEquals);
+        const {hash: valueHash, equals: valueEquals} = hashEqualsLib.fastEquals(valuesHashEquals);
         
         hashEquals = {
-            hash: ({key, value}) => Hash.makeNumber(hash(key)) ^ Hash.makeNumber(valueHash(value)),
+            hash: ({key, value}) => hashLib.makeNumber(hash(key)) ^ hashLib.makeNumber(valueHash(value)),
             equals: (e1, e2) => equals(e1.key, e2.key) && valueEquals(e1.value, e2.value),
         };
         
@@ -109,7 +112,7 @@ export const HashMap: HashMapClass = {
                     remove: () => undefined,
                 };
             }
-    
+            
             // explicitly check first node
             if (equals(key, node.key)) {
                 const n = node;
@@ -367,7 +370,7 @@ export const HashMap: HashMapClass = {
     },
     
     referential<K, V, VH = HashValue>(args: HashMapArgs<K, K, V, VH>): HashMap<K, V> {
-        args.keysHashEquals = HashEquals.referential();
+        args.keysHashEquals = hashEqualsLib.referential();
         return HashMap.new(args);
     },
     

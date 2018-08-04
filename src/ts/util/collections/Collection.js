@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const HashEquals_1 = require("./HashEquals");
+const hash_1 = require("../misc/hash");
+const hashEquals_1 = require("../misc/hashEquals");
+const equals_1 = require("../misc/equals");
 exports.checkSizeChanged = function (size, wrapped) {
     return arg => {
         const originalSize = size();
@@ -11,9 +13,9 @@ exports.checkSizeChanged = function (size, wrapped) {
 exports.Collection = {
     basedOn(base, hashEquals, constructor) {
         const { size, add, remove, clear } = base;
-        const { hash, equals } = HashEquals_1.HashEquals.fastEquals(hashEquals);
+        const { hash, equals } = hashEquals_1.hashEquals.fastEquals(hashEquals);
         const makeHas = function (iter) {
-            return e => [...iter].some(HashEquals_1.Equals.bind(equals, e));
+            return e => [...iter].some(equals_1.equals.bind(equals, e));
         };
         const iterArray = function (method) {
             return (iter) => method([...iter]);
@@ -39,7 +41,7 @@ exports.Collection = {
                 // b/c Collection can't have higher kinded generic types.
                 return returner({
                     ...{
-                        hashEquals: HashEquals_1.HashEquals.default(),
+                        hashEquals: hashEquals_1.hashEquals.default_(),
                     },
                     ...args || {},
                     ...{
@@ -80,7 +82,7 @@ exports.Collection = {
                 const a = c.toArray();
                 return _.toArray().every((e, i) => equals(e, a[i]));
             })(),
-            hash: () => _.toArray().map(hash).map(HashEquals_1.Hash.makeNumber).reduce((hash, h) => 31 * (hash | 0) + h, 1),
+            hash: () => _.toArray().map(hash).map(hash_1.hash.makeNumber).reduce((hash, h) => 31 * (hash | 0) + h, 1),
             filter: filteringMethod(a => a.filter, false),
             map: mappingMethod(a => a.map, false),
             mapFilter: mappingMethod(a => a.mapFilter, false),

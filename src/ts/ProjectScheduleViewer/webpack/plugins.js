@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const renderers_1 = require("../ssr/renderers");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
-const analyzeBundles = false;
+const analyzeBundles = true;
 exports.plugins = function (compileHtml) {
     const plugins = [];
     if (compileHtml) {

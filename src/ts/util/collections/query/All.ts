@@ -1,7 +1,3 @@
-interface Named {
-    readonly name: string;
-}
-
 export type By<T, By = {}> = {
     
     index(index: number): T | undefined;

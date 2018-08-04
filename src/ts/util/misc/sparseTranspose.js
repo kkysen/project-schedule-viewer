@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const HashEquals_1 = require("../collections/HashEquals");
 const HashSet_1 = require("../collections/HashSet");
+const hashEquals_1 = require("./hashEquals");
 exports.sparseTranspose = function (a) {
     return a.map(({ i, j, value }) => ({ i: j, j: i, value }));
 };
@@ -14,7 +14,7 @@ const reconstructUsingHashNew = function (flat, hashJ, newJ) {
     }));
 };
 const reconstructUsingHash = function (flat, hashJ) {
-    const { hash, equals } = HashEquals_1.HashEquals.fromHash(hashJ);
+    const { hash, equals } = hashEquals_1.hashEquals.fromHash(hashJ);
     return [...HashSet_1.HashSet.new({
             elements: flat.map(e => e.i),
             hashEquals: { hash, equals },

@@ -85,7 +85,7 @@ exports.SsrRendererFactory = {
                 };
                 return {
                     name,
-                    refresh: renderer.getRefreshed,
+                    ...renderer,
                     handler,
                     attachTo: server => server.get(`/${name}`, handler),
                     warmUp: repetitions => Range_1.Range.new(repetitions).map(renderer.getRefreshed),
@@ -102,7 +102,7 @@ exports.SsrRendererFactory = {
                     add: (..._renderers) => {
                         renderers.addAll(_renderers);
                     },
-                    refresh: () => renderers.map(e => e.refresh).callEach(null),
+                    refresh: () => renderers.map(e => e.getRefreshed).callEach(null),
                     attachTo: server => renderers.map(e => e.attachTo).callEach(server),
                     warmUp: repetitions => renderers.map(e => e.warmUp).callEach(repetitions),
                     htmlPlugins: () => renderers.map(e => e.htmlPlugin),

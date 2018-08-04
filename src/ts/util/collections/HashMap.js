@@ -2,22 +2,23 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const bind_1 = require("../decorators/bind");
 const iterables_1 = require("../functional/iterables");
-const typeAliases_1 = require("../types/typeAliases");
+const hash_1 = require("../misc/hash");
+const hashEquals_1 = require("../misc/hashEquals");
 const utils_1 = require("../misc/utils");
+const typeAliases_1 = require("../types/typeAliases");
 const ArrayStack_1 = require("./ArrayStack");
 const Collection_1 = require("./Collection");
-const HashEquals_1 = require("./HashEquals");
 const HashSet_1 = require("./HashSet");
 // TODO add referential version like in HashSet
 // TODO add perfect hash version (for keys like Date or enums), b/c can be optimized (no linked lists)
 // TODO add perfect hash version to HashSet, too
 exports.HashMap = {
-    new({ elements = [], hashEquals, keysHashEquals = HashEquals_1.HashEquals.default(), valuesHashEquals = HashEquals_1.HashEquals.default(), }) {
+    new({ elements = [], hashEquals, keysHashEquals = hashEquals_1.hashEquals.default_(), valuesHashEquals = hashEquals_1.hashEquals.default_(), }) {
         const exists = (node) => node.exists;
-        const { hash, equals } = HashEquals_1.HashEquals.fastEquals(keysHashEquals);
-        const { hash: valueHash, equals: valueEquals } = HashEquals_1.HashEquals.fastEquals(valuesHashEquals);
+        const { hash, equals } = hashEquals_1.hashEquals.fastEquals(keysHashEquals);
+        const { hash: valueHash, equals: valueEquals } = hashEquals_1.hashEquals.fastEquals(valuesHashEquals);
         hashEquals = {
-            hash: ({ key, value }) => HashEquals_1.Hash.makeNumber(hash(key)) ^ HashEquals_1.Hash.makeNumber(valueHash(value)),
+            hash: ({ key, value }) => hash_1.hash.makeNumber(hash(key)) ^ hash_1.hash.makeNumber(valueHash(value)),
             equals: (e1, e2) => equals(e1.key, e2.key) && valueEquals(e1.value, e2.value),
         };
         const table = bind_1.bind(new typeAliases_1.NativeMap());
@@ -263,7 +264,7 @@ exports.HashMap = {
         return _;
     },
     referential(args) {
-        args.keysHashEquals = HashEquals_1.HashEquals.referential();
+        args.keysHashEquals = hashEquals_1.hashEquals.referential();
         return exports.HashMap.new(args);
     },
     perfectHash(args) {

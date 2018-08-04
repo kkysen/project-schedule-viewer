@@ -40,7 +40,7 @@ server.get("/", app.handler);
 // force v8 to compile and optimize
 renderers.warmUp(production ? 16 : 1);
 
-export const dataWatchers = watchData();
+watchData();
 
 (async () => {
     serveJS(await jsDistFiles.get());

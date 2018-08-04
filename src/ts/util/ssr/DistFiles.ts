@@ -1,5 +1,6 @@
 import {createHash} from "crypto";
 import * as fs from "fs-extra";
+import {of} from "rxjs/index";
 import {dir} from "../../ProjectScheduleViewer/server/dir";
 import {RefreshableAsyncCache, refreshableAsyncCache} from "../cache/cache";
 import {All} from "../collections/query/All";

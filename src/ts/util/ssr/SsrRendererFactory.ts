@@ -1,7 +1,7 @@
 import {Express, Request, RequestHandler, Response} from "express-serve-static-core";
 import * as fs from "fs-extra";
 import {renderToString} from "react-dom/server";
-import {refreshableAsyncCache} from "../cache/cache";
+import {RefreshableAsyncCache, refreshableAsyncCache} from "../cache/cache";
 import {Range} from "../collections/Range";
 import {brotli, brotliOptions} from "../compression/Brotli";
 import {setBrotliHeaders} from "../http/headers";
@@ -19,9 +19,8 @@ interface SsrRendered {
     readonly html: Buffer;
 }
 
-export interface SsrRenderer {
+export interface SsrRenderer extends RefreshableAsyncCache<SsrRendered> {
     readonly name: string;
-    readonly refresh: () => void;
     readonly handler: RequestHandler;
     readonly attachTo: (server: Express) => void;
     readonly warmUp: (repetitions: number) => void;
@@ -161,7 +160,7 @@ export const SsrRendererFactory = {
                 
                 return {
                     name,
-                    refresh: renderer.getRefreshed,
+                    ...renderer,
                     handler,
                     attachTo: server => server.get(`/${name}`, handler),
                     warmUp: repetitions => Range.new(repetitions).map(renderer.getRefreshed),
@@ -179,7 +178,7 @@ export const SsrRendererFactory = {
                     add: (..._renderers) => {
                         renderers.addAll(_renderers);
                     },
-                    refresh: () => renderers.map(e => e.refresh).callEach(null),
+                    refresh: () => renderers.map(e => e.getRefreshed).callEach(null),
                     attachTo: server => renderers.map(e => e.attachTo).callEach(server),
                     warmUp: repetitions => renderers.map(e => e.warmUp).callEach(repetitions),
                     htmlPlugins: () => renderers.map(e => e.htmlPlugin),

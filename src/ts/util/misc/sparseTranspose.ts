@@ -1,5 +1,5 @@
-import {HashEquals} from "../collections/HashEquals";
 import {HashSet} from "../collections/HashSet";
+import {hashEquals} from "./hashEquals";
 
 interface E<I, J, T> {
     i: I;
@@ -26,7 +26,7 @@ const reconstructUsingHashNew = function<I, J, T, H>(flat: E<J, I, T>[], hashJ: 
 };
 
 const reconstructUsingHash = function<I, J, T, H>(flat: E<J, I, T>[], hashJ: (j: J) => H): Row<J, I, T>[] {
-    const {hash, equals} = HashEquals.fromHash(hashJ);
+    const {hash, equals} = hashEquals.fromHash(hashJ);
     return [...HashSet.new({
         elements: flat.map(e => e.i),
         hashEquals: {hash, equals},
