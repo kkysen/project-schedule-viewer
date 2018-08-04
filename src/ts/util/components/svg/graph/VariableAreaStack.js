@@ -1,17 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const classNames = require("classnames");
-const d3_array_1 = require("d3-array");
 const d3_axis_1 = require("d3-axis");
 const d3_scale_1 = require("d3-scale");
 const d3_scale_chromatic_1 = require("d3-scale-chromatic");
 const d3_shape_1 = require("d3-shape");
 const React = require("react");
-const utils_1 = require("../../../functional/utils");
-const production_1 = require("../../../env/production");
 const Range_1 = require("../../../collections/Range");
-const isType_1 = require("../../../types/isType");
+const production_1 = require("../../../env/production");
+const utils_1 = require("../../../functional/utils");
+const math_1 = require("../../../misc/math");
 const utils_2 = require("../../../misc/utils");
+const isType_1 = require("../../../types/isType");
 const utils_3 = require("../utils");
 const Axes_1 = require("./Axes");
 exports.VariableAreaStack = function (props) {
@@ -96,7 +96,7 @@ exports.VariableAreaStack = function (props) {
         const color = utils_2.moduloIndexer(colors);
         return (z, i) => color(i);
     };
-    const xDomain = forceDomain.x || d3_array_1.extent(xValues);
+    const xDomain = forceDomain.x || [xValues[0], xValues._().last()];
     const value = (d, i) => {
         if (i > d.length) {
             return 0;
@@ -104,7 +104,7 @@ exports.VariableAreaStack = function (props) {
         return values.y(d[i]);
     };
     return props => {
-        const { orderBy, offset = d3_shape_1.stackOffsetNone, scale: { x: xScale = d3_scale_1.scaleLinear(), y: yScale = d3_scale_1.scaleLinear(), } = {}, axes: { x: xAxis = utils_1.identity, y: yAxis = utils_1.identity, } = {}, axesNames = {}, size, margins = {}, className, curve, defined, glyph, reverse = false, } = props;
+        const { zLine, orderBy, offset = d3_shape_1.stackOffsetNone, scale: { x: xScale = d3_scale_1.scaleLinear(), y: yScale = d3_scale_1.scaleLinear(), } = {}, axes: { x: xAxis = utils_1.identity, y: yAxis = utils_1.identity, } = {}, axesNames = {}, size, margins = {}, className, curve, defined, glyph, reverse = false, } = props;
         const { width, height } = size;
         const { left = 0, top = 0, bottom = 0, right = 0 } = margins;
         const _margins = { left, top, bottom, right };
@@ -126,11 +126,21 @@ exports.VariableAreaStack = function (props) {
             .sortBy(e => orderBy(e.value, e.i))
             .map(e => e.i))
             .offset(offset)(yData._());
-        const yDomain = forceDomain.y || d3_array_1.extent(seriesData.flatten(2));
-        y.domain(yDomain);
+        const zLineHeight = zLine && math_1.sum(zData.map(e => e.key).map(zLine));
         reverse && seriesData.reverse();
+        const yDomain = forceDomain.y || [
+            Math.min(...seriesData[0].map(e => e[0]), zLine ? zLineHeight : Infinity),
+            Math.max(...seriesData.last().map(e => e[1]), zLine ? zLineHeight : -Infinity),
+        ];
+        y.domain(yDomain);
         const paths = seriesData.mapFilter(path);
-        const _className = classNames("vx-area-stack", className);
+        const zLinePath = zLineHeight && (() => {
+            const [x1, x2] = xDomain.map(x);
+            const _y = y(zLineHeight);
+            // TODO add argument for controlling line's style
+            return React.createElement("line", { x1: x1, x2: x2, y1: _y, y2: _y, stroke: "black" });
+        })();
+        const _className = classNames("variable-area-stack", className);
         const glyphNodes = !!glyph && React.createElement("g", { className: "vx-area-stack-glyphs" }, xData.map(glyph));
         const axesNode = React.createElement("g", null, Axes_1.Axes({
             axes: {
@@ -152,6 +162,7 @@ exports.VariableAreaStack = function (props) {
                 return React.createElement("svg", { width: outerWidth, height: outerHeight },
                     React.createElement("g", { transform: utils_3.translate(left, top) },
                         React.createElement("g", null, paths.map((path, i) => React.createElement("path", { key: i, className: _className, d: path, fill: _color(zData[i].key, i) }))),
+                        zLinePath,
                         glyphNodes,
                         axesNode));
             }

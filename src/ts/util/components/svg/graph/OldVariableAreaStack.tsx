@@ -10,9 +10,10 @@ import {MapEntry} from "../../../collections/Map";
 import {identity} from "../../../functional/utils";
 import {development} from "../../../env/production";
 import {Range} from "../../../collections/Range";
+import {Numeric} from "../../../misc/math";
 import {isArray, isReadonlyArray} from "../../../types/isType";
 import {moduloIndexer} from "../../../misc/utils";
-import {Accessor, Margins, Numeric, Scale, Size, translate} from "../utils";
+import {Accessor, Margins, Scale, Size, translate} from "../utils";
 import {Axes} from "./Axes";
 import {StackOffset} from "./utils";
 

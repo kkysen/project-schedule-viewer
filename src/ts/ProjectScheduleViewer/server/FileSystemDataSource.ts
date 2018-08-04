@@ -37,7 +37,7 @@ const parseProject = function(employees: Employees, positions: Positions) {
         };
     };
     
-    const GENERIC_EMPLOYEE_NAME = "Staff ??";
+    const GENERIC_EMPLOYEE_NAME_PATTERN = /^( *\?*)*Staff( *\?*)*$/i;
     
     const employeeByName = function(name: string$, levelString: string$, rateString: string$): Employee | undefined {
         if (!name) {
@@ -47,7 +47,7 @@ const parseProject = function(employees: Employees, positions: Positions) {
         if (employee) {
             return employee;
         }
-        if (name !== GENERIC_EMPLOYEE_NAME) {
+        if (!GENERIC_EMPLOYEE_NAME_PATTERN.test(name)) {
             return;
         }
         const level = parseInt(levelString!);

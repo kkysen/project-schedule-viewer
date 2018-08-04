@@ -27,7 +27,7 @@ const parseProject = function (employees, positions) {
             return !percent ? defaultPercent : 0.01 * percent;
         };
     };
-    const GENERIC_EMPLOYEE_NAME = "Staff ??";
+    const GENERIC_EMPLOYEE_NAME_PATTERN = /^( *\?*)*Staff( *\?*)*$/i;
     const employeeByName = function (name, levelString, rateString) {
         if (!name) {
             return;
@@ -36,7 +36,7 @@ const parseProject = function (employees, positions) {
         if (employee) {
             return employee;
         }
-        if (name !== GENERIC_EMPLOYEE_NAME) {
+        if (!GENERIC_EMPLOYEE_NAME_PATTERN.test(name)) {
             return;
         }
         const level = parseInt(levelString);

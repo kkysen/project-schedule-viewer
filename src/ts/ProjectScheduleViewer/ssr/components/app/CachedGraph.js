@@ -33,6 +33,7 @@ exports.CachedGraph = function ({ data, filter, order, color }) {
     });
     let graphData = updateGraphData(true);
     const updateGraph = () => graphData({
+        zLine: employee => employee.employee.isReal ? 1 : 0,
         orderBy: order,
         scale: {
             x: d3_scale_1.scaleTime(),

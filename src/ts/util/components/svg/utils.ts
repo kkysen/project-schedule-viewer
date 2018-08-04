@@ -14,8 +14,6 @@ export interface Margins {
 
 export type Accessor<T, Datum> = (d: Datum, i: number) => T;
 
-export type Numeric = number | {valueOf(): number};
-
 export interface Scale<Domain extends AxisDomain> {
     
     range(): number[];

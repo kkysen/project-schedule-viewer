@@ -1,18 +1,18 @@
 import * as classNames from "classnames";
-import {extent} from "d3-array";
 import {Axis, axisBottom, axisLeft} from "d3-axis";
 import {scaleLinear} from "d3-scale";
 import {schemeCategory10} from "d3-scale-chromatic";
 import {area, CurveFactory, SeriesPoint, stack, stackOffsetNone, stackOrderNone} from "d3-shape";
 import * as React from "react";
-import {ReactNode} from "react";
+import {ReactNode, SVGProps} from "react";
 import {MapEntry} from "../../../collections/Map";
-import {identity} from "../../../functional/utils";
-import {development} from "../../../env/production";
 import {Range} from "../../../collections/Range";
-import {isArray, isReadonlyArray} from "../../../types/isType";
+import {development} from "../../../env/production";
+import {identity} from "../../../functional/utils";
+import {Numeric, sum} from "../../../misc/math";
 import {moduloIndexer} from "../../../misc/utils";
-import {Accessor, Margins, Numeric, Scale, Size, translate} from "../utils";
+import {isArray, isReadonlyArray} from "../../../types/isType";
+import {Accessor, Margins, Scale, Size, translate} from "../utils";
 import {Axes} from "./Axes";
 import {StackOffset} from "./utils";
 
@@ -35,6 +35,7 @@ interface VariableAreaStackDataProps<T, X, XDomain extends Numeric, Z> {
 }
 
 interface VariableAreaStackProps<T, X, XDomain extends Numeric, Z> {
+    zLine?: (z: Z) => number;
     orderBy?: (z: Z, i: number) => number;
     offset?: StackOffset<RA<T>, number>;
     scale?: {
@@ -179,7 +180,7 @@ export const VariableAreaStack = function <T, X, XDomain extends Numeric, Z>(
         return (z, i) => color(i);
     };
     
-    const xDomain = forceDomain.x || extent(xValues) as [XDomain, XDomain];
+    const xDomain = forceDomain.x || [xValues[0], xValues._().last()];
     
     const value = (d: RA<T>, i: Key) => {
         if (i > d.length) {
@@ -190,6 +191,7 @@ export const VariableAreaStack = function <T, X, XDomain extends Numeric, Z>(
     
     return props => {
         const {
+            zLine,
             orderBy,
             offset = stackOffsetNone,
             scale: {
@@ -239,12 +241,25 @@ export const VariableAreaStack = function <T, X, XDomain extends Numeric, Z>(
             .offset(offset)
             (yData._());
         
-        const yDomain = forceDomain.y || extent(seriesData.flatten(2)) as [number, number];
-        y.domain(yDomain);
+        const zLineHeight = zLine && sum(zData.map(e => e.key).map(zLine));
+        
         reverse && seriesData.reverse();
+        
+        const yDomain = forceDomain.y || [
+            Math.min(...seriesData[0].map(e => e[0]), zLine ? zLineHeight! : Infinity),
+            Math.max(...seriesData.last().map(e => e[1]), zLine ? zLineHeight! : -Infinity),
+        ];
+        y.domain(yDomain);
         const paths = seriesData.mapFilter<string>(path);
         
-        const _className = classNames("vx-area-stack", className);
+        const zLinePath = zLineHeight && (() => {
+            const [x1, x2] = xDomain.map(x);
+            const _y = y(zLineHeight);
+            // TODO add argument for controlling line's style
+            return <line x1={x1} x2={x2} y1={_y} y2={_y} stroke={"black"}/>;
+        })();
+        
+        const _className = classNames("variable-area-stack", className);
         
         const glyphNodes = !!glyph && <g className="vx-area-stack-glyphs">{xData.map(glyph)}</g>;
         
@@ -271,9 +286,9 @@ export const VariableAreaStack = function <T, X, XDomain extends Numeric, Z>(
                 const {
                     color = schemeCategory10,
                 } = props;
-    
+                
                 const _color = isReadonlyArray(color) ? colorFromArray(color) : color;
-    
+                
                 return <svg width={outerWidth} height={outerHeight}>
                     <g transform={translate(left, top)}>
                         <g>
@@ -285,6 +300,7 @@ export const VariableAreaStack = function <T, X, XDomain extends Numeric, Z>(
                                 // onMouseEnter={() => console.log(zData[i].key, zData[i].value)}
                             />)}
                         </g>
+                        {zLinePath}
                         {glyphNodes}
                         {axesNode}
                     </g>

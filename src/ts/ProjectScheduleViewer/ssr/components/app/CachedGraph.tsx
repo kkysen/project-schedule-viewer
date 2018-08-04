@@ -9,6 +9,7 @@ import {
     VariableAreaStackData
 } from "../../../../util/components/svg/graph/VariableAreaStack";
 import {Scale} from "../../../../util/components/svg/utils";
+import {employees} from "../../../share/data/access/Employee";
 import {EmployeeCommitment, ProjectEmployee} from "../../../share/data/access/Project";
 import {Data} from "../../../share/data/Data";
 import {Color} from "./Graph";
@@ -59,6 +60,7 @@ export const CachedGraph = function({data, filter, order, color}: CachedGraphPro
     let graphData: GraphData = updateGraphData(true);
     
     const updateGraph = (): Graph => graphData({
+        zLine: employee => employee.employee.isReal ? 1 : 0,
         orderBy: order,
         scale: {
             x: scaleTime() as Scale<Date>,
