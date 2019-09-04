@@ -1,35 +1,14 @@
 import {schemeSet3} from "d3-scale-chromatic";
 import * as React from "react";
 import {Component, MouseEvent, ReactNode} from "react";
-import {HashMap} from "../../../../util/collections/HashMap";
-import {Map} from "../../../../util/collections/Map";
 import {Range} from "../../../../util/collections/Range";
+import {GraphControlIndices} from "../../../../util/components/svg/graph/GraphAccessor";
 import {doubleEvent} from "../../../../util/events/multiEvent";
 import {moduloIndexer} from "../../../../util/misc/utils";
-import {EmployeeCommitment} from "../../../share/data/access/Project";
 import {Data} from "../../../share/data/Data";
 import {CachedGraph, CachedGraphProps} from "./CachedGraph";
-import {AccessorsArgs, ControlIndices, GraphControls, RawFilter, RawOrder, SetControls} from "./GraphControls";
+import {Accessor, AccessorsArgs, GraphControls, Order, RawFilter, SetControls} from "./GraphControls";
 import {indexOrder, noFilter} from "./OrderControls";
-
-const prepareData = function(data: Data, filter: RawFilter): Map<Date, EmployeeCommitment[]> {
-    const hash = (date: Date) => +date;
-    const map = HashMap.perfectHash<Date, EmployeeCommitment[]>({
-        keysHashEquals: {
-            hash,
-            equals: (t1, t2) => hash(t1) === hash(t2),
-        },
-    });
-    data.teams.all
-        .flatMap(e => e.projects._())
-        .flatMap(e => e.dates._())
-        .forEach(({date, employees}) =>
-            map.getOrPutDefault(date.date, [])
-                .addAll(employees.filter(e => filter(e.employee)))
-        );
-    return map;
-};
-
 
 interface GraphProps {
     data: Data;
@@ -37,15 +16,14 @@ interface GraphProps {
 
 export type Color = (i: number) => string;
 
-interface GraphState extends ControlIndices {
+interface GraphState extends GraphControlIndices {
     
     color: Color;
-    order: RawOrder;
+    order: Order;
     filter: RawFilter;
     reScale: boolean;
     
 }
-
 
 const accessors: AccessorsArgs = {
     employee: {

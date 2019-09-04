@@ -3,28 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const d3_scale_chromatic_1 = require("d3-scale-chromatic");
 const React = require("react");
 const react_1 = require("react");
-const HashMap_1 = require("../../../../util/collections/HashMap");
 const Range_1 = require("../../../../util/collections/Range");
 const multiEvent_1 = require("../../../../util/events/multiEvent");
 const utils_1 = require("../../../../util/misc/utils");
 const CachedGraph_1 = require("./CachedGraph");
 const GraphControls_1 = require("./GraphControls");
 const OrderControls_1 = require("./OrderControls");
-const prepareData = function (data, filter) {
-    const hash = (date) => +date;
-    const map = HashMap_1.HashMap.perfectHash({
-        keysHashEquals: {
-            hash,
-            equals: (t1, t2) => hash(t1) === hash(t2),
-        },
-    });
-    data.teams.all
-        .flatMap(e => e.projects._())
-        .flatMap(e => e.dates._())
-        .forEach(({ date, employees }) => map.getOrPutDefault(date.date, [])
-        .addAll(employees.filter(e => filter(e.employee))));
-    return map;
-};
 const accessors = {
     employee: {
         get: e => e.employee,

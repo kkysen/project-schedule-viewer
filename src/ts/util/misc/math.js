@@ -7,6 +7,13 @@ exports.sum = function (a) {
     }
     return sum;
 };
+exports.sumBy = function (a, by) {
+    let sum = 0;
+    for (const n of a) {
+        sum += by(n);
+    }
+    return sum;
+};
 const checkNonEmpty = function (a, name) {
     if (a.length === 0) {
         throw new Error(`${name} does not exist b/c 0 elements in array`);

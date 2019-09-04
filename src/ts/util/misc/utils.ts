@@ -136,3 +136,12 @@ export const moduloIndexer = function <T>(a: ReadonlyArray<T>): (i: number) => T
     return i => a[i % a.length];
 };
 
+/**
+ * Make an array non-holey.
+ *
+ * @param {T[]} a holey array
+ * @returns {T[]} a blasphemous array
+ */
+export const makeBlasphemous = function<T>(a: T[]): T[] {
+    return Object.values(a) as any as T[];
+};

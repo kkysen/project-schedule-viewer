@@ -6,7 +6,7 @@ var cmp;
         return (t1, t2) => keyExtractor(t1) - keyExtractor(t2);
     };
     cmp.byNumeric = function (keyExtractor) {
-        return cmp.byNumber(keyExtractor.thenCall(e => e.valueOf()));
+        return cmp.byNumber(keyExtractor.then_(e => e.valueOf()));
     };
     cmp.byString = function (keyExtractor) {
         return (t1, t2) => {

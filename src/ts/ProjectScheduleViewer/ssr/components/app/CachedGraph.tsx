@@ -4,16 +4,12 @@ import * as React from "react";
 import {ReactNode} from "react";
 import {HashMap} from "../../../../util/collections/HashMap";
 import {Map} from "../../../../util/collections/Map";
-import {
-    VariableAreaStack,
-    VariableAreaStackData
-} from "../../../../util/components/svg/graph/VariableAreaStack";
+import {VariableAreaStack, VariableAreaStackData} from "../../../../util/components/svg/graph/VariableAreaStack";
 import {Scale} from "../../../../util/components/svg/utils";
-import {employees} from "../../../share/data/access/Employee";
 import {EmployeeCommitment, ProjectEmployee} from "../../../share/data/access/Project";
 import {Data} from "../../../share/data/Data";
 import {Color} from "./Graph";
-import {RawFilter, RawOrder} from "./GraphControls";
+import {Accessor, Order, RawFilter} from "./GraphControls";
 
 const prepareData = function(data: Data, filter: RawFilter): Map<Date, EmployeeCommitment[]> {
     const hash = (date: Date) => +date;
@@ -36,7 +32,7 @@ const prepareData = function(data: Data, filter: RawFilter): Map<Date, EmployeeC
 export interface CachedGraphProps {
     data: Data;
     filter: RawFilter;
-    order: RawOrder;
+    order: Order;
     color: Color;
     reScale: boolean;
 }
@@ -55,13 +51,22 @@ export const CachedGraph = function({data, filter, order, color}: CachedGraphPro
             z: d => d.employee,
         },
         flat: true,
+        extendLast: {
+            // inverse: x => new Date(x),
+            increment: x1 => {
+                const x2 = new Date(x1); // make copy
+                x2.setMonth(x1.getMonth() + 1); // allow overflow, will go to next year
+                return x2;
+            },
+        },
         forceDomain: reScale ? undefined : graph.domain,
     });
     let graphData: GraphData = updateGraphData(true);
     
     const updateGraph = (): Graph => graphData({
         zLine: employee => employee.employee.isReal ? 1 : 0,
-        orderBy: order,
+        orderBy: order.order,
+        orderByLength: order.all(data).length,
         scale: {
             x: scaleTime() as Scale<Date>,
         },
@@ -81,7 +86,8 @@ export const CachedGraph = function({data, filter, order, color}: CachedGraphPro
     let graph = updateGraph();
     
     const updateNode = (): ReactNode => graph.render({
-        color: (e, i) => color(order(e, i)),
+        color: (e, i) => color(order.order(e, i)),
+        tooltip: order.tooltip,
     });
     let node: ReactNode = updateNode();
     

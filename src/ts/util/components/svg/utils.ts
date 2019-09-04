@@ -26,6 +26,8 @@ export interface Scale<Domain extends AxisDomain> {
     
     (x: Domain): number;
     
+    invert(scaled: number): Domain;
+    
     copy(): this;
     
     bandwidth?(): number;

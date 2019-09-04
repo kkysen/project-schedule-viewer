@@ -5,7 +5,7 @@ export namespace cmp {
     };
     
     export const byNumeric = function <T>(keyExtractor: (t: T) => {valueOf(): number}): (t1: T, t2: T) => number {
-        return byNumber(keyExtractor.thenCall(e => e.valueOf()));
+        return byNumber(keyExtractor.then_(e => e.valueOf()));
     };
     
     export const byString = function <T>(keyExtractor: (t: T) => string): (t1: T, t2: T) => number {

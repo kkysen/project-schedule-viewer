@@ -82,9 +82,9 @@ declare interface Function {
     
     bind<T extends Function>(this: T, thisArg: any): T;
     
-    thenCall<T, U, V>(this: (arg: T) => U, nextFunc: (arg: U) => V): (arg: T) => V;
+    then_<T, U, V>(this: (arg: T) => U, nextFunc: (arg: U) => V): (arg: T) => V;
     
-    thenCall(this: () => void, nextFunc: () => void): () => void;
+    then_(this: () => void, nextFunc: () => void): () => void;
     
     applyReturning<T>(this: (arg: T) => void): (arg: T) => T;
     

@@ -2,13 +2,15 @@ import * as React from "react";
 import {SFC} from "react";
 import * as DropdownButton from "react-bootstrap/lib/DropdownButton";
 import * as MenuItem from "react-bootstrap/lib/MenuItem";
+import {GraphAccessorsAs, GraphFilter, RawGraphFilter} from "../../../../util/components/svg/graph/GraphAccessor";
 import {capitalize} from "../../../../util/misc/utils";
 import {Data} from "../../../share/data/Data";
+import {SetGraphFilter} from "../../../../util/components/svg/graph/GraphAccessor";
 import {AccessorsAs, Filter, RawFilter, SetFilter} from "./GraphControls";
 import {noFilter} from "./OrderControls";
 
 interface FilterControlsProps {
-    filters: AccessorsAs<Filter<any>>;
+    filters: AccessorsAs<Filter>;
     data: Data;
     setFilter: SetFilter;
     currentIndex: number;

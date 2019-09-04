@@ -111,4 +111,13 @@ exports.boolAsInt = function (bool) {
 exports.moduloIndexer = function (a) {
     return i => a[i % a.length];
 };
+/**
+ * Make an array non-holey.
+ *
+ * @param {T[]} a holey array
+ * @returns {T[]} a blasphemous array
+ */
+exports.makeBlasphemous = function (a) {
+    return Object.values(a);
+};
 //# sourceMappingURL=utils.js.map

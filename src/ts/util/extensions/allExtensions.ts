@@ -157,7 +157,7 @@ Object.defineImmutableProperties(Function, {
 
 Object.defineImmutableProperties(Function.prototype, {
     
-    thenCall<T, U, V>(this: (arg: T) => U, nextFunc: (arg: U) => V): (arg: T) => V {
+    then_<T, U, V>(this: (arg: T) => U, nextFunc: (arg: U) => V): (arg: T) => V {
         return (arg: T) => nextFunc(this(arg));
     },
     

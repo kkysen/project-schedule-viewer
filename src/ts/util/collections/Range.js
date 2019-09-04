@@ -6,6 +6,9 @@ exports.Range = {
         const _from = to === undefined ? 0 : from;
         const _to = to === undefined ? from : to;
         return {
+            fill(t) {
+                return [...new Array(_to - _from)].fill(t);
+            },
             toArray() {
                 return [...new Array(_to - _from)].map((e, i) => i + _from);
             },

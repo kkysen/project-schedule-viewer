@@ -2,16 +2,18 @@ import * as classNames from "classnames";
 import {Axis, axisBottom, axisLeft} from "d3-axis";
 import {scaleLinear} from "d3-scale";
 import {schemeCategory10} from "d3-scale-chromatic";
-import {area, CurveFactory, SeriesPoint, stack, stackOffsetNone, stackOrderNone} from "d3-shape";
+import {area, CurveFactory, Series, SeriesPoint, stack, stackOffsetNone, stackOrderNone} from "d3-shape";
 import * as React from "react";
-import {ReactNode, SVGProps} from "react";
+import {ReactNode} from "react";
 import {MapEntry} from "../../../collections/Map";
 import {Range} from "../../../collections/Range";
 import {development} from "../../../env/production";
 import {identity} from "../../../functional/utils";
+import {groupByNumber, groupByOrdinal} from "../../../misc/groupBy";
 import {Numeric, sum} from "../../../misc/math";
-import {moduloIndexer} from "../../../misc/utils";
+import {makeBlasphemous, moduloIndexer} from "../../../misc/utils";
 import {isArray, isReadonlyArray} from "../../../types/isType";
+import {anyWindow} from "../../../window/anyWindow";
 import {Accessor, Margins, Scale, Size, translate} from "../utils";
 import {Axes} from "./Axes";
 import {StackOffset} from "./utils";
@@ -19,6 +21,9 @@ import {StackOffset} from "./utils";
 type Entry<K, V> = MapEntry<K, V>;
 
 type RA<T> = ReadonlyArray<T>;
+
+type Inverse<X, Y> = {inverse: (y: Y) => X};
+type Increment<X> = {increment: (x: X) => X};
 
 interface VariableAreaStackDataProps<T, X, XDomain extends Numeric, Z> {
     data: Iterable<Entry<X, RA<T>>> | Iterable<[X, RA<T>]>;
@@ -28,6 +33,7 @@ interface VariableAreaStackDataProps<T, X, XDomain extends Numeric, Z> {
         z: (d: T) => Z;
     };
     flat?: boolean;
+    extendLast?: Inverse<X, number> | Increment<X>; // increment preferred
     forceDomain?: {
         x?: [XDomain, XDomain];
         y?: [number, number];
@@ -37,6 +43,7 @@ interface VariableAreaStackDataProps<T, X, XDomain extends Numeric, Z> {
 interface VariableAreaStackProps<T, X, XDomain extends Numeric, Z> {
     zLine?: (z: Z) => number;
     orderBy?: (z: Z, i: number) => number;
+    orderByLength?: number;
     offset?: StackOffset<RA<T>, number>;
     scale?: {
         x?: Scale<XDomain>;
@@ -65,6 +72,7 @@ export interface VariableAreaStackData<T, X, XDomain extends Numeric, Z> {
 
 interface VariableAreaStackRenderedProps<Z> {
     color?: RA<string> | ((z: Z, i: number) => string);
+    tooltip?: (z: Z, i: number) => string;
 }
 
 export interface VariableAreaStack<T, X, XDomain, Z> {
@@ -85,6 +93,7 @@ export const VariableAreaStack = function <T, X, XDomain extends Numeric, Z>(
         data: nonStandardizedData,
         values,
         flat = false,
+        extendLast,
         forceDomain = {},
     } = props;
     
@@ -111,18 +120,28 @@ export const VariableAreaStack = function <T, X, XDomain extends Numeric, Z>(
         if (!flat) {
             return data;
         }
-        return data.flatMap((e, i, a) => {
-            if (i === 0) {
-                return e;
+        return [...(function*(){
+            for (let i = 0; i < data.length; i++) {
+                const e = data[i];
+                if (i !== 0) {
+                    yield {key: e.key, value: data[i - 1].value};
+                }
+                yield e;
+                if (extendLast && i === data.length - 1) {
+                    const {inverse, increment} = extendLast as Inverse<X, number> & Increment<X>;
+                    if (increment) {
+                        yield {key: increment(e.key), value: e.value};
+                    } else {
+                        const start = +data[0].key;
+                        const end = +e.key;
+                        const range = end - start;
+                        const avgInterval = range / data.length;
+                        const next = end + avgInterval;
+                        yield {key: inverse(next), value: e.value};
+                    }
+                }
             }
-            return [
-                {
-                    key: e.key,
-                    value: a[i - 1].value,
-                },
-                e,
-            ];
-        });
+        })()];
     };
     
     const standardizeData = function(): Data | undefined {
@@ -157,7 +176,9 @@ export const VariableAreaStack = function <T, X, XDomain extends Numeric, Z>(
     const numZ = Math.max(...yData.map(e => e.length));
     const zRange = Range.new(numZ);
     const keys = zRange.toArray();
-    const zData: RA<Entry<Z, number[]>> = zRange
+    
+    type ZE = Entry<Z, number[]>;
+    const zData: RA<ZE> = zRange
     // TODO check mapFilter or map
         .map(i => yData._().mapFilter(e => e[i]))
         .mapFilter(e => {
@@ -193,6 +214,7 @@ export const VariableAreaStack = function <T, X, XDomain extends Numeric, Z>(
         const {
             zLine,
             orderBy,
+            orderByLength,
             offset = stackOffsetNone,
             scale: {
                 x: xScale = scaleLinear() as any as Scale<XDomain>,
@@ -230,14 +252,38 @@ export const VariableAreaStack = function <T, X, XDomain extends Numeric, Z>(
         curve && path.curve(curve);
         defined && path.defined((d, i) => defined(d.data, i));
         
+        const order = !orderBy ? null : (series: Series<RA<T>, number>): number[] => {
+            // if orderByLength is given, can optimize this
+            // groups will be buckets, with orderBy() giving the bucket index
+            // therefore use a pre-filled, packed smi array
+            // otherwise use [], a hash-map like array
+            
+            type IZE = {i: number, z: ZE};
+            const indexedZData: IZE[] = series.map((e, i) => ({i, z: zData[i]}));
+            const groupBy = (e: IZE, i: number) => orderBy(e.z.key, i);
+            const groups: IZE[][] = orderByLength
+                ? groupByOrdinal(indexedZData, groupBy, orderByLength)
+                : groupByNumber(indexedZData, groupBy);
+            
+            for (const group of groups) {
+                for (const e of group) {
+                    (series[e.i] as any).hello = e.z;
+                }
+            }
+            
+            // need to remove holes if used groupByNumber
+            return (orderByLength ? groups : makeBlasphemous(groups))
+                .flatMap(group => group.flatMap(ize => ize.i));
+            
+            // return series.map((e, i) => ({i, value: zData[i].key}))
+            //     .sortBy(e => orderBy(e.value, e.i))
+            //     .map(e => e.i);
+        };
+        
         const seriesData = stack<RA<T>, Key>()
             .keys(keys)
             .value(value)
-            .order(!orderBy ? stackOrderNone : series =>
-                series.map((e, i) => ({i, value: zData[i].key}))
-                    .sortBy(e => orderBy(e.value, e.i))
-                    .map(e => e.i)
-            )
+            .order(order || stackOrderNone)
             .offset(offset)
             (yData._());
         
@@ -285,21 +331,33 @@ export const VariableAreaStack = function <T, X, XDomain extends Numeric, Z>(
             render: props => {
                 const {
                     color = schemeCategory10,
+                    tooltip,
                 } = props;
                 
                 const _color = isReadonlyArray(color) ? colorFromArray(color) : color;
                 
+                const Area = (path: string, i: number) => {
+                    const {key, value} = zData[i];
+                    return <path
+                        key={i}
+                        className={_className}
+                        d={path}
+                        fill={_color(key, i)}
+                        onMouseOver={e => {
+                            const mouseX = x.invert(e.nativeEvent.offsetX - left);
+                            const nextIndex = xValues.findIndex(x => x > mouseX);
+                            const xRegion = xValues[nextIndex - 1];
+                            return (anyWindow.f || (() => {
+                            }))({e, x, y, mouseX, xValues, xRegion});
+                        }}
+                    >
+                        {tooltip && <title>{tooltip(key, i)}</title>}
+                    </path>;
+                };
+                
                 return <svg width={outerWidth} height={outerHeight}>
                     <g transform={translate(left, top)}>
-                        <g>
-                            {paths.map((path, i) => <path
-                                key={i}
-                                className={_className}
-                                d={path}
-                                fill={_color(zData[i].key, i)}
-                                // onMouseEnter={() => console.log(zData[i].key, zData[i].value)}
-                            />)}
-                        </g>
+                        <g>{paths.map(Area)}</g>
                         {zLinePath}
                         {glyphNodes}
                         {axesNode}

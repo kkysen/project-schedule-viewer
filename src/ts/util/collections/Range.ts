@@ -8,6 +8,8 @@ export interface Range {
     
     forEach(func: (i: number) => void): void;
     
+    fill<T>(t: T): T[];
+    
     toArray(): number[];
     
     toInterval(): number[];
@@ -37,6 +39,10 @@ export const Range: RangeClass = {
         const _to: number = to === undefined ? from : to;
         
         return {
+            
+            fill<T>(t: T): T[] {
+                return [...new Array(_to - _from)].fill(t);
+            },
             
             toArray(): number[] {
                 return [...new Array(_to - _from)].map((e, i) => i + _from);

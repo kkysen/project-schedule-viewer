@@ -1,4 +1,5 @@
 import {iltorb} from "../../lib/iltorb";
+import {production} from "../env/production";
 
 interface AllBrotliOptions {
     
@@ -46,7 +47,7 @@ export interface CommonBrotliOptions extends _CommonBrotliOptions {
 export const brotliOptions: CommonBrotliOptions = {
     staticText: {
         mode: "text",
-        quality: 11,
+        quality: production ? 11 : 5,
     },
 };
 

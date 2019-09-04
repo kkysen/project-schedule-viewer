@@ -121,7 +121,7 @@ Object.defineImmutableProperties(Function, {
     },
 });
 Object.defineImmutableProperties(Function.prototype, {
-    thenCall(nextFunc) {
+    then_(nextFunc) {
         return (arg) => nextFunc(this(arg));
     },
     applyReturning() {

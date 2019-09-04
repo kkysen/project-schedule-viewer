@@ -29,12 +29,21 @@ exports.CachedGraph = function ({ data, filter, order, color }) {
             z: d => d.employee,
         },
         flat: true,
+        extendLast: {
+            // inverse: x => new Date(x),
+            increment: x1 => {
+                const x2 = new Date(x1); // make copy
+                x2.setMonth(x1.getMonth() + 1); // allow overflow, will go to next year
+                return x2;
+            },
+        },
         forceDomain: reScale ? undefined : graph.domain,
     });
     let graphData = updateGraphData(true);
     const updateGraph = () => graphData({
         zLine: employee => employee.employee.isReal ? 1 : 0,
-        orderBy: order,
+        orderBy: order.order,
+        orderByLength: order.all(data).length,
         scale: {
             x: d3_scale_1.scaleTime(),
         },
@@ -52,7 +61,8 @@ exports.CachedGraph = function ({ data, filter, order, color }) {
     });
     let graph = updateGraph();
     const updateNode = () => graph.render({
-        color: (e, i) => color(order(e, i)),
+        color: (e, i) => color(order.order(e, i)),
+        tooltip: order.tooltip,
     });
     let node = updateNode();
     return (props) => {

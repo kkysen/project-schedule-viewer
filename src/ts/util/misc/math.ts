@@ -6,6 +6,14 @@ export const sum = function(a: ReadonlyArray<number>): number {
     return sum;
 };
 
+export const sumBy = function<T>(a: ReadonlyArray<T>, by: (t: T) => number): number {
+    let sum = 0;
+    for (const n of a) {
+        sum += by(n);
+    }
+    return sum;
+};
+
 export type Numeric = number | {valueOf(): number};
 
 const checkNonEmpty = function <T>(a: ReadonlyArray<T>, name: string): void {

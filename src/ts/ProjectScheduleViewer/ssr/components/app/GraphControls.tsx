@@ -1,10 +1,14 @@
 import * as React from "react";
 import {SFC} from "react";
 import * as Button from "react-bootstrap/lib/Button";
-import {MapEntry} from "../../../../util/collections/Map";
 import {Br} from "../../../../util/components/Br";
-import {multiEvent, tripleEvent} from "../../../../util/events/multiEvent";
-import {isBoolean} from "../../../../util/types/isType";
+import {
+    GraphAccessor,
+    GraphAccessorArgs, GraphAccessorsAs,
+    GraphControlIndices, GraphFilter, GraphOrder,
+    Id, RawGraphFilter,
+    SetGraphControls, SetGraphFilter, SetGraphOrder
+} from "../../../../util/components/svg/graph/GraphAccessor";
 import {Employee} from "../../../share/data/access/Employee";
 import {Position} from "../../../share/data/access/Position";
 import {Project, ProjectEmployee} from "../../../share/data/access/Project";
@@ -13,21 +17,7 @@ import {Data} from "../../../share/data/Data";
 import {FilterControls} from "./FilterControls";
 import {OrderControls} from "./OrderControls";
 
-export interface Id {
-    readonly id: number;
-}
-
-interface AccessorArgs<T extends Id> {
-    
-    get(employee: ProjectEmployee): T;
-    
-    all(data: Data): ReadonlyArray<T>;
-    
-    name(t: T): string;
-    
-}
-
-type GetAccessorArgsType<Args> = Args extends AccessorArgs<infer T> ? T : never;
+type AccessorArgs<T extends Id> = GraphAccessorArgs<ProjectEmployee, T>;
 
 export interface AccessorsArgs {
     readonly employee: AccessorArgs<Employee>;
@@ -36,83 +26,20 @@ export interface AccessorsArgs {
     readonly position: AccessorArgs<Position>;
 }
 
-export type RawOrder = (employee: ProjectEmployee, i: number) => number;
-export type RawFilter = (employee: ProjectEmployee) => boolean;
+export type Accessor<T extends Id = any> = GraphAccessor<ProjectEmployee, T>;
 
-export interface Order {
-    
-    readonly order: RawOrder;
-    
-}
+export type RawFilter = RawGraphFilter<ProjectEmployee>;
 
-export interface Filter<T> {
-    
-    filter(include: ReadonlyArray<T> | boolean, exclude: ReadonlyArray<T> | boolean): RawFilter;
-    
-    all(data: Data): ReadonlyArray<T>;
-    
-    name(t: T): string;
-    
-}
+export type Order = GraphOrder<ProjectEmployee>;
+export type Filter<T extends Id = any> = GraphFilter<ProjectEmployee, T>;
 
-interface Accessor<T extends Id> extends AccessorArgs<T>, Order, Filter<T> {
-    
-}
+export type AccessorsAs<T> = GraphAccessorsAs<ProjectEmployee, T>;
 
-type Accessors = {[K in keyof AccessorsArgs]: Accessor<GetAccessorArgsType<AccessorsArgs[K]>>};
+export type SetOrder = SetGraphOrder<ProjectEmployee>;
+export type SetFilter = SetGraphFilter<ProjectEmployee>;
+export type SetControls = SetGraphControls<ProjectEmployee>;
 
-export type AccessorKey = keyof Accessors;
-
-export type AccessorsAs<T> = Accessor<Id> extends T ? ReadonlyArray<MapEntry<string, T>> : never;
-
-
-const Accessor = (() => {
-    
-    const has = function <T>(a: ReadonlyArray<T> | boolean): (t: T) => boolean {
-        if (isBoolean(a)) {
-            return () => a;
-        }
-        const set = new Set(a);
-        return t => set.has(t);
-    };
-    
-    return {
-        
-        new<T extends Id>({get, all, name}: AccessorArgs<T>): Accessor<T> {
-            return {
-                get,
-                order: e => get(e).id,
-                filter: (include, exclude) => {
-                    const includes = has(include);
-                    const excludes = has(exclude);
-                    return employee => {
-                        const t = get(employee);
-                        return includes(t) && !excludes(t);
-                    };
-                },
-                all,
-                name,
-            };
-        },
-        
-    };
-})();
-
-
-export type SetOrder = (order: RawOrder, i: number) => void;
-export type SetFilter = (filter: RawFilter, i: number) => void;
-
-
-export interface SetControls {
-    readonly order: SetOrder;
-    readonly filter: SetFilter;
-    readonly reScale: () => void;
-}
-
-export interface ControlIndices {
-    readonly orderIndex: number;
-    readonly filterIndex: number;
-}
+export type ControlIndices = GraphControlIndices;
 
 interface GraphControlsProps {
     readonly data: Data;
@@ -121,18 +48,12 @@ interface GraphControlsProps {
     readonly current: ControlIndices;
 }
 
+const Accessor = GraphAccessor;
+
 export const GraphControls: SFC<GraphControlsProps> = ({data, accessors: accessorsArgs, set, current}) => {
-    const accessors = Object.entries(accessorsArgs).map(([key, value]) => ({key, value: Accessor.new(value as Accessor<any>)}));
+    const accessors = Object.entries(accessorsArgs)
+        .map(([key, value]) => ({key, value: Accessor.new(value as Accessor<any>)}));
     return <div style={{textAlign: "center"}}>
-        {/*<Br times={3}/>*/}
-        
-        {/*<h1 onClick={multiEvent()((events) => console.log(events.length))}>Hello</h1>*/}
-        {/*<h1 onClick={tripleEvent()(*/}
-            {/*() => console.log(1),*/}
-            {/*() => console.log(2),*/}
-            {/*() => console.log(3),*/}
-        {/*)}>World</h1>*/}
-        
         <OrderControls orders={accessors} setOrder={set.order} currentIndex={current.orderIndex}/>
         <Br times={1}/>
         <FilterControls filters={accessors} data={data} setFilter={set.filter} currentIndex={current.filterIndex}/>
