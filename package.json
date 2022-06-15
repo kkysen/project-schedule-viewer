@@ -61,7 +61,7 @@
     "react-router": "^4.3.1",
     "rxjs": "^6.2.2",
     "wasm-brotli": "^1.0.2",
-    "xlsx": "^0.13.2",
+    "xlsx": "^0.17.0",
     "zlib": "^1.0.5"
   },
   "main": "src/ts/ProjectScheduleViewer/server/server.js",
